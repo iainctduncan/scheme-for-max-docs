@@ -1,2 +1,7 @@
 # scheme-for-max-docs
-Documentation for Scheme For Max
+This is the repository for the documentation for Scheme-for-Max.
+
+More coming soon, I promise!
+
+
+
