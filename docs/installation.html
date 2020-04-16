@@ -1,0 +1,153 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Setup and Installation &#8212; Scheme For Max 0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Building From Source" href="building.html" />
+    <link rel="prev" title="Motivation - Why Lisp in Max?" href="motivations.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="setup-and-installation">
+<h1>Setup and Installation<a class="headerlink" href="#setup-and-installation" title="Permalink to this headline">¶</a></h1>
+<p>Scheme for Max is currently available as a package for Max 8 on OSX, and as source code
+that should compile for Max 7, and on Windows.</p>
+<p>The Scheme For Max package can be downloaded from the Releases tab on  <a class="reference external" href="https://github.com/iainctduncan/scheme-for-max.com">GitHub</a>.</p>
+<p>To install the package, download the archive, and uncompress it in Max packages directory. On OSX this
+is normally in <strong>~/Documents/Max 8/Packages</strong>. Once you have uncompressed here, open
+the package manager (File -&gt; Show Package Manager), and select “Installed Packages” in the upper right hand corner.
+You should now see an entry for Scheme For Max. Clicking <strong>Launch</strong> ought to open the Help tab.</p>
+<p>In addition the Max external, the package contains:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>help/</dt><dd><ul>
+<li><p>The help file, <strong>s4m.scm.maxhelp</strong></p></li>
+<li><p>The scheme source files used in the help (<strong>s4m_help_basics.scm</strong> etc)</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>extras/</dt><dd><ul>
+<li><p>The demo patcher(s), <strong>s4m.demo.maxpat</strong>, used in the demo videos</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>patchers/</dt><dd><ul>
+<li><p>The repl patcher, <strong>s4m.repl</strong></p></li>
+<li><p>The main s4m scheme file, <strong>scm4max.scm</strong></p></li>
+<li><p>Optional extra scheme files from s4m or base S7 that you may want</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p><strong>Important:</strong> When you install a Max Package, the patchers, extras, and help directories are
+automatically added to your Max file search path. If you move the scheme files from the patchers
+directory, you will need to add their new location to the search path. In particular, the
+<strong>scm4max.scm</strong> file is essential, it bootstraps the scheme side of scheme for max. If you decide
+to alter it, you probably want to make a backup (though you can always get it again from GitHub too).</p>
+<p>Providing the above are all where they should be, you should be able run the help file
+and try out the features of Scheme for Max.</p>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Scheme For Max</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="motivations.html">Motivation - Why Lisp in Max?</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Setup and Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="building.html">Building From Source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Using Scheme For Max</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="motivations.html" title="previous chapter">Motivation - Why Lisp in Max?</a></li>
+      <li>Next: <a href="building.html" title="next chapter">Building From Source</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Iain CT Duncan.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/installation.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

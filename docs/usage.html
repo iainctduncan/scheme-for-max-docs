@@ -1,0 +1,241 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Using Scheme For Max &#8212; Scheme For Max 0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Building From Source" href="building.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="using-scheme-for-max">
+<h1>Using Scheme For Max<a class="headerlink" href="#using-scheme-for-max" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="s4m-scm-object-reference">
+<h2>s4m.scm Object Reference<a class="headerlink" href="#s4m-scm-object-reference" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="properties-of-s4m-scm">
+<h3>Properties of s4m.scm<a class="headerlink" href="#properties-of-s4m-scm" title="Permalink to this headline">¶</a></h3>
+<p>A source file name as the first argument in the s4m.scm object box
+will be loaded automatically, searching the Max file search path.
+Changing this file in the box will always wipe the scheme environment and reload
+the file, as this recreates the object.</p>
+<dl class="simple">
+<dt><strong>&#64;ins {num}</strong></dt><dd><p>Sets the number of inlets to num</p>
+</dd>
+<dt><strong>&#64;outs {num)</strong></dt><dd><p>Sets the number of outlets to num</p>
+</dd>
+</dl>
+<p>Note, there is currently an issue whereby these can <em>only</em> be changed in the
+object box, and thus must wipe the environment. This may be made dynamica
+at a later date. Do not change in the property inspector or attempt to set
+dynamically with messages at this time.</p>
+<p>When a source file has been listed in the object box, double clicking the
+object will open the file in the editor. The file will be reloaded on save,
+which will <em>not</em> reboot the scheme interpreter. We can reboot the interpreter
+at any time with the <strong>reset</strong> message.</p>
+</div>
+<div class="section" id="messages-to-inlet-0">
+<h3>Messages to inlet 0<a class="headerlink" href="#messages-to-inlet-0" title="Permalink to this headline">¶</a></h3>
+<p>Messages to inlet 0 are either handled directly by the s4m.scm object,
+or executed as scheme code if no direct handling exists. The interpreter will
+evaluate the token list as a scheme s-expression that is being called, with
+any symbols evaluating to the their value in the scheme environment. Essentially
+they are executed as if wrapped in an outer pair of parentheses. For example,
+the message <strong>foobar 1 2 3</strong> will be evaluated in scheme as <strong>(foobar 1 2 3)</strong>.
+This means that the message <strong>out a</strong> will only execute properly if the variable <strong>a</strong>
+has been defined. To have <strong>a</strong> treated as a max symbol, not a scheme variable,
+we single quote it. For example, <strong>out 0 ‘a</strong> will send the symbo “a” out output
+0, having evaluated as <strong>(out 0 ‘a)</strong> in scheme.</p>
+<p>The messages <strong>reset</strong>, <strong>read</strong>, <strong>scan</strong>, and <strong>eval-string</strong> are handled
+by the external directly, but nontheless the semantics are the same.
+<strong>eval-string “(define a 99)”</strong> will execute as <strong>(eval-string “(define a 99)”)</strong>,
+which is defined in S7 scheme.</p>
+<p>Messages reference for inlet 0:</p>
+<dl class="simple">
+<dt><strong>reset</strong></dt><dd><p>Resets the scheme intepreter, wiping all active definitions, and reloading any
+sourcefile specified in the s4m.scm object box itself.</p>
+</dd>
+<dt><strong>read {filename}</strong></dt><dd><p>Loads the file {filename} from the Max search path. Executes the Scheme <strong>load</strong>
+function internally, after finding the full file path. Loading does not erase any
+already active definitions unless they are redefined.</p>
+</dd>
+<dt><strong>scan</strong></dt><dd><p>Scans the current patcher and all descendents for objects with scripting names,
+adding them to an internal registry so that they can receive messages with the
+<strong>send</strong> scheme function.</p>
+</dd>
+<dt><strong>{bang|int|float|list}</strong></dt><dd><p>Evaluates the function <strong>f-bang</strong>, <strong>f-int</strong>, <strong>f-float</strong>, or <strong>f-list</strong>, with
+the respective max atom(s) as argument(s). I.E. the int <strong>4</strong> sent to inlet 0
+will executes in Scheme as <strong>(f-int 4)</strong>. If no f-type function defined, prints
+an error message to console. Result of evaluation is printed to console if
+not null, or if the <strong>s4m-log-nulls</strong> variable has been set to <strong>#t</strong>.</p>
+</dd>
+<dt><strong>eval-string {string}</strong></dt><dd><p>Evaluates {string} in scheme. This is used by the REPL object by converting
+the text output to a single symbol with <strong>tosymbol</strong> and the prepending
+<strong>eval-string</strong>. Result of evaluation is printed to console.</p>
+</dd>
+<dt><strong>{symbol …}</strong></dt><dd><p>Evalues the symbol or list of symbols as a scheme s-expression. I.E. If sent
+the list <strong>my-fun 1 2 3</strong>, scheme will evaluate <strong>(my-fun 1 2 3)</strong>. Any symbols will
+be evaluated as scheme variables unless quoted. For example, on <strong>my-fun 1 a</strong>,
+there will be an error if <strong>a</strong> has not been defined. Result of evaluation
+printed to console. If the first symbol is not callable as a scheme procedure,
+will produce an error.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="messages-to-inlet-1">
+<h3>Messages to inlet 1+<a class="headerlink" href="#messages-to-inlet-1" title="Permalink to this headline">¶</a></h3>
+<p>Messages to inlet 1+ are treated as simple Max values or lists of Max atoms; they
+are not evaluated as scheme code.
+Symbols will become quoted symbols in scheme, with no variable evaluation. As these are
+not evaluated as code, the messages may begin with any type. Keywords are
+a good choice as it’s clear at a glance that the is not a function call, becauses keywords
+can not take the first position in a function call. I.E. <strong>(:foobar 1 2)</strong> is always
+an error in scheme, and thus <strong>:foobar 1 2</strong> will always be an invalid message to inlet 0, but
+is valid in inlet 1+. It won’t <em>do</em> anything unless we have registered a listener
+function on the inlet receiving the message, with the keyword <strong>:foobar</strong>.
+See Registering Listeners below.</p>
+<p>Messages reference for inlet 0:</p>
+<dl class="simple">
+<dt><strong>{bang|int|float|list}</strong></dt><dd><p>Evaluates scheme function <strong>(s4m-dispatch {inlet} {:bang|:int|:float|:list} {arg})</strong>,
+which will call registered listener functions, with inlet as arg 1, and data as arg2.
+For example, the message <strong>4</strong> on inlet 1 will call <strong>(s4m-dispatch 1 :int 4)</strong>, which will in turn
+call a registered listener function called my-listener as <strong>(listener 4)</strong>.
+If no listener function is registered for the inlet used and the associated keyword
+(:int, :bang, etc), will produce an error. See Registering Listeners.</p>
+</dd>
+<dt><strong>{symbol …}</strong></dt><dd><p>Evaluates scheme function <strong>(s4m-dispatch {inlet} {symbol} arg)</strong>, dispatching
+to listener functions registered with the symbol. Any arguments after the first
+symbol will be bound up in a list passed as <strong>arg</strong>, which may be empty.
+For example, the message <strong>:foobar 1 2 3</strong> on inlet 2 will call
+<strong>(s4m-dispatch 2 :foobar arg)</strong>, where <strong>arg</strong> is the scheme object <strong>(list 1 2 3)</strong>.
+This will in turn call a listener that has been registered with
+<strong>(listen 2 :foobar {function})*</strong>.
+If no listener function is registered for the inlet used and the associated symbol
+will produce an error. See Registering Listeners for more details.</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="scheme-api">
+<h2>Scheme API<a class="headerlink" href="#scheme-api" title="Permalink to this headline">¶</a></h2>
+<p>Below are details of the Scheme API. Core S7 functions are not listed here,
+only functions added by Scheme-For-Max.</p>
+<div class="section" id="console-output">
+<h3>Console Output<a class="headerlink" href="#console-output" title="Permalink to this headline">¶</a></h3>
+<dl class="simple">
+<dt><strong>post {args…}</strong></dt><dd><p>Post to the Max console. All arguments will be converted to string representations
+automatically. Post returns the null list.</p>
+</dd>
+</dl>
+<div class="highlight-scm notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define </span><span class="nv">a</span> <span class="mi">99</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">post</span> <span class="s">&quot;my var a is&quot;</span> <span class="nv">a</span><span class="p">)</span>
+<span class="nv">s4m&gt;</span> <span class="nv">my</span> <span class="nv">var</span> <span class="nv">a</span> <span class="nv">is</span> <span class="mi">99</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="registering-listeners">
+<h3>Registering Listeners<a class="headerlink" href="#registering-listeners" title="Permalink to this headline">¶</a></h3>
+<p>left off here…</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Scheme For Max</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="motivations.html">Motivation - Why Lisp in Max?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Setup and Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="building.html">Building From Source</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Using Scheme For Max</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#s4m-scm-object-reference">s4m.scm Object Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#scheme-api">Scheme API</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="building.html" title="previous chapter">Building From Source</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Iain CT Duncan.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/usage.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

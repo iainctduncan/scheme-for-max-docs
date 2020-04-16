@@ -1,0 +1,178 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Building From Source &#8212; Scheme For Max 0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Using Scheme For Max" href="usage.html" />
+    <link rel="prev" title="Setup and Installation" href="installation.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="building-from-source">
+<h1>Building From Source<a class="headerlink" href="#building-from-source" title="Permalink to this headline">¶</a></h1>
+<p>To build from your source, you will need to have installed the <a class="reference external" href="https://cycling74.com/downloads/sdk">Max 8 SDK</a>.
+I believe s4m should compile fine with the Max 7 SDK as well, but this has not been verified. If you have
+not previously compiled a Max external with the SDK, I recommend you start by compiling some of the samples that
+come with the SDK, at least until you get XCode building a dummy external. It should be theoretically
+be possible to build without the full XCode IDE, but I haven’t found good enough instructions to make this
+work, so I’m just using XCode as a (giant) compiler. If you know how, please let me know!</p>
+<p>The sample projects come with project files for XCode and VisualStudio. I’ll be honest, I know just
+enough about XCode to be dangerous, so the instructions below are likely not optimal. I have
+altered a sample XCode project file from the samples in the SDK, with my alterations detailed heere.</p>
+<p>Note than on XCode at least,
+these project files assume that the SDK files are in a specific place relative to your code. So you should
+clone the repository such that you have the following path layout, where the SDK path matches whatever version you
+download, and <strong>scheme4max</strong> is the top level of the Git repository.</p>
+<p><strong>~/Documents/Max 8/Packages/max-sdk-8.0.3/source/scheme4max</strong></p>
+<p>So for me, the following works:</p>
+<p><strong>$ cd ~/Documents/Max8/Packages/max-sdk-8.0.3/source</strong></p>
+<p><strong>$ git clone https://github.com/iainctduncan/scheme-for-max.git</strong></p>
+<p>In the cloned repository, you should see a source directory, <strong>s4m.scm</strong>, with the following:</p>
+<ul class="simple">
+<li><p><strong>s7.c</strong> - the main S7 C file (from S7)</p></li>
+<li><p><strong>s7.h</strong> - the S7 header file (from S7)</p></li>
+<li><p><strong>mus-config.h</strong> - an empty file required to compile S7</p></li>
+<li><p><strong>scm/</strong> - directory with various scheme files.</p></li>
+<li><p><strong>build_s7.sh</strong> - a bash helper for building S7</p></li>
+<li><p><strong>s4m.scm.xcodeproj</strong> - the XCode project file</p></li>
+</ul>
+<p>Someone who knows XCode could tell me how to set it up to build S7 properly as a dependency,
+but as I don’t, I’m just building the S7 object file and then linking it. build_s7.sh does this too.</p>
+<p><strong>$ gcc -c s7.c</strong></p>
+<p>If it worked, you should now have <strong>s7.o</strong>.
+Now we can build from XCode. Open the xcode project file; and below are the XCode settings I
+use.</p>
+<p>We need to edit the linker flags. Select <strong>s4m.scm</strong> in the left hand toolbar, and look for the
+<strong>Linking</strong> section in the main window, with an entry called <strong>Other Linker Flags</strong>.
+Double click this to add Linker Flags. My linker flags are the following:</p>
+<ul class="simple">
+<li><p>-framework MaxAudioAPI</p></li>
+<li><p>-framework JitterAPI</p></li>
+<li><p>${C74_SYM_LINKER_FLAGS}</p></li>
+<li><p>s7.o</p></li>
+<li><p>-L.</p></li>
+<li><p>-ldl</p></li>
+<li><p>-lm</p></li>
+</ul>
+<p>With these in place, we should be able to build. Building will generate lot of warnings
+about S7 pointers. I need to figure out how to turn those off, but they are harmless.
+A successful build should build a new version of <strong>s4m.scm.mxo</strong>, by default in <strong>Packages/max-sdk-8.x.x/externals</strong>.
+If you want to change where this goes you can do so, it’s somewhere in the XCode config labrynth.</p>
+<p>To make the development workflow better, under <strong>Product -&gt; Scheme</strong> you should see <strong>max-external</strong>.
+Choose <strong>Edit Scheme</strong> and the <strong>Run</strong> submenu to setup up whether Max launches automatically
+on compile. Select your Max.app as the executable to run. This will relaunch Max whenever you compile,
+so you don’t have to close and open Max to load your new external whenever you make changes.</p>
+<p>If you have previously installed the binary package, you may need to move it out of your Max
+package path to make sure you get the right external loading. The Python script <strong>make-release.py</strong>
+automates bundling up a build, putting the tarball in the right place, and moving my SDK package
+out of view so that I can test a new build. <strong>uninstall.py</strong> just puts things back. You can
+alter these for your system if they seem useful.</p>
+<p>If you want to experiment further with S7, you can download the S7 source directly from
+CCRMA. It comes with a lot of examples of using S7 with C. If you want to add features
+to Scheme-For-Max, you’ll probably want to do this. But all we need for simple compilation
+is <strong>s7.c</strong>, <strong>s7.h</strong>, and an empty <strong>mus-config.h</strong>.</p>
+<p>The C Code is ugly right now, I know. We’ll be refatoring and cleaning it up after I get
+the Max automated test package working nicely, promise!</p>
+<p>I will happily improve these instructions with feedback, and add a section on VisualStudio if someone
+can help there. If you get a build going off the instructions, please let me know on the Google
+Group so I know someone has managed.</p>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Scheme For Max</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="motivations.html">Motivation - Why Lisp in Max?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Setup and Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Building From Source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Using Scheme For Max</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="installation.html" title="previous chapter">Setup and Installation</a></li>
+      <li>Next: <a href="usage.html" title="next chapter">Using Scheme For Max</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Iain CT Duncan.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/building.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
