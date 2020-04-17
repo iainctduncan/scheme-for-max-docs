@@ -110,6 +110,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#gerbil"><strong>Gerbil</strong></a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#final-thoughts">Final Thoughts</a></li>
 </ul>
 </li>
 </ul>
@@ -286,6 +287,14 @@ slots of s-expressions, with arguments to get their contents. In
 S7 we can do this automatically with lists, vectors, and hash-tables.
 This makes for some terse code, a good thing when we want to build things
 in Max messages.</p>
+<div class="highlight-scm notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">my-listener</span> <span class="nv">args</span><span class="p">)</span>
+   <span class="c1">;; output the first arg</span>
+   <span class="p">(</span><span class="nf">out</span> <span class="mi">0</span> <span class="p">(</span><span class="nf">args</span> <span class="mi">0</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define </span><span class="nv">my-hash</span> <span class="p">(</span><span class="nf">hash-table</span> <span class="nv">:a</span> <span class="mi">1</span> <span class="nv">:b</span> <span class="mi">2</span><span class="p">))</span>
+<span class="c1">;; applicative syntax with keywords, so nice!</span>
+<span class="p">(</span><span class="nf">out-1</span> <span class="p">(</span><span class="nf">my-hash</span> <span class="nv">:a</span><span class="p">))</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="first-class-environments">
 <h3><strong>First class environments</strong><a class="headerlink" href="#first-class-environments" title="Permalink to this headline">¶</a></h3>
@@ -320,11 +329,9 @@ and link, and one header file to include. And the S7 FFI is
 really easy to use. It’s simple to define Scheme
 functions from C, and to build Scheme expressions to hand to the functions
 in C. This has proved tremendously helpful for the rather cumbersome tasks
-of taking Max’s concept of a list of atoms and converting it to a valid Scheme</p>
-<blockquote>
-<div><p>sexp and vice versa.</p>
-</div></blockquote>
-<p>Further, one of the project goals is to enable people to hack on Scheme For Max
+of taking Max’s concept of a list of atoms and converting it to a valid Scheme
+sexp and vice versa.
+Further, one of the project goals is to enable people to hack on Scheme For Max
 itself, and after looking at the embedding story for Chicken, Chez, Gambit, and Racket,
 I realized this would make a big difference to the accessibility of the code.</p>
 </div>
@@ -465,18 +472,26 @@ of Gambit. It does not support defmacro macros. It is aimed at system
 programming primarily. By the time I looked at Gerbil closely, I was
 pretty sure I wanted defmacro. However, tt does look worth looking
 at more closely for other Scheme uses.</p>
+</div>
+</div>
+<div class="section" id="final-thoughts">
+<h2>Final Thoughts<a class="headerlink" href="#final-thoughts" title="Permalink to this headline">¶</a></h2>
 <p>Overall, after several months of evaluation, S7 was elected. Four
-months in, I’ve been happy with the decision. There have been times
-where it took a while to figure stuff out, but the code comes
-with a lot of examples, and Bill has been helpful with questions on the
-CCRMA CM Dist mailing list.</p>
+months in, I’ve been happy with the decision. The ease of the FFI
+has been a huge win, and I’m really looking forward to supporting Common
+Music on Max and making it possible to run the code in “Notes From The Metalevel”
+on Max. The docs meant there have been times where it took a while to figure stuff out,
+but the code comes with a lot of examples, and Bill has been helpful with questions on the
+CCRMA CM Dist mailing list. The language design continues to grow on me.</p>
+<p>Over the next months, I plan to add a resources page and a crash course page
+to these docs to help people learn S7 for Scheme For Max, and hopefully
+can introduce more people to the language.</p>
 <p>If this document piques interest in others who wish to try something similar
 or port the project to another Scheme/Lisp, I would certainly be interested
-in communicating.</p>
+in communicating. Come join the Google Group!</p>
 <p>Enjoy!
 Iain Duncan
 Victoria BC, Apr 2020.</p>
-</div>
 </div>
 </div>
 

@@ -116,6 +116,7 @@ This makes for some terse code, a good thing when we want to build things
 in Max messages. 
 
 .. code:: scm
+
    (define (my-listener args)
       ;; output the first arg
       (out 0 (args 0))
@@ -161,8 +162,8 @@ and link, and one header file to include. And the S7 FFI is
 really easy to use. It's simple to define Scheme
 functions from C, and to build Scheme expressions to hand to the functions
 in C. This has proved tremendously helpful for the rather cumbersome tasks
-of taking Max's concept of a list of atoms and converting it to a valid Scheme
- sexp and vice versa.
+of taking Max's concept of a list of atoms and converting it to a valid Scheme 
+sexp and vice versa.
 Further, one of the project goals is to enable people to hack on Scheme For Max
 itself, and after looking at the embedding story for Chicken, Chez, Gambit, and Racket,
 I realized this would make a big difference to the accessibility of the code.
@@ -313,15 +314,24 @@ pretty sure I wanted defmacro. However, tt does look worth looking
 at more closely for other Scheme uses.
 
 
+Final Thoughts
+--------------
+
 Overall, after several months of evaluation, S7 was elected. Four 
-months in, I've been happy with the decision. There have been times
-where it took a while to figure stuff out, but the code comes
-with a lot of examples, and Bill has been helpful with questions on the
-CCRMA CM Dist mailing list. 
+months in, I've been happy with the decision. The ease of the FFI
+has been a huge win, and I'm really looking forward to supporting Common
+Music on Max and making it possible to run the code in "Notes From The Metalevel"
+on Max. The docs meant there have been times where it took a while to figure stuff out,
+but the code comes with a lot of examples, and Bill has been helpful with questions on the
+CCRMA CM Dist mailing list. The language design continues to grow on me.
+
+Over the next months, I plan to add a resources page and a crash course page 
+to these docs to help people learn S7 for Scheme For Max, and hopefully
+can introduce more people to the language.
 
 If this document piques interest in others who wish to try something similar
 or port the project to another Scheme/Lisp, I would certainly be interested 
-in communicating.
+in communicating. Come join the Google Group!
 
 Enjoy! 
 Iain Duncan
