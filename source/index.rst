@@ -13,6 +13,7 @@ Scheme For Max - Documentation
     overview
     motivations
     installation
-    building
     usage
-
+    building
+    s7
+    

@@ -1,45 +1,163 @@
 
-<!DOCTYPE html>
 
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <title>Motivation - Why Lisp in Max? &#8212; Scheme For Max 0.1 documentation</title>
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Motivation - Why Lisp in Max? &mdash; Scheme For Max 0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Setup and Installation" href="installation.html" />
-    <link rel="prev" title="Overview" href="overview.html" />
+    <link rel="prev" title="Overview" href="overview.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
    
-  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
-
-  </head><body>
-  
-
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
           
 
-          <div class="body" role="main">
+          
+            <a href="index.html" class="icon icon-home"> Scheme For Max
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Motivation - Why Lisp in Max?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Setup and Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="building.html">Building From Source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Using Scheme For Max</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Scheme For Max</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Motivation - Why Lisp in Max?</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/motivations.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
             
   <div class="section" id="motivation-why-lisp-in-max">
 <h1>Motivation - Why Lisp in Max?<a class="headerlink" href="#motivation-why-lisp-in-max" title="Permalink to this headline">¶</a></h1>
-<p>The purpose of s4m is to bring some of the power, convenience, and flexibility of
-Lisp to the Max platform. This grew from several motivations and disatisfactions
-with the existing JavaScript options (the js object, and the newer Node-for-Max object).</p>
+<p>The purpose of Scheme For Max is to bring some of the power, convenience, and flexibility of
+Scheme and lisp to the Max platform.</p>
 <p><strong>Project Goals:</strong></p>
 <ul class="simple">
-<li><p>Hot-reloading of code, so that one can use the Lisp workflow of incrementally
+<li><p>Hot-reloading of code, so that one can use the lisp workflow of incrementally
 changing code while the program runs, preserving state where desired</p></li>
 <li><p>Ability to send code to a running max patch from a REPL in a terminal, to allow
 live coding directly in the Max environment or from a connected network REPL (ie Emacs)</p></li>
@@ -50,12 +168,12 @@ timing and threading</p></li>
 <li><p>Ability to move between a lisp context and the Max context more easily than is possible
 with the JS object</p></li>
 </ul>
-<p>Scheme Lisp provides all the above very well. We can load source files into
-the interpreter without needing to wipe out the running session. This allows us
+<p>Embedding the S7 Scheme interpreter in a Max external has worked out well for achieving these.</p>
+<p>We can load source files into the interpreter without needing to wipe out the running session. This allows us
 to keep state variables in one file and code under development in another, reloading
 function definitions as we go, while the patch is running.</p>
-<p>We can live-code from a REPL editor by sending blocks of code to the s4m.scm object
-as strings, prepended with the <strong>eval-string</strong> symbol. <strong>s4m.repl</strong> is a simple multi-line terminal
+<p>We can live-code from a REPL editor by sending blocks of code to the s4m.scm object.
+<strong>s4m.repl</strong> is a simple multi-line terminal
 editor object that we can use to interact with the interpreter in real time in Max.
 Future plans include supporting network REPLs through Emacs and the like.</p>
 <p>Scheme also allows us to create simple DSL’s so that we can send blocks of code
@@ -63,94 +181,70 @@ to the interpreter that we dynamically generate with Max patcher objects. Scheme
 and use of whitespace as token separators make this easy to implement. The s4m.scm
 object takes any list of max symbols sent to inlet 0, and treats them as a list of tokens
 in a Lisp s-expression, evaluating them as if they were enclosed in an outer set of
-parantheses. I.E. The max message <strong>define foobar 1</strong> becomes <strong>(define foobar 1)</strong>.
-When combined with max message building objects like <strong>sprintf</strong>, <strong>pack</strong>, and so on,
-and the <strong>$</strong> interpolation features of the message box, this makes it easy to assemble
-valid scheme expressions from standard Max objects and symbols. Future plans
-include porting the threading macros from Clojure to enable compound statements
-in max expressions, such as <strong>+ 1 my-var -&gt; out 0</strong> to represent <strong>(out 0 (+ 1 my-var))</strong></p>
+parantheses.  We can thus assemble valid Scheme expressions from standard Max objects and symbols.
+With S7’s support for Common Lisp style macros, we can extend this into a domain
+specific language as powerful as we want.</p>
 <p>The <strong>s4m.scm</strong> external is open-sourced, and written using the C SDK and the S7 Scheme
-Foreign Function Interface.  S7’s FFI enables defining scheme functions from C, and
+Foreign Function Interface.  S7’s FFI enables defining Scheme functions from C, and
 assembling Scheme objects in C from Max atoms. The user-developer can thus add
-any functionality in the Max SDK to the scheme interpreter, and can also call scheme
-functions from C code that in response to messages to the s4m.scm object.
-We can also move execution from Scheme to C by defining a wrapper, giving us
-the opportunity to optimize execution timing and performance as needed.</p>
-<p>Further details on this topic will be forthcoming, including why S7 was chosen and how it compares
-to other Lisps.</p>
+any functionality in the Max SDK to the Scheme interpreter, and can also call Scheme
+functions from C code in response to messages to the <strong>s4m.scm</strong> object.
+We can thus move operations from Scheme to C and vice versa, allowing us to opimize
+for performance or flexibility wherever we’d like.</p>
+<p>Longer term plans for this documentation include further sections introducing
+S7 Scheme, documenting the basics of the language, comparing it to other lisps,
+and explaining why it was chosen.</p>
+<p>Of course, as Scheme For Max is open-source, you’re welcome to port it to
+another lisp implementation too!</p>
 </div>
 
 
+           </div>
+           
           </div>
-          
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="index.html">Scheme For Max</a></h1>
-
-
-
-
-
-
-
-
-<h3>Navigation</h3>
-<p class="caption"><span class="caption-text">Contents:</span></p>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Motivation - Why Lisp in Max?</a></li>
-<li class="toctree-l1"><a class="reference internal" href="installation.html">Setup and Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="building.html">Building From Source</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage.html">Using Scheme For Max</a></li>
-</ul>
-
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="overview.html" title="previous chapter">Overview</a></li>
-      <li>Next: <a href="installation.html" title="next chapter">Setup and Installation</a></li>
-  </ul></li>
-</ul>
-</div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
-      <input type="submit" value="Go" />
-    </form>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="installation.html" class="btn btn-neutral float-right" title="Setup and Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="overview.html" class="btn btn-neutral float-left" title="Overview" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
     </div>
-</div>
-<script>$('#searchbox').show(0);</script>
+  
 
+  <hr/>
 
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Iain CT Duncan
 
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
-
-
-
+</footer>
 
         </div>
       </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2020, Iain CT Duncan.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
-      
-      |
-      <a href="_sources/motivations.rst.txt"
-          rel="nofollow">Page source</a>
-    </div>
 
-    
+    </section>
 
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
     
-  </body>
+   
+
+</body>
 </html>

@@ -1,39 +1,62 @@
 Building From Source
---------------------
+========================================
+If you are not running OSX and Max 8, you will currently have to build from source.
 
-To build from your source, you will need to have installed the `Max 8 SDK <https://cycling74.com/downloads/sdk>`_.
-I believe s4m should compile fine with the Max 7 SDK as well, but this has not been verified. If you have 
+Short version
+--------------
+I'm using the Max 8 SDK, though I think the Max 7 should work too.
+
+The repo includes **s7.c**, **s7.h**, and an empty file **mus-config.h**. You 
+need **mus-config.h** to build **s7.o**, and then you need to link in **s7.o**. 
+There is only one source file for the external, **s4m.scm.c**.
+Building it will build the Max external **s4m.scm**. The other objects
+are just standard Max patchers. 
+
+My linker flags: 
+
+* -framework MaxAudioAPI
+* -framework JitterAPI
+* ${C74_SYM_LINKER_FLAGS}
+* s7.o
+* -L.
+* -ldl
+* -lm
+
+
+Long version
+-------------
+To build from your source, you'll need to have installed the `Max 8 SDK <https://cycling74.com/downloads/sdk>`_.
+I believe S4M should compile fine with the Max 7 SDK as well, but this has not been verified. If you have 
 not previously compiled a Max external with the SDK, I recommend you start by compiling some of the samples that
-come with the SDK, at least until you get XCode building a dummy external. It should be theoretically 
-be possible to build without the full XCode IDE, but I haven't found good enough instructions to make this
-work, so I'm just using XCode as a (giant) compiler. If you know how, please let me know!
+come with the SDK, as the XCode setup is finicky. It should theoretically 
+be possible to build without the full XCode IDE, but I haven't managed to make this
+work. If you know how, please let me know.
 
-The sample projects come with project files for XCode and VisualStudio. I'll be honest, I know just
-enough about XCode to be dangerous, so the instructions below are likely not optimal. I have
-altered a sample XCode project file from the samples in the SDK, with my alterations detailed heere.
+The SDK comes with sample projects with project files for XCode and VisualStudio. I'll be honest, I know just
+enough about XCode to be dangerous, so the instructions below are likely not optimal. I 
+altered a sample XCode project file from the samples in the SDK, and my alterations are detailed here.
 
-Note than on XCode at least,
-these project files assume that the SDK files are in a specific place relative to your code. So you should 
-clone the repository such that you have the following path layout, where the SDK path matches whatever version you
-download, and **scheme4max** is the top level of the Git repository.
+Note than on XCode at least, these XCode project files from C74 assume that the SDK files are in a specific place
+relative to your code. So you should clone the repository such that you have the following path layout, 
+where the SDK path matches whatever version you download, and **Scheme4max** is the top level of the Git repository.
 
-**~/Documents/Max 8/Packages/max-sdk-8.0.3/source/scheme4max**
+**~/Documents/Max 8/Packages/max-sdk-8.0.3/source/Scheme4max**
 
 So for me, the following works:
 
 **$ cd ~/Documents/Max\ 8/Packages/max-sdk-8.0.3/source**
 
-**$ git clone https://github.com/iainctduncan/scheme-for-max.git**
+**$ git clone https://github.com/iainctduncan/Scheme-for-max.git**
 
 
 In the cloned repository, you should see a source directory, **s4m.scm**, with the following:
 
 * **s7.c** - the main S7 C file (from S7)
 * **s7.h** - the S7 header file (from S7)
-* **mus-config.h** - an empty file required to compile S7
-* **scm/** - directory with various scheme files.  
+* **mus-config.h** - an empty file that is necessary to compile S7
+* **scm/** - a directory with various Scheme files.  
 * **build_s7.sh** - a bash helper for building S7
-* **s4m.scm.xcodeproj** - the XCode project file
+* **s4m.scm.xcodeproj** - the XCode project file, tweaked from a C74 example
 
 Someone who knows XCode could tell me how to set it up to build S7 properly as a dependency, 
 but as I don't, I'm just building the S7 object file and then linking it. build_s7.sh does this too.
@@ -41,8 +64,7 @@ but as I don't, I'm just building the S7 object file and then linking it. build_
 **$ gcc -c s7.c**
 
 If it worked, you should now have **s7.o**. 
-Now we can build from XCode. Open the xcode project file; and below are the XCode settings I 
-use.
+Now we can build from XCode. Let's open the xcode project file and verify the set up.
 
 We need to edit the linker flags. Select **s4m.scm** in the left hand toolbar, and look for the 
 **Linking** section in the main window, with an entry called **Other Linker Flags**. 
@@ -56,14 +78,18 @@ Double click this to add Linker Flags. My linker flags are the following:
 * -ldl
 * -lm
 
+The first three are for the C74 SDK, and the rest are linking in S7.
 With these in place, we should be able to build. Building will generate lot of warnings
-about S7 pointers. I need to figure out how to turn those off, but they are harmless.
-A successful build should build a new version of **s4m.scm.mxo**, by default in **Packages/max-sdk-8.x.x/externals**.
-If you want to change where this goes you can do so, it's somewhere in the XCode config labrynth. 
+about S7 pointers. I need to figure out how to tell XCode it's ok, as I'm following examples
+from the S7 FFI, but they are harmless right now.
 
+A successful build should build a new version of **s4m.scm.mxo**, by default in **Packages/max-sdk-8.x.x/externals**.
+If you want to change where this goes you can do so, it's somewhere in the XCode config labyrinth. 
+
+If you plan on hacking on Scheme for Max, you'll want to get Max launching automatically on compile. 
 To make the development workflow better, under **Product -> Scheme** you should see **max-external**. 
-Choose **Edit Scheme** and the **Run** submenu to setup up whether Max launches automatically 
-on compile. Select your Max.app as the executable to run. This will relaunch Max whenever you compile,
+Choose **Edit Scheme** and the **Run** submenu.
+Select your Max.app as the executable to run. This will relaunch Max whenever you compile,
 so you don't have to close and open Max to load your new external whenever you make changes.
 
 If you have previously installed the binary package, you may need to move it out of your Max
@@ -74,15 +100,12 @@ alter these for your system if they seem useful.
 
 If you want to experiment further with S7, you can download the S7 source directly from 
 CCRMA. It comes with a lot of examples of using S7 with C. If you want to add features
-to Scheme-For-Max, you'll probably want to do this. But all we need for simple compilation
+to Scheme For Max, you'll probably want to do this. But all we need for simple compilation
 is **s7.c**, **s7.h**, and an empty **mus-config.h**.
-
-The C Code is ugly right now, I know. We'll be refatoring and cleaning it up after I get
-the Max automated test package working nicely, promise!
 
 I will happily improve these instructions with feedback, and add a section on VisualStudio if someone
 can help there. If you get a build going off the instructions, please let me know on the Google
-Group so I know someone has managed. 
+Group so I know someone has managed. If you need help, post there too.
 
 
 
