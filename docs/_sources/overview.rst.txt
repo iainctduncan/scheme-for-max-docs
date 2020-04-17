@@ -6,6 +6,9 @@ with S7 Scheme. S7 is a minimal, "lisp-y" Scheme implementation, created by Bill
 Schottstaedt at CCRMA, and used in the Common Music algorithmic composition toolkit 
 and the Snd audio editor. Scheme for Max is authored by Iain Duncan, and hosted on GitHub.
 
+These docs are in Scheme-For-Max-Docs repository on GitHub. If you find anything unclear,
+incorrect, or just have suggestions, please post a ticket or let me know on the Google Group.
+
 S4M is available as a Max 8 package, as well as source code that should build
 on both Windows and OSX, for Max 7 or 8. The Max package is available for 64-bit OSX
 only at this time, but help building on Max 7 and Windows would be most welcome.
