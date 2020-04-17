@@ -193,31 +193,35 @@ as its purpose is specifically to enable advanced academic computer music.
 Community involvement in the development process has not been a priority,
 which one might consider a good or bad thing depending on your take.
 
-The documentation is very sparse, and not beginner friendly - it's definitely not
-got docs suitable for someone just learning Scheme. On the other hand, the 
-docs have extensive examples of embedding in C and using the FFI, 
-which was extremely helpful and which few others had.
+The documentation is very sparse, and not beginner friendly - they are
+definitely not docs suitable for someone just learning Scheme. On the other hand, 
+the docs do have extensive examples of embedding in C and using the FFI, 
+which was extremely helpful and which few others implementations had.
 
-It's a bit of a hybrid, and thus does not try to hew to the R7RX standards.
-It's mosly R5RS, some R7RS, but meeting R7RS small is not a goal of the project.
-This means some people looking for a general purpose scheme are going to prefer
+S7 is a bit of a hybrid, and thus does not try to exactly meet the various standards.
+It's mostly R5RS, some R7RS, but meeting R7RS small is not a goal of the project.
+This may mean that people looking for a general purpose scheme are going to prefer
 implementations working towards R7RS, such as Chicken or Guile. 
 
 On the whole, after looking at the options, I came to the conclusion that
 the advantages significantly outweighed the disadvantages for the stated
-goals of the project. Documentation and community facing
-material can be written much more easily than one can improve another scheme implementation,
-and if development becomes an issue, there is always the
+goals of Scheme For Max. Documentation and community facing
+material can be written more easily than one can improve a Scheme implementation,
+and if development process becomes an issue, there is always the
 option of writing a thin layer on top of S7 to act as an abstraction between
-upstream and the scheme used in Scheme For Max. This approach has been taken
+upstream S7 and the Scheme used in Scheme For Max. This approach has been taken
 successfully in many open source projects before, and may well make sense at some
-time in the future if we wind up adding features to S7 that are not of interest
-to the main S7 project. 
+time in the future if we wind up adding features to S7 at the C level that are not of interest
+to the main S7 project. I don't expect this being necessary for some time
+as so much of Scheme can be extended from Scheme itsel, that I should be able
+to get a long way on library modules added to S7.
 
-Other Options Considered 
-------------------------
+
+Other options that were considered 
+-----------------------------------
 When beginning the project, I looked for quite a while at many Scheme and 
 Lisp options. If you care about that sort of thing, you might find this interesting.
+These included:
 
 * Clojure
 * Guile
@@ -230,11 +234,11 @@ Lisp options. If you care about that sort of thing, you might find this interest
 
 Below are my subjective thoughts in case anyone wants to try porting
 Scheme For Max to another Scheme. (I'd love to see the results if you do!)
-None of the others have extensive computer music (with the exception of Common 
+None of the others have extensive computer music usage (with the exception of Common 
 Lisp) so I won't even list that as a disadvantage - take it as given.
 
 **Clojure**
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^
 Clojure is it's own lisp-like langauge, that runs on the Java Virtual Machine.
 It has a lot of adoption, with the resuting rich library of books and 
 documentation resources. However, it only runs on the Java Virtual Machine or
@@ -249,34 +253,36 @@ compared to something embedded in a C external.
 There are some native or compile-to-c languages influenced by Clojure that 
 look promising, such as Ferret, Fennel, Janet, and Carp. However, none of
 them are as mature as S7 at this point, and would give us the disadvantages
-of S7 (docs, community size) without the computer music world maturity.
+of S7 (sparse docs, small community size) without the computer music specific 
+maturity.
 
 **Guile**
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Guile is a very nice minimal, embeddable scheme. It's easy to embed, 
-is very modern, and has excellent documentation. It's under very 
-active development, though mostly by one person. It's pretty small. 
+is working towards R7RS, and has excellent documentation. It's under very 
+active development, though mostly by one person, and it's pretty small. 
 The main disadvantages of Guile are that it uses a less permissive license. 
 If S7 weren't around, version 1 would probably be Guile. Like S7
 Guile is just an interperter, making the FFI situation pretty simple.
 
 **Chicken**
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Chicken is a modern (R7RS) scheme that compiles to C. It's got fantastic
+Chicken is a modern (R7RS) scheme that compiles to C. It's got great
 docs, a great module system with lots of libraries, and a really great community.
-It's popular as a scheme to build real-world products in for business
+It's popular as a scheme to build products in for business
 and scientific applications. Unfortunately, it's not multi-thread safe
 out of the box, and the FFI docs were minimal. The embedding situation is also
-not as simple as Guile or S7, as it's both compiler and interpreter.
+not as simple as Guile or S7, as it's both a compiler and interpreter.
 
 **Gambit**
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Gambit is a large, mature, industrial strenth Scheme. 
-It compiles down to highly performant C, and supports many kinds
+Gambit is a large, mature, industrial strength Scheme that has been around
+for 30 years.  It compiles down to highly performant C, and supports many kinds
 of macros. Gambit was another high contender. The big issue for Gambit
 was lack of documentation on embedding and a much more difficult embedding story.
 I will likely try to get Gambit working out of curiosity, there are
-some interesting developments in Gambit such as compiling to JavaScript. 
+some interesting developments in Gambit such as compiling to JavaScript,
+and it is very flexible with how it interacts with C. 
 
 **Chez** 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -284,30 +290,41 @@ Chez is similar to Gambit, in that it's a big, industrial grade Scheme,
 with high performance. Racket is being redone on top of Chez. Also like
 Gambit, the embedding and FFI story scared me off pretty quickly. 
 I would use Gambit or Chez if I were starting a commercial product 
-on Scheme and expected to be on it for a long time, with a team, building
-tons of code. They are like the Common Lisps of Scheme.
+on Scheme and expected to be on it for a long time, with a large team, building
+tons of code. They are like the Common Lisps of Scheme, with Chez being
+R6RS, meaning it's got a lot in the language, by Scheme standards.
 
 **Racket**
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Racket was originally called PLT Scheme, and came out of the academic side
 of scheme. It has a very advanced macro system, and fairly accessible 
 syntax. Unfortunately, it changes a lot (currently being redone on Chez)
-and embedding is not a high priority. It can be done, but it looks 
+and embedding is not a high priority. Pretty much the only priorities for 
+Racket are language research and teaching. Embedding can be done, but it looks 
 very cumbersome. Racket also does not support Common Lisp macros with defmacro,
 which I wanted. It does have fantastic documentation though!
 
 **Gerbil**
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Gerbil is a modern "opinionated" (their words!) scheme built on top
+Gerbil is a modern "opinionated" (their words) Scheme built on top
 of Gambit. It does not support defmacro macros. It is aimed at system
 programming primarily. By the time I looked at Gerbil closely, I was
-pretty sure I wanted defmacro. It does look like somethin worth looking
-at more closely however for other Scheme uses.
+pretty sure I wanted defmacro. However, tt does look worth looking
+at more closely for other Scheme uses.
 
 
-Overall, after several months of evaluation, S7 was elected. If this document
-piques interest in others who wish to try something similar or port the project
-to another Scheme/Lisp, I would certainly be interested in communicating.
+Overall, after several months of evaluation, S7 was elected. Four 
+months in, I've been happy with the decision. There have been times
+where it took a while to figure stuff out, but the code comes
+with a lot of examples, and Bill has been helpful with questions on the
+CCRMA CM Dist mailing list. 
 
+If this document piques interest in others who wish to try something similar
+or port the project to another Scheme/Lisp, I would certainly be interested 
+in communicating.
+
+Enjoy! 
+Iain Duncan
+Victoria BC, Apr 2020.
 
 
