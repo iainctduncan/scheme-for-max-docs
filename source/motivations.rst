@@ -22,25 +22,25 @@ We can load source files into the interpreter without needing to wipe out the ru
 to keep state variables in one file and code under development in another, reloading
 function definitions as we go, while the patch is running.  
 
-We can live-code from a REPL editor by sending blocks of code to the s4m.scm object.
+We can live-code from a REPL editor by sending blocks of code to the s4m object.
 **s4m.repl** is a simple multi-line terminal
 editor object that we can use to interact with the interpreter in real time in Max. 
 Future plans include supporting network REPLs through Emacs and the like.
 
 Scheme also allows us to create simple DSL's so that we can send blocks of code
 to the interpreter that we dynamically generate with Max patcher objects. Scheme's minimal syntax
-and use of whitespace as token separators make this easy to implement. The s4m.scm
+and use of whitespace as token separators make this easy to implement. The s4m
 object takes any list of max symbols sent to inlet 0, and treats them as a list of tokens
 in a Lisp s-expression, evaluating them as if they were enclosed in an outer set of
 parantheses.  We can thus assemble valid Scheme expressions from standard Max objects and symbols.
 With S7's support for Common Lisp style macros, we can extend this into a domain
 specific language as powerful as we want. 
 
-The **s4m.scm** external is open-sourced, and written using the C SDK and the S7 Scheme
+The **s4m** external is open-sourced, and written using the C SDK and the S7 Scheme
 Foreign Function Interface.  S7's FFI enables defining Scheme functions from C, and 
 assembling Scheme objects in C from Max atoms. The user-developer can thus add
 any functionality in the Max SDK to the Scheme interpreter, and can also call Scheme
-functions from C code in response to messages to the **s4m.scm** object.  
+functions from C code in response to messages to the **s4m** object.  
 We can thus move operations from Scheme to C and vice versa, allowing us to opimize
 for performance or flexibility wherever we'd like.
 

@@ -8,8 +8,8 @@ I'm using the Max 8 SDK, though I think the Max 7 should work too.
 
 The repo includes **s7.c**, **s7.h**, and an empty file **mus-config.h**. You 
 need **mus-config.h** to build **s7.o**, and then you need to link in **s7.o**. 
-There is only one source file for the external, **s4m.scm.c**.
-Building it will build the Max external **s4m.scm**. The other objects
+There is only one source file for the external, **s4m.c**.
+Building it will build the Max external **s4m**. The other objects
 are just standard Max patchers. 
 
 My linker flags: 
@@ -49,14 +49,14 @@ So for me, the following works:
 **$ git clone https://github.com/iainctduncan/Scheme-for-max.git**
 
 
-In the cloned repository, you should see a source directory, **s4m.scm**, with the following:
+In the cloned repository, you should see a source directory, **s4m**, with the following:
 
 * **s7.c** - the main S7 C file (from S7)
 * **s7.h** - the S7 header file (from S7)
 * **mus-config.h** - an empty file that is necessary to compile S7
 * **scm/** - a directory with various Scheme files.  
 * **build_s7.sh** - a bash helper for building S7
-* **s4m.scm.xcodeproj** - the XCode project file, tweaked from a C74 example
+* **s4m.xcodeproj** - the XCode project file, tweaked from a C74 example
 
 Someone who knows XCode could tell me how to set it up to build S7 properly as a dependency, 
 but as I don't, I'm just building the S7 object file and then linking it. build_s7.sh does this too.
@@ -66,7 +66,7 @@ but as I don't, I'm just building the S7 object file and then linking it. build_
 If it worked, you should now have **s7.o**. 
 Now we can build from XCode. Let's open the xcode project file and verify the set up.
 
-We need to edit the linker flags. Select **s4m.scm** in the left hand toolbar, and look for the 
+We need to edit the linker flags. Select **s4m** in the left hand toolbar, and look for the 
 **Linking** section in the main window, with an entry called **Other Linker Flags**. 
 Double click this to add Linker Flags. My linker flags are the following:
 
@@ -83,7 +83,7 @@ With these in place, we should be able to build. Building will generate lot of w
 about S7 pointers. I need to figure out how to tell XCode it's ok, as I'm following examples
 from the S7 FFI, but they are harmless right now.
 
-A successful build should build a new version of **s4m.scm.mxo**, by default in **Packages/max-sdk-8.x.x/externals**.
+A successful build should build a new version of **s4m.mxo**, by default in **Packages/max-sdk-8.x.x/externals**.
 If you want to change where this goes you can do so, it's somewhere in the XCode config labyrinth. 
 
 If you plan on hacking on Scheme for Max, you'll want to get Max launching automatically on compile. 

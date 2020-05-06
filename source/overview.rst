@@ -33,9 +33,9 @@ Features under development, to be released for v0.2:
 
 S4M provides the following Max patchers:
 
-* s4m.scm - The embedded interpreter
+* s4m - The embedded interpreter
 * s4m.repl - A patcher for making a terminal REPL in Max
-* s4m.scm.help - An extensive help file demoing all features with sample source code
+* s4m.help - An extensive help file demoing all features with sample source code
 
 If you'd like to see a demo of Scheme For Max in action, there are videos on the 
 `Computer Music Tools <https://www.youtube.com/channel/UC6ftX7yuEi5uUFkRVJbJyWA>`_ channel on 
