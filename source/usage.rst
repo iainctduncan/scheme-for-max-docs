@@ -365,7 +365,7 @@ receives and send them.
 
 
 s4m.repl patcher
----------------
+-----------------
 The s4m.repl object is intended to be put in a **bpatcher** and then hooked up.
 The left outlet sends the output as a single text symbol. To evaluate
 as scheme, we send it to a **prepend eval-string** object and send to inlet
