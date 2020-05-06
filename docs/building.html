@@ -35,6 +35,7 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Why S7 Scheme?" href="s7.html" />
     <link rel="prev" title="Using Scheme For Max" href="usage.html" /> 
 </head>
 
@@ -90,6 +91,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#long-version">Long version</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="s7.html">Why S7 Scheme?</a></li>
 </ul>
 
             
@@ -162,8 +164,8 @@
 <p>I’m using the Max 8 SDK, though I think the Max 7 should work too.</p>
 <p>The repo includes <strong>s7.c</strong>, <strong>s7.h</strong>, and an empty file <strong>mus-config.h</strong>. You
 need <strong>mus-config.h</strong> to build <strong>s7.o</strong>, and then you need to link in <strong>s7.o</strong>.
-There is only one source file for the external, <strong>s4m.scm.c</strong>.
-Building it will build the Max external <strong>s4m.scm</strong>. The other objects
+There is only one source file for the external, <strong>s4m.c</strong>.
+Building it will build the Max external <strong>s4m</strong>. The other objects
 are just standard Max patchers.</p>
 <p>My linker flags:</p>
 <ul class="simple">
@@ -194,21 +196,21 @@ where the SDK path matches whatever version you download, and <strong>Scheme4max
 <p>So for me, the following works:</p>
 <p><strong>$ cd ~/Documents/Max8/Packages/max-sdk-8.0.3/source</strong></p>
 <p><strong>$ git clone https://github.com/iainctduncan/Scheme-for-max.git</strong></p>
-<p>In the cloned repository, you should see a source directory, <strong>s4m.scm</strong>, with the following:</p>
+<p>In the cloned repository, you should see a source directory, <strong>s4m</strong>, with the following:</p>
 <ul class="simple">
 <li><p><strong>s7.c</strong> - the main S7 C file (from S7)</p></li>
 <li><p><strong>s7.h</strong> - the S7 header file (from S7)</p></li>
 <li><p><strong>mus-config.h</strong> - an empty file that is necessary to compile S7</p></li>
 <li><p><strong>scm/</strong> - a directory with various Scheme files.</p></li>
 <li><p><strong>build_s7.sh</strong> - a bash helper for building S7</p></li>
-<li><p><strong>s4m.scm.xcodeproj</strong> - the XCode project file, tweaked from a C74 example</p></li>
+<li><p><strong>s4m.xcodeproj</strong> - the XCode project file, tweaked from a C74 example</p></li>
 </ul>
 <p>Someone who knows XCode could tell me how to set it up to build S7 properly as a dependency,
 but as I don’t, I’m just building the S7 object file and then linking it. build_s7.sh does this too.</p>
 <p><strong>$ gcc -c s7.c</strong></p>
 <p>If it worked, you should now have <strong>s7.o</strong>.
 Now we can build from XCode. Let’s open the xcode project file and verify the set up.</p>
-<p>We need to edit the linker flags. Select <strong>s4m.scm</strong> in the left hand toolbar, and look for the
+<p>We need to edit the linker flags. Select <strong>s4m</strong> in the left hand toolbar, and look for the
 <strong>Linking</strong> section in the main window, with an entry called <strong>Other Linker Flags</strong>.
 Double click this to add Linker Flags. My linker flags are the following:</p>
 <ul class="simple">
@@ -224,7 +226,7 @@ Double click this to add Linker Flags. My linker flags are the following:</p>
 With these in place, we should be able to build. Building will generate lot of warnings
 about S7 pointers. I need to figure out how to tell XCode it’s ok, as I’m following examples
 from the S7 FFI, but they are harmless right now.</p>
-<p>A successful build should build a new version of <strong>s4m.scm.mxo</strong>, by default in <strong>Packages/max-sdk-8.x.x/externals</strong>.
+<p>A successful build should build a new version of <strong>s4m.mxo</strong>, by default in <strong>Packages/max-sdk-8.x.x/externals</strong>.
 If you want to change where this goes you can do so, it’s somewhere in the XCode config labyrinth.</p>
 <p>If you plan on hacking on Scheme for Max, you’ll want to get Max launching automatically on compile.
 To make the development workflow better, under <strong>Product -&gt; Scheme</strong> you should see <strong>max-external</strong>.
@@ -253,6 +255,8 @@ Group so I know someone has managed. If you need help, post there too.</p>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="s7.html" class="btn btn-neutral float-right" title="Why S7 Scheme?" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="usage.html" class="btn btn-neutral float-left" title="Using Scheme For Max" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

@@ -2,11 +2,11 @@ Using Scheme For Max
 ====================
 
 This page details all functionality offically released in the v0.1.
-The **s4m.scm** help file includes example patches for everything here.
+The **s4m** help file includes example patches for everything here.
 
-s4m.scm
+s4m
 -------
-The s4m.scm object is the core patcher object for Scheme For Max. It works
+The s4m object is the core patcher object for Scheme For Max. It works
 fairly similarly to the JS object, and can have a source file argument to load.
 The interpreter is thread safe, so we can have multiple objects in a patch,
 with isolated scheme environments.
@@ -15,7 +15,7 @@ arguments & properties
 --------------------------------------------------------------------------------
 
 **{filename.scm}**
-   A source file name as the first argument in the s4m.scm object box
+   A source file name as the first argument in the s4m object box
    will be loaded automatically, searching the Max file search path.
    Changing this file in the box will always wipe the scheme environment and reload
    the file, as this recreates the object. Resets will reload this file.
@@ -39,7 +39,7 @@ at any time with the **reset** message.
 
 messages to inlet 0 
 --------------------------------------------------------------------------------
-Messages to inlet 0 are either handled directly by the s4m.scm object,
+Messages to inlet 0 are either handled directly by the s4m object,
 or executed as scheme code if no direct handling exists. The interpreter will
 evaluate the token list as a scheme s-expression that is being called, with
 any symbols evaluating to the their value in the scheme environment. Essentially
@@ -51,7 +51,7 @@ we single quote it. For example, **out 0 'a** will send the symbo "a" out output
 0, having evaluated as **(out 0 'a)** in scheme.   
 
 The messages **reset**, **read**, **scan**, and **eval-string** are handled
-by the s4m.scm object, but nontheless the semantics are the same. 
+by the s4m object, but nontheless the semantics are the same. 
 **eval-string "(define a 99)"** will execute as **(eval-string "(define a 99)")**,
 which is defined in S7 scheme.
 
@@ -59,7 +59,7 @@ Messages reference for inlet 0:
  
 **reset** 
    Resets the scheme intepreter, wiping all active definitions, and reloading any
-   sourcefile specified in the s4m.scm object box itself.
+   sourcefile specified in the s4m object box itself.
 
 **read {filename}** 
    Loads the file {filename} from the Max search path. Executes the Scheme **load** 
@@ -130,7 +130,7 @@ Scheme API
 -----------
 Below are details of the Scheme API. Core S7 functions are not listed here,
 only functions added by Scheme-For-Max. Scheme functions are either defined
-in **s4m.scm.c** using the S7 Foreign Function Interface, or in Scheme code boostrapped
+in **s4m.c** using the S7 Foreign Function Interface, or in Scheme code boostrapped
 from the initial load of **scm4max.scm**.
 
 File Loading
@@ -326,8 +326,8 @@ Sending Messages
 
 We can send arbitrary Max messages to other Max objects that have been given
 a scripting name. Before doing so, we must send the **scan** message to the
-s4m.scm object, which will scan the current patcher and all descendents,
-registering scripting names interally in s4m.scm object (in the C code).
+s4m object, which will scan the current patcher and all descendents,
+registering scripting names interally in s4m object (in the C code).
 
 **(send {target} {msg} ... {atoms})**
    Send the message {msg}, which may be followed by any number of 
@@ -365,7 +365,7 @@ receives and send them.
 
 
 s4m.repl patcher
----------------
+-----------------
 The s4m.repl object is intended to be put in a **bpatcher** and then hooked up.
 The left outlet sends the output as a single text symbol. To evaluate
 as scheme, we send it to a **prepend eval-string** object and send to inlet

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Lisp and Max in Detail &mdash; Scheme For Max 0.1 documentation</title>
+  <title>Automated Tests &mdash; Scheme For Max 0.1 documentation</title>
   
 
   
@@ -131,13 +131,13 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Lisp and Max in Detail</li>
+      <li>Automated Tests</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/lisp_and_max.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/testing.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -150,39 +150,24 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="lisp-and-max-in-detail">
-<h1>Lisp and Max in Detail<a class="headerlink" href="#lisp-and-max-in-detail" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="dynamic-evaluation">
-<h2>Dynamic Evaluation<a class="headerlink" href="#dynamic-evaluation" title="Permalink to this headline">¶</a></h2>
-<p>While it is possible to send code to JS to have it dynamically evaluated, the js object
-doesn’t support this specifically, and it is thus very cumbersome. Generation
-of runnable JS code from outside of the object is very difficult, given the syntax
-heavy nature of JS, the frequent use of strings in JS code, and the fact that other
-Max objects don’t work very easily with strings. In contrast, building valid lisp
-s-expressions in max messages is simple.</p>
-<ul class="simple">
-<li><p>In Lisp, tokens are separated by spaces, as are tokens in Max messages</p></li>
-<li><p>Max messages don’t like strings: quotation marks need to be escaped, and
-frequently disappear when messages are sent to each if care is not taken to treat
-the whole message as one max symbol</p></li>
-<li><p>The single-quote convention for quoting a symbol in lisp works in Max
-messages: Max accepts ‘foobar as a symbol and will pass it on to other objects intact</p></li>
-<li><p>In most places, Max will accept a leading colon for a symbol, allowing use of
-Lisp keywords, that always evaluate to themselves.</p></li>
-<li><p>While parentheses are used to enclose s-expressions in lisp, lisp macros can
-be used to</p></li>
-</ul>
+  <div class="section" id="automated-tests">
+<h1>Automated Tests<a class="headerlink" href="#automated-tests" title="Permalink to this headline">¶</a></h1>
+<p>Regression tests for Scheme For Max are in the <strong>tests</strong> directory of the package.
+You can look at these to see how various elements should work.
+You can also run all the tests at once with the Ruby test runner.</p>
 </div>
-<div class="section" id="syntax">
-<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline">¶</a></h2>
-<p>Lisp syntanx</p>
-<p>The main supported option in Max is the JS object, and the newer Node-for-Max object.</p>
+<div class="section" id="running-the-tests">
+<h1>Running the tests<a class="headerlink" href="#running-the-tests" title="Permalink to this headline">¶</a></h1>
+<p>You will need to install the <strong>max-tests</strong> package, which can be downloaded as
+a package or cloned from source here. <a href="#id1"><span class="problematic" id="id2">`https://github.com/Cycling74/max-test&lt;https://github.com/Cycling74/max-test&gt;`_</span></a></p>
+<p>To use the automated test runner, you will also need Ruby installed, and the
+ruby sqlite3 and rosc gems. Note that the test runner requires you to
+pass the location of your Max application. It will then run <em>every</em> test
+it finds on your Max search path.</p>
+<p>Making New Tests</p>
 <ul class="simple">
-<li><p>JavaScript syntax does not map well to Max syntaxt, meaning that the</p></li>
-<li><p>The JS object uses older JavaScript</p></li>
-<li><p>The Node-for-Max object runs in a separate process with very limited direct Max API access</p></li>
+<li><p>save as foobar.test.maxpat on the</p></li>
 </ul>
-</div>
 </div>
 
 

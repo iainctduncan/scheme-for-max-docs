@@ -14,7 +14,7 @@ You should now see an entry for Scheme For Max. Clicking **Launch** ought to ope
 In addition the Max external, the package contains:
 
 * help/
-   * The help file, **s4m.scm.maxhelp**
+   * The help file, **s4m.maxhelp**
    * The Scheme source files used in the help (**s4m_help_basics.scm** etc)
 
 * extras/
