@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Search &mdash; Scheme For Max 0.1 documentation</title>
+  <title>Automated Tests &mdash; Scheme For Max 0.1 documentation</title>
   
 
   
@@ -25,7 +25,6 @@
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/language_data.js"></script>
-        <script src="_static/searchtools.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -35,7 +34,7 @@
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="#" /> 
+    <link rel="search" title="Search" href="search.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -62,7 +61,7 @@
 
           
 <div role="search">
-  <form id="rtd-search-form" class="wy-form" action="#" method="get">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
@@ -132,12 +131,14 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Search</li>
+      <li>Automated Tests</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
+            <a href="_sources/testing.rst.txt" rel="nofollow"> View page source</a>
+          
         
       </li>
     
@@ -149,19 +150,26 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <noscript>
-  <div id="fallback" class="admonition warning">
-    <p class="last">
-      Please activate JavaScript to enable the search
-      functionality.
-    </p>
-  </div>
-  </noscript>
+  <div class="section" id="automated-tests">
+<h1>Automated Tests<a class="headerlink" href="#automated-tests" title="Permalink to this headline">¶</a></h1>
+<p>Regression tests for Scheme For Max are in the <strong>tests</strong> directory of the package.
+You can look at these to see how various elements should work.
+You can also run all the tests at once with the Ruby test runner.</p>
+</div>
+<div class="section" id="running-the-tests">
+<h1>Running the tests<a class="headerlink" href="#running-the-tests" title="Permalink to this headline">¶</a></h1>
+<p>You will need to install the <strong>max-tests</strong> package, which can be downloaded as
+a package or cloned from source here. <a href="#id1"><span class="problematic" id="id2">`https://github.com/Cycling74/max-test&lt;https://github.com/Cycling74/max-test&gt;`_</span></a></p>
+<p>To use the automated test runner, you will also need Ruby installed, and the
+ruby sqlite3 and rosc gems. Note that the test runner requires you to
+pass the location of your Max application. It will then run <em>every</em> test
+it finds on your Max search path.</p>
+<p>Making New Tests</p>
+<ul class="simple">
+<li><p>save as foobar.test.maxpat on the</p></li>
+</ul>
+</div>
 
-  
-  <div id="search-results">
-  
-  </div>
 
            </div>
            
@@ -199,14 +207,7 @@
   
   
     
-  
-  <script type="text/javascript">
-    jQuery(function() { Search.loadIndex("searchindex.js"); });
-  </script>
-  
-  <script type="text/javascript" id="searchindexloader"></script>
    
-
 
 </body>
 </html>

@@ -1,0 +1,340 @@
+Why S7 Scheme?
+==============
+
+About S7
+--------
+The purpose of this page is to provide an intro to S7 along with the rationale
+for choosing it, aimed at people with some lisp familiarity. Those interested in
+lisp related languages in general may find this interesting - regular users can skip it. 
+
+S7 Scheme is a minimal scheme designed specifically for embedding in music contexts,
+made by Bill Schottstaedt at CCRMA. It's the scheme engine in the Common Music and Grace 
+algorithmic composition platforms, the Snd library, and the Radium editor. 
+S7 is mostly R4RS Scheme, along with extras features chosen for the specific use 
+case of scripting music and audio in a host application. 
+In brief, it was chosen for Scheme For Max because:
+
+* It has a feature set that maps well to our problem space
+* It's multi-threaded such that we can have multiple interpreters in Max patches
+* It's fast, small, and easy to hack on 
+* It has a permissive (BSD) license, so it can be used in stand-alones and M4L devices
+
+S7 was based originally on TinyScheme, and is quite similar to Guile. In addition 
+to most of the standard Scheme linguistic features, it has a number of features also seen in 
+Common Lisp and shared with lisp relatives like Clojure. In some ways it's a bit
+of a hybrid: the syntax is clearly Scheme, but it does not have hygeinic macros
+using syntax-case or syntax-rules, preferring Common Lisp style macros,
+and it has various other features that aren't in all all Scheme implementations.
+
+Features of note for our use case include:
+
+* Scheme simplicity (one namespace, tail call optimization, etc.)
+* Keywords
+* Applicative syntax
+* First class environments
+* Common Lisp style macros
+* Simple FFI
+* Used in music (Common Music, etc)
+
+Advantages of S7 
+----------------
+
+The remainder of this page goes into more detail on the decision to use S7 and
+its drivers, and may or may not be of interest to the reader. 
+
+**Our Use Case**
+^^^^^^^^^^^^^^^^
+In order to evaluate whether S7's feature set is a good one for Scheme
+For Max, let's examine our use case. The goal here is to
+make building and extending music systems in Max easier, more
+flexible, and smaller (in code). I anticipate most users are going to be working
+in teams of one to a few people, and making many similar projects rather
+than working on one large and continually growing codebase.
+Given this, issues around onboarding new developers are not likely to be relevant.
+The code should be easy to learn, but only if this can be done without 
+sacrificing power and expressiveness. We don't need to be accessible to the
+casual or beginning programmer - that niche is already well filled by the
+JS object. We want a system that enables a sufficiently motivated 
+developer to express themselves as succinctly and flexibly as possible. 
+They should be able to build a re-usable toolkit flexible enough to use
+in a wide variety of artistic contexts. And the resulting code 
+should be small, with very minimal syntax, allowing us to embed 
+and manipulate code in Max messages.  
+
+A further thought is that in music hacking, we have two very different creation
+times: creating the system vs. creating the artistic product. When
+we are creating the system, we want the most advanced tools we can
+get our hands on, as the semantic and grammar problems of music are, 
+compared to business applications for example, rather fierce. 
+(I spent 15 years doing business application development, for what
+that's worth...) On the other hand, when we are creating the artistic product, we
+want the code to "just get out of the way". Any barrier to expression
+slows down the artistic process. This is, in a nutshell, the reason
+advanced languages like Lisp and Haskell are great for music, the developer
+can used advanced tools to make a very smart engine, that is then
+"played" with a high level and expressive domain specific language.
+
+Ok, with that pontificating out of the way, let's look at the features of S7 
+and how they fit in with our needs.
+
+**Scheme Simplicity**
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Being a Scheme, S7 has a single name space, tail call optimization, and
+named let, among other things. These lead to recursive code that is smaller 
+and easier to read than Common Lisp, in my personal opinion. (Cue the drum-beats
+of the religious war in 3..2..1..) 
+In many ways, S7 Scheme is a Scheme implementation with a bunch of Common Lisp's 
+best features baked in.  Whether this is a *good* thing I think depends on 
+your taste and use case.  I happen to believe that everything I've seen 
+in S7 makes sense for our use case. As discussed above,
+we're after small, clear code, that can be changed quickly, even if one
+must have a fair degree of language familiarity to read it easily.
+Scheme's recursion idioms fall in this category.
+We can point the user at `"The Little Schemer" <https://mitpress.mit.edu/books/little-schemer-fourth-edition>`_, 
+and when they come back, they'll be happily writing tiny code. 
+
+**Keywords**
+^^^^^^^^^^^^^^^^
+Keywords (in lisps that support them) are symbols that always evaluate
+to themselves. In S7, these are symbols starting with a colon.  
+Keyowrds are really useful in situations
+where one is doing a lot of dynamic evaluation, as we are doing when
+we pass over the Max-Scheme boundary. We need never worry about whether
+we ought to be quoting a keyword, or what it will become after evaluation,
+it just stays a keyword. In most places (aside from object scripting names), Max
+is happy to accept keywords as symbols, and the resulting Max code is very 
+readable because it's clear at a glance what a message
+with a keyword will be when in Scheme. I'm using them wherever I can
+and it's definitely helping readability. 
+
+**Applicative Syntax**
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Applicative syntax allows us to use data structures in the function
+slots of s-expressions, with arguments to get their contents. In
+S7 we can do this automatically with lists, vectors, and hash-tables. 
+This makes for some terse code, a good thing when we want to build things 
+in Max messages. 
+
+.. code:: scm
+
+   (define (my-listener args)
+      ;; output the first arg
+      (out 0 (args 0))
+   (define my-hash (hash-table :a 1 :b 2))
+   ;; applicative syntax with keywords, so nice! 
+   (out-1 (my-hash :a))
+
+
+**First class environments**
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+In S7, environments are first class objects, meaning we can easily
+capture lexical bindings and pass them around. Again, we're doing
+a lot of dynamic evaluation as we cross the boundary, so it's helpful
+to be able to have this degree of control. It will also be useful as we
+add more objects to Scheme For Max, with the ability to control
+their executing environment, potentially sharing them or passing them
+between environments. 
+Environments are also used in S7 to prevent hygeine issues in macros...
+
+.. TODO example here
+
+**CL Macros:**
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+S7 only supports Common Lisp style macros, with **defmacro** and **gensym**.
+It does not do syntax-case or syntax-rules Scheme/Racket style macros.
+While it would be nice to have syntax-case and/or syntax-rules as well, 
+if only for uptake from the broader scheme community to have, 
+I think the Common Lisp style makes much more sense for our use case. 
+They are arguably easier to learn, 
+and can arguably be more powerful, at the cost of some chance of hygeine issues.
+For easy creation of DSLs, on small code bases, in small teams, I think (presently...)
+defmacro wins. They are also used in Clojure, Common Lisp, and Elixir,
+from whom I hope to attract users.  
+Also with S7's first-class environments, macro-hygeine is not a big concern
+- details on this are in the S7 reference page for the macro enthusiast.
+
+.. TODO example here
+
+**Simple FFI and embedding**
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Embedding S7 is a snap: there's one C file to build
+and link, and one header file to include. And the S7 FFI is 
+really easy to use. It's simple to define Scheme
+functions from C, and to build Scheme expressions to hand to the functions
+in C. This has proved tremendously helpful for the rather cumbersome tasks
+of taking Max's concept of a list of atoms and converting it to a valid Scheme 
+sexp and vice versa.
+Further, one of the project goals is to enable people to hack on Scheme For Max
+itself, and after looking at the embedding story for Chicken, Chez, Gambit, and Racket,
+I realized this would make a big difference to the accessibility of the code.
+
+**Use in music**
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Another big advantage of S7 is its use in music circles already.
+Common Music, by Heinrich Taube, is a very mature algorithmic composition toolkit
+with a rich library of music related functions that will be helpful to
+users. This library depends a lot on S7's lisp-y-ness, leaning heavily
+on various Common Lisp macros. Prof. Taube also has an excellent book,
+"Notes From The Metalevel", with a wonderfully clear intro to Scheme and Lisp
+specifically with musical examples that will be applicable to Max. 
+One goal of the project is to ensure that the learner can use this book
+as a reference, and that people using Common Music outside of Max can
+easily port code to a Max environment. Common Music's application, Grace,
+is built with the JUCE toolkit, and examples on this are available. 
+I felt this would be very valuable in encouraging adoption in music hackers.
+
+
+Disadvantages of S7
+-------------------
+Of course, S7 has some disadvantages too. 
+
+It's not well known, being used in a small specialist community.
+Adoption in the larger scheme world has not been a priority of the project,
+as its purpose is specifically to enable advanced academic computer music.
+Community involvement in the development process has not been a priority,
+which one might consider a good or bad thing depending on your take.
+
+The documentation is very sparse, and not beginner friendly - they are
+definitely not docs suitable for someone just learning Scheme. On the other hand, 
+the docs do have extensive examples of embedding in C and using the FFI, 
+which was extremely helpful and which few others implementations had.
+
+S7 is a bit of a hybrid, and thus does not try to exactly meet the various standards.
+It's mostly R5RS, some R7RS, but meeting R7RS small is not a goal of the project.
+This may mean that people looking for a general purpose scheme are going to prefer
+implementations working towards R7RS, such as Chicken or Guile. 
+
+On the whole, after looking at the options, I came to the conclusion that
+the advantages significantly outweighed the disadvantages for the stated
+goals of Scheme For Max. Documentation and community facing
+material can be written more easily than one can improve a Scheme implementation,
+and if development process becomes an issue, there is always the
+option of writing a thin layer on top of S7 to act as an abstraction between
+upstream S7 and the Scheme used in Scheme For Max. This approach has been taken
+successfully in many open source projects before, and may well make sense at some
+time in the future if we wind up adding features to S7 at the C level that are not of interest
+to the main S7 project. I don't expect this being necessary for some time
+as so much of Scheme can be extended from Scheme itsel, that I should be able
+to get a long way on library modules added to S7.
+
+
+Other options that were considered 
+-----------------------------------
+When beginning the project, I looked for quite a while at many Scheme and 
+Lisp options. If you care about that sort of thing, you might find this interesting.
+These included:
+
+* Clojure
+* Guile
+* Chicken
+* Gambit
+* Chez
+* Racket
+* Embeddable Common Lisp
+* Clojure/ClojureScript
+
+Below are my subjective thoughts in case anyone wants to try porting
+Scheme For Max to another Scheme. (I'd love to see the results if you do!)
+None of the others have extensive computer music usage (with the exception of Common 
+Lisp) so I won't even list that as a disadvantage - take it as given.
+
+**Clojure**
+^^^^^^^^^^^^^
+Clojure is it's own lisp-like langauge, that runs on the Java Virtual Machine.
+It has a lot of adoption, with the resuting rich library of books and 
+documentation resources. However, it only runs on the Java Virtual Machine or
+on Node.js as ClojureScript. My first attempt at this project was with 
+with ClojureScript on Node For Max. Overall, I really like the language, but
+the ties to the JVM make it unsuitable for embedding or for low latency
+native use. ClojureScipt on Node for Max works, but runs in a separate process
+that Max communicates with under the hood with serialization over a network
+connection. As a result, the level of integration possible is minimal 
+compared to something embedded in a C external. 
+
+There are some native or compile-to-c languages influenced by Clojure that 
+look promising, such as Ferret, Fennel, Janet, and Carp. However, none of
+them are as mature as S7 at this point, and would give us the disadvantages
+of S7 (sparse docs, small community size) without the computer music specific 
+maturity.
+
+**Guile**
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Guile is a very nice minimal, embeddable scheme. It's easy to embed, 
+is working towards R7RS, and has excellent documentation. It's under very 
+active development, though mostly by one person, and it's pretty small. 
+The main disadvantages of Guile are that it uses a less permissive license. 
+If S7 weren't around, version 1 would probably be Guile. Like S7
+Guile is just an interperter, making the FFI situation pretty simple.
+
+**Chicken**
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Chicken is a modern (R7RS) scheme that compiles to C. It's got great
+docs, a great module system with lots of libraries, and a really great community.
+It's popular as a scheme to build products in for business
+and scientific applications. Unfortunately, it's not multi-thread safe
+out of the box, and the FFI docs were minimal. The embedding situation is also
+not as simple as Guile or S7, as it's both a compiler and interpreter.
+
+**Gambit**
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Gambit is a large, mature, industrial strength Scheme that has been around
+for 30 years.  It compiles down to highly performant C, and supports many kinds
+of macros. Gambit was another high contender. The big issue for Gambit
+was lack of documentation on embedding and a much more difficult embedding story.
+I will likely try to get Gambit working out of curiosity, there are
+some interesting developments in Gambit such as compiling to JavaScript,
+and it is very flexible with how it interacts with C. 
+
+**Chez** 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Chez is similar to Gambit, in that it's a big, industrial grade Scheme,
+with high performance. Racket is being redone on top of Chez. Also like
+Gambit, the embedding and FFI story scared me off pretty quickly. 
+I would use Gambit or Chez if I were starting a commercial product 
+on Scheme and expected to be on it for a long time, with a large team, building
+tons of code. They are like the Common Lisps of Scheme, with Chez being
+R6RS, meaning it's got a lot in the language, by Scheme standards.
+
+**Racket**
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Racket was originally called PLT Scheme, and came out of the academic side
+of scheme. It has a very advanced macro system, and fairly accessible 
+syntax. Unfortunately, it changes a lot (currently being redone on Chez)
+and embedding is not a high priority. Pretty much the only priorities for 
+Racket are language research and teaching. Embedding can be done, but it looks 
+very cumbersome. Racket also does not support Common Lisp macros with defmacro,
+which I wanted. It does have fantastic documentation though!
+
+**Gerbil**
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Gerbil is a modern "opinionated" (their words) Scheme built on top
+of Gambit. It does not support defmacro macros. It is aimed at system
+programming primarily. By the time I looked at Gerbil closely, I was
+pretty sure I wanted defmacro. However, tt does look worth looking
+at more closely for other Scheme uses.
+
+
+Final Thoughts
+--------------
+
+Overall, after several months of evaluation, S7 was elected. Four 
+months in, I've been happy with the decision. The ease of the FFI
+has been a huge win, and I'm really looking forward to supporting Common
+Music on Max and making it possible to run the code in "Notes From The Metalevel"
+on Max. The docs meant there have been times where it took a while to figure stuff out,
+but the code comes with a lot of examples, and Bill has been helpful with questions on the
+CCRMA CM Dist mailing list. The language design continues to grow on me.
+
+Over the next months, I plan to add a resources page and a crash course page 
+to these docs to help people learn S7 for Scheme For Max, and hopefully
+can introduce more people to the language.
+
+If this document piques interest in others who wish to try something similar
+or port the project to another Scheme/Lisp, I would certainly be interested 
+in communicating. Come join the Google Group!
+
+Enjoy! 
+Iain Duncan
+Victoria BC, Apr 2020.
+
+
