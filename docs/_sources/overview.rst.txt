@@ -6,13 +6,15 @@ with S7 Scheme. S7 is a minimal, "lisp-y" Scheme implementation, created by Bill
 Schottstaedt at CCRMA, and used in the Common Music algorithmic composition toolkit 
 and the Snd audio editor. Scheme for Max is authored by Iain Duncan, and hosted on GitHub.
 
+If you'd like to see a demo of Scheme For Max in action, there is a video on the 
+`Computer Music Tools <https://www.youtube.com/channel/UC6ftX7yuEi5uUFkRVJbJyWA>`_ channel on 
+YouTube.
+
 These docs are in Scheme-For-Max-Docs repository on GitHub. If you find anything unclear,
 incorrect, or just have suggestions, please post a ticket or let me know on the Google Group.
 
-S4M is available as a Max 8 package, as well as source code that should build
-on both Windows and OSX, for Max 7 or 8. The Max package is available for 64-bit OSX
-only at this time, but help building on Max 7 and Windows would be most welcome.
-Releases are available on the GitHub site.
+S4M is available as a Max 8 package for both OSX and both 32 and 64 bit Windows, as 
+well as source code for Windows and OSX, for Max 7 or 8. 
 
 Features of v0.1 include:
 
@@ -26,9 +28,10 @@ Features of v0.1 include:
 
 Features under development, to be released for v0.2:
 
-* Dictionary access and i/o
 * Table access and i/o
 * Buffer access and i/o
+* Dictionary access and i/o
+* Deferred event scheduling
 * Integration with Max4Live
 
 S4M provides the following Max patchers:
@@ -36,9 +39,5 @@ S4M provides the following Max patchers:
 * s4m - The embedded interpreter
 * s4m.repl - A patcher for making a terminal REPL in Max
 * s4m.help - An extensive help file demoing all features with sample source code
-
-If you'd like to see a demo of Scheme For Max in action, there are videos on the 
-`Computer Music Tools <https://www.youtube.com/channel/UC6ftX7yuEi5uUFkRVJbJyWA>`_ channel on 
-YouTube.
 
 Development is tracked on GitHub at `github.com/iainctduncan/scheme-for-max <https://github.com/iainctduncan/scheme-for-max>`_
