@@ -1,0 +1,13 @@
+Documentation notes
+
+Sections
+
+* Introduction
+ * Why Scheme? Why Lisp? 
+ * S7 Scheme
+
+* Installation
+  * Supported Platforms
+  * Installing As a Package
+  * Building from Source
+   
