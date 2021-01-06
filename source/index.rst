@@ -13,7 +13,9 @@ Scheme For Max - Documentation
     overview
     motivations
     installation
+    threading
     usage
+    api
     building
     s7
     
