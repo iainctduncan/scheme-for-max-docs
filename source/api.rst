@@ -297,8 +297,6 @@ S7 hash-table and keyword examples
     s4m> Poppy-poodle
 
 
-     
-
 Max Dictionary API
 ++++++++++++++++++++++++++++++
 Examples below can be used with the tests-dict.maxpat test patcher in the patchers directory.
@@ -373,4 +371,66 @@ Examples below can be used with the tests-dict.maxpat test patcher in the patche
     ;; set a value that is a hash-table, creating an intermediate hash-table automatically
     (dict-replace! 'test-dict (list 'foo 'bar) 99)
     s4m> 99
-   
+  
+**(dict->hash-table {dict-name})**
+    Return a hash-table of a Max dictionary. Nested dicts become nested hash-tables, arrays
+    become vectors. Raises error on bad dict-name. Alias **d->h**
+
+**(hash-table->dict {hash-table} {dict-name})**
+    Write entire contents of a hash-table to a named Max dict. If {dict-name} does not exist,
+    creates a dictionary. If {dict-name} already exists, replaces entire contents. Alias **h->d**.
+
+
+Max Time and Transport API
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+Transport functions exist to interact with the Max master transport. Named transports in addition
+to the master transport are not yet supported, and behaviour in Max For Live is unknown (but will be tackled
+in future!).
+
+**(time)**
+    Returns current time in float ms. This is the global Max time, *not* the transport time.
+    This only resets to 0 on restarting Max.
+
+**(transport-state)**
+    Returns **#t** if transport is running, **#f** otherwise. Alias **t-state**
+
+**(transport-state-set! {boolean|int state})**
+    Starts master transport on **#t** or **1**, stops on **#f** or **0**. Returns state set. Alias **t-state!**.
+
+**(transport-bpm-set! {int bpm})**
+    Starts master transport tempo to bpm. Note, there is no get version in the Max C SDK, strangely. 
+    Returns bpm set. Alias **t-bpm!**
+
+**(transport-time-sig)**
+    Returns current time signature as list of (numerator denominator).  Alias **t-time-sig**
+
+**(transport-time-sig-set! {int numerator} {int denominator})**
+    Sets master transport time signature.  Alias **t-time-sig!**
+
+**(transport-ticks)**
+    Returns current master transport location in ticks (float).  Alias **t-ticks**
+
+**(transport-seek {opt. bars} {opt. int beats} {float|int ticks})**
+    Sets master transport location immediately. If called with three arguments,
+    sets with Max bbu (bars beats units) format, otherwise sets location in ticks.
+    Returns new transport location in ticks (float). Alias **t-seek**
+
+**(ticks->ms {number ticks})**
+    Converts ticks to float ms according to current settings of the master transport.
+
+**(ticks->bbu {number ticks})**
+    Converts ticks to list of (bars, beats, ticks) according to current settings of the master transport.
+
+**(ms->ticks {number ms})**
+    Converts ms to float ticks according to current settings of the master transport.
+
+**(ms->bbu {number ms})**
+    Converts ms to list of (bars beats units) according to current settings of the master transport.
+
+**(bbu->ms {int bars} {int beats} {number units})**
+    Converts bars-beats-units to float ms according to current settings of the master transport.
+
+**(bbu->ticks {int bars} {int beats} {number units})**
+    Converts bars-beats-units to float ticks according to current settings of the master transport.
+
+
