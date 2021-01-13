@@ -1,38 +1,41 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Why S7 Scheme? &mdash; Scheme For Max 0.1 documentation</title>
   
 
   
-  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
   
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
-        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="prev" title="Building From Source" href="building.html" /> 
@@ -72,6 +75,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -84,10 +88,13 @@
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="motivations.html">Motivation - Why Lisp in Max?</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Setup and Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="threading.html">Threading, the Scheduler and Comparisons to JS &amp; Node</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Using Scheme For Max</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">S4M Scheme API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="building.html">Building From Source</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Why S7 Scheme?</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#about-s7">About S7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#about-s7-and-s74-scheme">About S7 and S74 Scheme</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#s74-scheme">S74 Scheme</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#advantages-of-s7">Advantages of S7</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#our-use-case"><strong>Our Use Case</strong></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#scheme-simplicity"><strong>Scheme Simplicity</strong></a></li>
@@ -118,6 +125,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -152,18 +160,20 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
       <li>Why S7 Scheme?</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
             <a href="_sources/s7.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -179,11 +189,11 @@
             
   <div class="section" id="why-s7-scheme">
 <h1>Why S7 Scheme?<a class="headerlink" href="#why-s7-scheme" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="about-s7">
-<h2>About S7<a class="headerlink" href="#about-s7" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="about-s7-and-s74-scheme">
+<h2>About S7 and S74 Scheme<a class="headerlink" href="#about-s7-and-s74-scheme" title="Permalink to this headline">¶</a></h2>
 <p>The purpose of this page is to provide an intro to S7 along with the rationale
-for choosing it, aimed at people with some lisp familiarity. Those interested in
-lisp related languages in general may find this interesting - regular users can skip it.</p>
+for choosing it, aimed at people with some Lisp familiarity. Those interested in
+Lisp related languages in general may find this interesting - regular users can skip it.</p>
 <p>S7 Scheme is a minimal scheme designed specifically for embedding in music contexts,
 made by Bill Schottstaedt at CCRMA. It’s the scheme engine in the Common Music and Grace
 algorithmic composition platforms, the Snd library, and the Radium editor.
@@ -192,15 +202,15 @@ case of scripting music and audio in a host application.
 In brief, it was chosen for Scheme For Max because:</p>
 <ul class="simple">
 <li><p>It has a feature set that maps well to our problem space</p></li>
-<li><p>It’s multi-threaded such that we can have multiple interpreters in Max patches</p></li>
-<li><p>It’s fast, small, and easy to hack on</p></li>
+<li><p>It’s thread-safe, allowing us to have  multiple independent interpreters in Max patches</p></li>
+<li><p>It’s fast, small, and easy to hack on and to embed</p></li>
 <li><p>It has a permissive (BSD) license, so it can be used in stand-alones and M4L devices</p></li>
 </ul>
-<p>S7 was based originally on TinyScheme, and is quite similar to Guile. In addition
+<p>S7 was based originally on TinyScheme, and is similar to Guile. In addition
 to most of the standard Scheme linguistic features, it has a number of features also seen in
-Common Lisp and shared with lisp relatives like Clojure. In some ways it’s a bit
-of a hybrid: the syntax is clearly Scheme, but it does not have hygeinic macros
-using syntax-case or syntax-rules, preferring Common Lisp style macros,
+Common Lisp and shared with Lisp relatives like Clojure. Like Clojure, it’s a bit
+of a hybrid: the syntax is clearly Scheme, with a single name-space for functions and variables,
+but it does not have hygeinic macros using syntax-case or syntax-rules, preferring Common Lisp style macros,
 and it has various other features that aren’t in all all Scheme implementations.</p>
 <p>Features of note for our use case include:</p>
 <ul class="simple">
@@ -212,6 +222,16 @@ and it has various other features that aren’t in all all Scheme implementation
 <li><p>Simple FFI</p></li>
 <li><p>Used in music (Common Music, etc)</p></li>
 </ul>
+</div>
+<div class="section" id="s74-scheme">
+<h2>S74 Scheme<a class="headerlink" href="#s74-scheme" title="Permalink to this headline">¶</a></h2>
+<p>The author of S7 intends to keep S7 as minimal as is practical. While great for
+ensuring it’s small and easy to embed, this means the language is missing many convenience
+functions that users coming from Clojure or Racket might be used to. S74 is
+simply a layer of additional functions on S7 that is loaded automatically by Scheme For
+Max. The only reason it has its own name is so that documentation can indicate
+easily which functions are added to S7 by S74. S74 additions are implemented (so far)
+as Scheme code and can be disable if the user desires by altering the bootstrap files.</p>
 </div>
 <div class="section" id="advantages-of-s7">
 <h2>Advantages of S7<a class="headerlink" href="#advantages-of-s7" title="Permalink to this headline">¶</a></h2>
@@ -252,33 +272,31 @@ and how they fit in with our needs.</p>
 </div>
 <div class="section" id="scheme-simplicity">
 <h3><strong>Scheme Simplicity</strong><a class="headerlink" href="#scheme-simplicity" title="Permalink to this headline">¶</a></h3>
-<p>Being a Scheme, S7 has a single name space, tail call optimization, and
-named let, among other things. These lead to recursive code that is smaller
-and easier to read than Common Lisp, in my personal opinion. (Cue the drum-beats
-of the religious war in 3..2..1..)
-In many ways, S7 Scheme is a Scheme implementation with a bunch of Common Lisp’s
+<p>Being a Scheme, S7 has a single name space for functions and variables, tail call optimization, and
+named let, among other things. In my personal opinion, these lead to recursive code that is smaller
+and easier to read than Common Lisp, and make it simpler to write dynamically evaluated
+code in Max messages. In many ways, S7 Scheme is a Scheme implementation with a bunch of Common Lisp’s
 best features baked in.  Whether this is a <em>good</em> thing I think depends on
 your taste and use case.  I happen to believe that everything I’ve seen
 in S7 makes sense for our use case. As discussed above,
-we’re after small, clear code, that can be changed quickly, even if one
-must have a fair degree of language familiarity to read it easily.
+we’re after small, clear code, that can be changed quickly and expressed with the simplest list of tokens,
+even if one must have a fair degree of language familiarity to read it easily.
 Scheme’s recursion idioms fall in this category.
 We can point the user at <a class="reference external" href="https://mitpress.mit.edu/books/little-schemer-fourth-edition">“The Little Schemer”</a>,
 and when they come back, they’ll be happily writing tiny code.</p>
 </div>
 <div class="section" id="keywords">
 <h3><strong>Keywords</strong><a class="headerlink" href="#keywords" title="Permalink to this headline">¶</a></h3>
-<p>Keywords (in lisps that support them) are symbols that always evaluate
+<p>Keywords (in Lisps that support them) are symbols that always evaluate
 to themselves. In S7, these are symbols starting with a colon.
-Keyowrds are really useful in situations
+Keywords are really useful in situations
 where one is doing a lot of dynamic evaluation, as we are doing when
 we pass over the Max-Scheme boundary. We need never worry about whether
 we ought to be quoting a keyword, or what it will become after evaluation,
 it just stays a keyword. In most places (aside from object scripting names), Max
-is happy to accept keywords as symbols, and the resulting Max code is very
+is happy to accept keywords as symbols, and the resulting Max code is
 readable because it’s clear at a glance what a message
-with a keyword will be when in Scheme. I’m using them wherever I can
-and it’s definitely helping readability.</p>
+with a keyword will be when in Scheme.</p>
 </div>
 <div class="section" id="applicative-syntax">
 <h3><strong>Applicative Syntax</strong><a class="headerlink" href="#applicative-syntax" title="Permalink to this headline">¶</a></h3>
@@ -291,7 +309,7 @@ in Max messages.</p>
    <span class="c1">;; output the first arg</span>
    <span class="p">(</span><span class="nf">out</span> <span class="mi">0</span> <span class="p">(</span><span class="nf">args</span> <span class="mi">0</span><span class="p">))</span>
 <span class="p">(</span><span class="k">define </span><span class="nv">my-hash</span> <span class="p">(</span><span class="nf">hash-table</span> <span class="nv">:a</span> <span class="mi">1</span> <span class="nv">:b</span> <span class="mi">2</span><span class="p">))</span>
-<span class="c1">;; applicative syntax with keywords, so nice!</span>
+<span class="c1">;; applicative syntax with keywords:</span>
 <span class="p">(</span><span class="nf">out-1</span> <span class="p">(</span><span class="nf">my-hash</span> <span class="nv">:a</span><span class="p">))</span>
 </pre></div>
 </div>
@@ -305,19 +323,20 @@ to be able to have this degree of control. It will also be useful as we
 add more objects to Scheme For Max, with the ability to control
 their executing environment, potentially sharing them or passing them
 between environments.
-Environments are also used in S7 to prevent hygeine issues in macros…</p>
+Environments are also used in S7 to prevent hygeine issues in macros.</p>
 </div>
 <div class="section" id="cl-macros">
 <h3><strong>CL Macros:</strong><a class="headerlink" href="#cl-macros" title="Permalink to this headline">¶</a></h3>
-<p>S7 only supports Common Lisp style macros, with <strong>defmacro</strong> and <strong>gensym</strong>.
+<p>S7 supports Common Lisp style macros, with <strong>defmacro</strong> and <strong>gensym</strong>,
+and some other more advanced CL style macro options (see the S7 docs).
 It does not do syntax-case or syntax-rules Scheme/Racket style macros.
-While it would be nice to have syntax-case and/or syntax-rules as well,
-if only for uptake from the broader scheme community to have,
-I think the Common Lisp style makes much more sense for our use case.
+While it might be nice to have syntax-case and/or syntax-rules as well,
+if only for uptake from the broader scheme community,
+I think the Common Lisp style makes more sense for our use case.
 They are arguably easier to learn,
 and can arguably be more powerful, at the cost of some chance of hygeine issues.
-For easy creation of DSLs, on small code bases, in small teams, I think (presently…)
-defmacro wins. They are also used in Clojure, Common Lisp, and Elixir,
+For easy creation of DSLs, on small code bases, in small teams, I think
+defmacro is a strong approach. They are also used in Clojure, Common Lisp, and Elixir,
 from whom I hope to attract users.
 Also with S7’s first-class environments, macro-hygeine is not a big concern
 - details on this are in the S7 reference page for the macro enthusiast.</p>
@@ -355,13 +374,13 @@ I felt this would be very valuable in encouraging adoption in music hackers.</p>
 <h2>Disadvantages of S7<a class="headerlink" href="#disadvantages-of-s7" title="Permalink to this headline">¶</a></h2>
 <p>Of course, S7 has some disadvantages too.</p>
 <p>It’s not well known, being used in a small specialist community.
-Adoption in the larger scheme world has not been a priority of the project,
+Adoption in the larger Scheme world has not been a priority of the project,
 as its purpose is specifically to enable advanced academic computer music.
 Community involvement in the development process has not been a priority,
 which one might consider a good or bad thing depending on your take.</p>
-<p>The documentation is very sparse, and not beginner friendly - they are
-definitely not docs suitable for someone just learning Scheme. On the other hand,
-the docs do have extensive examples of embedding in C and using the FFI,
+<p>The documentation is sparse, and is aimed at someone conversant with Scheme.
+The docs are definitely not suitable for someone just learning Scheme.
+On the other hand, they do include extensive examples of embedding in C and using the FFI,
 which was extremely helpful and which few others implementations had.</p>
 <p>S7 is a bit of a hybrid, and thus does not try to exactly meet the various standards.
 It’s mostly R5RS, some R7RS, but meeting R7RS small is not a goal of the project.
@@ -500,27 +519,28 @@ Victoria BC, Apr 2020.</p>
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-      
-        <a href="building.html" class="btn btn-neutral float-left" title="Building From Source" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+        <a href="building.html" class="btn btn-neutral float-left" title="Building From Source" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2020, Iain CT Duncan
+        &#169; Copyright 2020, Iain CT Duncan.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 
@@ -528,7 +548,6 @@ Victoria BC, Apr 2020.</p>
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

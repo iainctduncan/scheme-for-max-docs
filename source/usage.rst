@@ -83,6 +83,9 @@ that in Max, the messages **int**, **float**, **symbol**, and **list** are impli
 if you send an object the message **int 4** or **list a b c**, they are treated by the 
 receiving object as being the exact same as the message **4** or **a b c**. 
 
+In addition, S4M has some internal private functions used where the public API function
+calls a private helper implemented in C. These begin with **s4m-**.
+
 The easiest solution is to avoid using the following as names in Scheme unless you know
 exactly why you are doing it:
 
@@ -90,7 +93,9 @@ Max reserved words: **int**, **float**, **symbol**, **get**, **set**
 
 S4M attributes: **thread**, **ins**, **outs**, **log-repl**, **log-null**
 
-S4m commands: **reset**, **scan**, **read**, **eval-string**
+S4M commands: **reset**, **scan**, **read**, **eval-string**
+
+S4M internal functions: anything starting with **s4m-**
 
 The astute reader will have noticed that **list** is missing above. This is because
 **list** is already a Scheme function. This is also why our handlers for bang, int, float, and

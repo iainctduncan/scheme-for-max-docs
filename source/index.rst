@@ -16,6 +16,7 @@ Scheme For Max - Documentation
     threading
     usage
     api
+    algo_procs
     building
     s7
     
