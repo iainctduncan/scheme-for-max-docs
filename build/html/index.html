@@ -1,38 +1,41 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Scheme For Max - Documentation &mdash; Scheme For Max 0.1 documentation</title>
   
 
   
-  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
   
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
-        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Overview" href="overview.html" /> 
@@ -72,6 +75,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -84,7 +88,10 @@
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="motivations.html">Motivation - Why Lisp in Max?</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Setup and Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="threading.html">Max Threads, the Scheduler and the S7 Garbage Collector</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Using Scheme For Max</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">S4M Scheme API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="algo_procs.html">Algorithmic Processes and Live-Coding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="building.html">Building From Source</a></li>
 <li class="toctree-l1"><a class="reference internal" href="s7.html">Why S7 Scheme?</a></li>
 </ul>
@@ -92,6 +99,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -126,18 +134,20 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="#">Docs</a> &raquo;</li>
+      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
         
       <li>Scheme For Max - Documentation</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
             <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -159,13 +169,41 @@
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="motivations.html">Motivation - Why Lisp in Max?</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Setup and Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="threading.html">Max Threads, the Scheduler and the S7 Garbage Collector</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="threading.html#max-s-scheduling-model">Max’s scheduling model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="threading.html#delay-and-defer-operations">Delay and Defer operations:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="threading.html#the-s7-garbage-collector">The S7 Garbage Collector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="threading.html#s4m-thread-selection">S4M Thread Selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="threading.html#comparison-to-js-and-node-for-max">Comparison to JS and Node For Max</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Using Scheme For Max</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="usage.html#s4m">s4m</a></li>
-<li class="toctree-l2"><a class="reference internal" href="usage.html#arguments-properties">arguments &amp; properties</a></li>
-<li class="toctree-l2"><a class="reference internal" href="usage.html#messages-to-inlet-0">messages to inlet 0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="usage.html#messages-to-inlet-1">messages to inlet 1+</a></li>
-<li class="toctree-l2"><a class="reference internal" href="usage.html#scheme-api">Scheme API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#the-s4m-object">The s4m object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#arguments-attributes">Arguments &amp; Attributes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#reserved-words-and-naming-conventions">Reserved Words and Naming Conventions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#messages-to-inlet-0">Messages to inlet 0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#messages-to-inlet-1">Messages to inlet 1+</a></li>
 <li class="toctree-l2"><a class="reference internal" href="usage.html#s4m-repl-patcher">s4m.repl patcher</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">S4M Scheme API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.html#file-loading">File Loading</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#console-output">Console Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#outputs">Outputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#sending-messages">Sending Messages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#table-i-o">Table I/O</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#buffer-i-o">Buffer I/O</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#dictionary-i-o-hash-tables">Dictionary I/O &amp; hash-tables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#max-time-and-transport-api">Max Time and Transport API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#scheduling-delays-timers">Scheduling, Delays, &amp; Timers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="algo_procs.html">Algorithmic Processes and Live-Coding</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="algo_procs.html#dynamically-redefining-scheduled-functions">Dynamically Redefining Scheduled Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="algo_procs.html#capturing-variables-with-lexical-closures">Capturing variables with lexical closures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="algo_procs.html#temporal-recursion-recursive-scheduling">Temporal Recursion / Recursive Scheduling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="algo_procs.html#recurive-scheduling-and-lexical-closures">Recurive Scheduling and Lexical Closures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="algo_procs.html#controlling-recursive-processes">Controlling Recursive Processes</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="building.html">Building From Source</a><ul>
@@ -174,7 +212,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="s7.html">Why S7 Scheme?</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="s7.html#about-s7">About S7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="s7.html#about-s7-and-s74-scheme">About S7 and S74 Scheme</a></li>
+<li class="toctree-l2"><a class="reference internal" href="s7.html#s74-scheme">S74 Scheme</a></li>
 <li class="toctree-l2"><a class="reference internal" href="s7.html#advantages-of-s7">Advantages of S7</a></li>
 <li class="toctree-l2"><a class="reference internal" href="s7.html#disadvantages-of-s7">Disadvantages of S7</a></li>
 <li class="toctree-l2"><a class="reference internal" href="s7.html#other-options-that-were-considered">Other options that were considered</a></li>
@@ -190,27 +229,28 @@
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="overview.html" class="btn btn-neutral float-right" title="Overview" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
+        <a href="overview.html" class="btn btn-neutral float-right" title="Overview" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2020, Iain CT Duncan
+        &#169; Copyright 2020, Iain CT Duncan.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 
@@ -218,7 +258,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

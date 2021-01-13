@@ -1,0 +1,243 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Comparison to JS and Node For Max &mdash; Scheme For Max 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Scheme For Max
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="motivations.html">Motivation - Why Lisp in Max?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Setup and Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="threading.html">Max Threads, the Scheduler and the Garbage Collector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Using Scheme For Max</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">S4M Scheme API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="algo_procs.html">Algorithmic Processes and Live-Coding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="building.html">Building From Source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="s7.html">Why S7 Scheme?</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Scheme For Max</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Comparison to JS and Node For Max</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/comparison_to_js.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="comparison-to-js-and-node-for-max">
+<h1>Comparison to JS and Node For Max<a class="headerlink" href="#comparison-to-js-and-node-for-max" title="Permalink to this headline">¶</a></h1>
+<p>The <strong>js</strong> (JavaScript) object in Max <em>only</em> executes in the low priority thread. This is done
+to ensure there is no chance of a thread context switch corrupting data and creating unknown
+conditions, as detailed above. The fact that the <strong>js</strong> object always defers messages to the low
+priority thread has ramifications for what we can reliably do with the <strong>js</strong> object.
+Realistically, we can never guarantee that an event handled in JavaScript code
+will be serviced in a timely manner. While there are delay operations in JS,
+they only create a <em>minimum</em> delay. The event
+won’t be serviced until the delay is done, and the low priority thread gets to run again.
+It’s not at all uncommon for the low priority thread to hiccup: visual redrawing
+operations or any file system interaction can do it. The upshot of this is that while the
+<strong>js</strong> object has quite a comprehensive set of features, it’s not reliable for timing critical operations.
+Note that this only matters for events that will be rendered to <em>audio</em> - user interface and Jitter operations
+execute in the low priority thread anyway, making <strong>js</strong> suitable for UI or Jitter manipulation.</p>
+<p>There is often some confusion about how Node For Max fits into all this. Node For Max uses
+a completely different model, where the Node script executes in a separate <em>process</em> that is spawned
+and supervised by the Max process. Under the hood, Node scripts do not get
+executed by Max system code, (the way the <strong>js</strong> and <strong>s4m</strong> objects do), and thus don’t have programatic
+access to all of Max’s internals through the Max C API functions. The Node code is executed by a Node.JS
+runtime, outside of Max, with communication to and from Max over a network connection. Messages
+and data are serialized and deserialized automatically so that we don’t need to deal with
+any of the networking complexity. The advantage of this is that the Node script
+can work with the external file system or communicate with the outside world over networks and
+we never have to worry about how long that takes. When Node finishes its work, messages
+come back to Max. However, this means that Node is, like <em>js</em>, not reliable for timing critical code, as we have
+no guarantees of when Node code will complete and send messages back to Max.
+This does, however, make Node For Max a good compliment to S4M. By adding a Node object
+to our patchers, we can use it for operations that might take a while and which we don’t want
+blocking either a low or high priority <strong>s4m</strong> object. We can have an <strong>s4m</strong> object send messages to
+Node to request a long running operation (such as saving or loading a file),
+or to take advantage of the rich libraries for interacting
+with the world outside of Max, and have the results sent back as messages to <strong>s4m</strong> or make
+them accessible in Max dictionaries that <strong>s4m</strong> can read.</p>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Iain CT Duncan.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

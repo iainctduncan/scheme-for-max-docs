@@ -1,0 +1,515 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Algorithmic Processes and Live-Coding &mdash; Scheme For Max 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Building From Source" href="building.html" />
+    <link rel="prev" title="S4M Scheme API" href="api.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Scheme For Max
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="motivations.html">Motivation - Why Lisp in Max?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Setup and Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="threading.html">Threading, the Scheduler and Comparisons to JS &amp; Node</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Using Scheme For Max</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">S4M Scheme API</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Algorithmic Processes and Live-Coding</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#dynamically-redefining-scheduled-functions">Dynamically Redefining Scheduled Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#capturing-variables-with-lexical-closures">Capturing variables with lexical closures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#temporal-recursion-recursive-scheduling">Temporal Recursion / Recursive Scheduling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#recurive-scheduling-and-lexical-closures">Recurive Scheduling and Lexical Closures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#controlling-recursive-processes">Controlling Recursive Processes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="building.html">Building From Source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="s7.html">Why S7 Scheme?</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Scheme For Max</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Algorithmic Processes and Live-Coding</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/algo_procs.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="algorithmic-processes-and-live-coding">
+<h1>Algorithmic Processes and Live-Coding<a class="headerlink" href="#algorithmic-processes-and-live-coding" title="Permalink to this headline">¶</a></h1>
+<p>We can use the <strong>delay</strong> and <strong>listen</strong> functions to create
+sequencers and repeating algorithmic processes, and interact
+with these in real-time by changing variables or redefining functions.
+This section provides some helpful examples and tips. This document
+assumes familiarity with lambda functions and let blocks, though
+one could certainly use the examples here to learn them.</p>
+<p>This kind of algorithmic composition is explored in detail in the (highly
+recommended!) book <strong>Notes from the Metalevel</strong>, by Dr Heinrich Taube.
+The book uses S7 Scheme with the Common Music runtime, but examples are easily adapted to
+Scheme For Max.</p>
+<div class="section" id="dynamically-redefining-scheduled-functions">
+<h2>Dynamically Redefining Scheduled Functions<a class="headerlink" href="#dynamically-redefining-scheduled-functions" title="Permalink to this headline">¶</a></h2>
+<p>We can use the interpreter to redefine scheduled functions on the fly, but this
+requires some care to get the behaviour you are expecting. When we register
+a scheduled function or a listener function, we are registering the <em>function</em>,
+not the <em>symbol for the function</em>. This means that if a function is registered in the
+scheduler (whether as a listener or using delay), redefining the function
+attached to the symbol for the function’s <em>name</em> has no effect on the function called
+when the timer callback fires.
+If we want to ensure that redefining the value of a given symbol changes what an
+already registered listener does, we need to make a wrapper function that evaluates
+the global symbol on each pass. This is best illustrated with examples:</p>
+<p>Example of function registration that is unaffected by changes to the
+symbol used to define the function:</p>
+<div class="highlight-scm notranslate"><div class="highlight"><pre><span></span><span class="c1">;; define a function that posts :foobar to the console</span>
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">my-listener</span><span class="p">)</span> <span class="p">(</span><span class="nf">post</span> <span class="nv">:foobar</span><span class="p">))</span>
+
+<span class="c1">;; register it to get evaluated every second</span>
+<span class="p">(</span><span class="nf">listen-ms</span> <span class="mi">1000</span> <span class="nv">my-listener</span><span class="p">)</span>
+
+<span class="c1">;; now we see :foobar posted every second</span>
+
+<span class="c1">;; redefine my-listener</span>
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">my-listener</span><span class="p">)</span> <span class="p">(</span><span class="nf">post</span> <span class="nv">:foobaz</span><span class="p">)</span> <span class="p">)</span>
+
+<span class="c1">;; no change to what is getting posted, because the old</span>
+<span class="c1">;; my-listener function is still registered!</span>
+
+<span class="c1">;; register the new function, replacing the function registered for listen-ms</span>
+<span class="p">(</span><span class="nf">listen-ms</span> <span class="mi">1000</span> <span class="nv">my-listener</span><span class="p">)</span>
+
+<span class="c1">;; now we get :foobaz posted</span>
+</pre></div>
+</div>
+<p>Example of function registration that ensures changing the listener
+will have an immediate effect:</p>
+<div class="highlight-scm notranslate"><div class="highlight"><pre><span></span><span class="c1">;; define a function that posts :foobar to the console</span>
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">my-listener</span><span class="p">)</span> <span class="p">(</span><span class="nf">post</span> <span class="nv">:foobar</span><span class="p">))</span>
+
+<span class="c1">;; register a lambda function that evaluates whatever is currently</span>
+<span class="c1">;; attached to the symbol &#39;my-listener</span>
+<span class="p">(</span><span class="nf">listen-ms</span> <span class="mi">1000</span> <span class="p">(</span><span class="k">lambda </span><span class="p">()</span> <span class="p">(</span><span class="nb">eval </span><span class="p">(</span><span class="nb">list </span><span class="ss">&#39;my-listener</span><span class="p">))))</span>
+<span class="c1">;; same, different syntax</span>
+<span class="p">(</span><span class="nf">listen-ms</span> <span class="mi">1000</span> <span class="p">(</span><span class="k">lambda </span><span class="p">()</span> <span class="p">(</span><span class="nb">eval </span><span class="o">&#39;</span><span class="p">(</span><span class="nv">my-listener</span><span class="p">))))</span>
+
+<span class="c1">;; every second we are getting :foobar posted now</span>
+
+<span class="c1">;; redefine my-listener</span>
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">my-listener</span><span class="p">)</span> <span class="p">(</span><span class="nf">post</span> <span class="nv">:foobaz</span><span class="p">)</span> <span class="p">)</span>
+
+<span class="c1">;; now foobaz is getting posted</span>
+</pre></div>
+</div>
+<p>The same scoping rules apply for variables that your function uses. If we want changes to
+a top level variable to immediate be reflected in our registered functions,
+we have those functions use values looked up from global symbols:</p>
+<div class="highlight-scm notranslate"><div class="highlight"><pre><span></span><span class="c1">;; define and register function that outputs the note-number currently at &#39;note-num</span>
+<span class="c1">;; this will print an error message if note-num does not exist</span>
+<span class="p">(</span><span class="k">define </span><span class="nv">note-num</span> <span class="mi">60</span><span class="p">)</span>
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">my-listener</span><span class="p">)</span> <span class="p">(</span><span class="nf">out</span> <span class="mi">0</span> <span class="nv">note-num</span><span class="p">))</span>
+
+<span class="p">(</span><span class="nf">listen-ms</span> <span class="mi">1000</span> <span class="nv">my-listener</span><span class="p">)</span>
+<span class="c1">;; function is outputing 60</span>
+
+<span class="p">(</span><span class="k">set! </span><span class="nv">note-num</span> <span class="mi">72</span><span class="p">)</span>
+<span class="c1">;; function is now outputing 72</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="capturing-variables-with-lexical-closures">
+<h2>Capturing variables with lexical closures<a class="headerlink" href="#capturing-variables-with-lexical-closures" title="Permalink to this headline">¶</a></h2>
+<p>To capture the value of a global (or outer) variable, but keep the listener function using
+it regardless of any subsequent changes to the global variable, we need to use a lexical
+closure. There are several ways of doing this, one is to use a <strong>let</strong> block.</p>
+<div class="highlight-scm notranslate"><div class="highlight"><pre><span></span><span class="c1">;; assume we have a global var, note-num, that we manipulate somehow</span>
+<span class="p">(</span><span class="k">define </span><span class="nv">note-num</span> <span class="mi">60</span><span class="p">)</span>
+
+<span class="p">(</span><span class="k">define </span><span class="nv">my-listener</span>
+  <span class="p">(</span><span class="k">let </span><span class="p">((</span><span class="nf">captured-note-num</span> <span class="nv">note-num</span><span class="p">))</span>
+    <span class="p">(</span><span class="k">lambda </span><span class="p">()</span> <span class="p">(</span><span class="nf">out</span> <span class="mi">0</span> <span class="nv">captured-note-num</span><span class="p">))))</span>
+
+<span class="p">(</span><span class="nf">listen-ms</span> <span class="mi">1000</span> <span class="nv">my-listener</span><span class="p">)</span>
+
+<span class="c1">;; 60 now coming out every second</span>
+
+<span class="p">(</span><span class="k">set! </span><span class="nv">note-num</span> <span class="mi">72</span><span class="p">)</span>
+
+<span class="c1">;; no change, captured-note-num is not subject to changes to symbol note-num</span>
+</pre></div>
+</div>
+<p>This is a very common pattern in Lisp languages, often refered to as “let over lambda”.
+A variable is declared in the let definitions and its value is read from the global
+when the let block runs. The let block then returns a function that uses the symbol
+local to the let block, thus the function returned takes the let environment with it.</p>
+<p>Another way of doing this is to use function arguments, and capture
+those with wrapper lambdas. In this case, we would define a function we want to have
+run at the scheduled time, with some local arguments, and register a wrapper function
+that takes no arguments as the actualy delayed callback:</p>
+<div class="highlight-scm notranslate"><div class="highlight"><pre><span></span><span class="c1">;; assume we have a global var, note-num, that we manipulate somehow</span>
+<span class="p">(</span><span class="k">define </span><span class="nv">note-num</span> <span class="mi">60</span><span class="p">)</span>
+
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">my-delay-fun</span> <span class="nv">note-num-param</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">out</span> <span class="mi">0</span> <span class="nv">note-num-param</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define </span><span class="nv">my-delay-fun-callback</span>
+  <span class="p">(</span><span class="k">let </span><span class="p">((</span><span class="nf">captured-note-num</span> <span class="nv">note-num</span><span class="p">))</span>
+    <span class="p">(</span><span class="k">lambda </span><span class="p">()</span>
+      <span class="p">(</span><span class="nf">my-delay-fun</span> <span class="nv">captured-note-num</span><span class="p">))))</span>
+
+<span class="p">(</span><span class="nf">listen-ms</span> <span class="mi">1000</span> <span class="nv">my-delay-fun-callback</span><span class="p">)</span>
+
+<span class="c1">;; 60 now coming out every second</span>
+<span class="p">(</span><span class="k">set! </span><span class="nv">note-num</span> <span class="mi">72</span><span class="p">)</span>
+
+<span class="c1">;; no change, the local note-num-param captured the value of</span>
+<span class="c1">;; note-num at the time of the lambda</span>
+</pre></div>
+</div>
+<p>Below is an example of reading from both mutable top level variables
+and captured variables:</p>
+<div class="highlight-scm notranslate"><div class="highlight"><pre><span></span><span class="c1">;; top level vars for note-num and velocity</span>
+<span class="p">(</span><span class="k">define </span><span class="nv">note-num</span> <span class="mi">60</span><span class="p">)</span>
+<span class="p">(</span><span class="k">define </span><span class="nv">velocity</span> <span class="mi">90</span><span class="p">)</span>
+
+<span class="p">(</span><span class="k">define </span><span class="nv">my-listener</span>
+  <span class="p">(</span><span class="k">let </span><span class="p">((</span><span class="nf">captured-note-num</span> <span class="nv">note-num</span><span class="p">))</span>
+    <span class="c1">;; captured-note-num is in the let, but velocity is global</span>
+    <span class="p">(</span><span class="k">lambda </span><span class="p">()</span> <span class="p">(</span><span class="nf">out</span> <span class="mi">0</span> <span class="p">(</span><span class="nb">list </span><span class="nv">captured-note-num</span> <span class="nv">velocity</span><span class="p">)))))</span>
+
+<span class="p">(</span><span class="nf">listen-ms</span> <span class="mi">1000</span> <span class="nv">my-listener</span><span class="p">)</span>
+
+<span class="c1">;; 60 90 now coming out every second</span>
+
+<span class="p">(</span><span class="k">set! </span><span class="nv">note-num</span> <span class="mi">72</span><span class="p">)</span>
+<span class="p">(</span><span class="k">set! </span><span class="nv">velocity</span> <span class="mi">120</span><span class="p">)</span>
+
+<span class="c1">;; 60 120 coming out - velocity changes, but note-num does not</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="temporal-recursion-recursive-scheduling">
+<h2>Temporal Recursion / Recursive Scheduling<a class="headerlink" href="#temporal-recursion-recursive-scheduling" title="Permalink to this headline">¶</a></h2>
+<p>It is safe to have a scheduled function re-schedule another function, sometimes called
+“temporal recursion” in the algorithmic composition literature. The function
+definition uses standard Lisp recursion:</p>
+<div class="highlight-scm notranslate"><div class="highlight"><pre><span></span><span class="c1">;; my self-scheduled callback</span>
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">my-callback</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">post</span> <span class="s">&quot;executing!&quot;</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">delay-t</span> <span class="mi">480</span> <span class="nv">my-callback</span><span class="p">))</span>
+
+<span class="c1">;; start it up immediately, it will then repeat every 480 ticks</span>
+<span class="p">(</span><span class="k">delay </span><span class="mi">0</span> <span class="nv">my-callback</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>These require some management if you want to be able to cancel their execution (without just
+resetting the intrepreter!) One method is to write to a global (or other scope) variable that</p>
+<blockquote>
+<div><p>stores the last registered callback handler and can thus be used to stop playback.</p>
+</div></blockquote>
+<div class="highlight-scm notranslate"><div class="highlight"><pre><span></span><span class="c1">;; a variable to hold the handle, outside of the scope of the callback</span>
+<span class="p">(</span><span class="k">define </span><span class="nv">cb-handle</span> <span class="no">#f</span><span class="p">)</span>
+
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">my-callback</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">post</span> <span class="s">&quot;executing!&quot;</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">set! </span><span class="nv">cb-handle</span> <span class="p">(</span><span class="nf">delay-t</span> <span class="mi">480</span> <span class="nv">my-callback</span><span class="p">)))</span>
+
+<span class="c1">;; start it up, and capture the callback</span>
+<span class="p">(</span><span class="k">set! </span><span class="nv">cb-handle</span> <span class="p">(</span><span class="k">delay </span><span class="mi">0</span> <span class="nv">my-callback</span><span class="p">))</span>
+
+<span class="c1">;; at some point, we can stop playback by cancelling the callback</span>
+<span class="p">(</span><span class="nf">cancel-delay</span> <span class="nv">cb-handle</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If we use the transport aware delay functions with quantize (<strong>delay-tq</strong>) this
+can be used to spawn repeating processes synchronized with musical time and
+kept in sync with the transport tempo. You may want to make your own version
+of transport control functions that manage callback cancellation and then
+stop the transport using the aforementioned transport functions.</p>
+</div>
+<div class="section" id="recurive-scheduling-and-lexical-closures">
+<h2>Recurive Scheduling and Lexical Closures<a class="headerlink" href="#recurive-scheduling-and-lexical-closures" title="Permalink to this headline">¶</a></h2>
+<p>By combining lexical clojures with self-scheduling delay calls, we can
+make functions that change the arguments for their next iteration.
+Below is an example of a function that counts down 4 repetitions.</p>
+<div class="highlight-scm notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define </span><span class="nv">global-num-reps</span> <span class="mi">3</span><span class="p">)</span>
+
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">my-fun</span> <span class="nv">rep-num</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">post</span> <span class="s">&quot;rep:&quot;</span> <span class="nv">rep-num</span><span class="p">)</span>
+  <span class="c1">;; do stuff for this iteration</span>
+
+  <span class="c1">;; make arguments for next iteration</span>
+  <span class="p">(</span><span class="k">let </span><span class="p">((</span><span class="nf">next-rep-num</span> <span class="p">(</span><span class="nb">- </span><span class="nv">rep-num</span> <span class="mi">1</span><span class="p">)))</span>
+
+    <span class="c1">;; in let body we schedule next iteration with the captured arg</span>
+    <span class="p">(</span><span class="k">delay </span><span class="mi">1000</span> <span class="p">(</span><span class="k">lambda </span><span class="p">()</span>
+      <span class="p">(</span><span class="nf">my-fun</span> <span class="nv">next-rep-num</span><span class="p">)))))</span>
+
+<span class="c1">;; now we need to kick it off with a lambda capturing the first arg</span>
+<span class="p">(</span><span class="k">delay </span><span class="mi">1000</span> <span class="p">(</span><span class="k">lambda </span><span class="p">()(</span><span class="nf">my-fun</span> <span class="nv">global-num-reps</span><span class="p">)))</span>
+</pre></div>
+</div>
+<p>The above will just count forever. Below is the same improved so that
+the process stops after the count reaches the last rep:</p>
+<div class="highlight-scm notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define </span><span class="nv">global-num-reps</span> <span class="mi">3</span><span class="p">)</span>
+
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">my-fun</span> <span class="nv">rep-num</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">post</span> <span class="s">&quot;rep:&quot;</span> <span class="nv">rep-num</span><span class="p">)</span>
+  <span class="c1">;; do stuff for this iteration</span>
+
+  <span class="c1">;; make arguments for next iteration</span>
+  <span class="p">(</span><span class="k">let </span><span class="p">((</span><span class="nf">next-rep-num</span> <span class="p">(</span><span class="nb">- </span><span class="nv">rep-num</span> <span class="mi">1</span><span class="p">)))</span>
+
+    <span class="c1">;; schedule next iteration only if next-rep-num is greater than zero</span>
+    <span class="c1">;; otherwise, post :done</span>
+    <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="k">and </span><span class="nv">playing</span> <span class="p">(</span><span class="nb">&gt; </span><span class="nv">next-rep-num</span> <span class="mi">0</span><span class="p">))</span>
+      <span class="p">(</span><span class="k">delay </span><span class="mi">1000</span> <span class="p">(</span><span class="k">lambda </span><span class="p">()</span> <span class="p">(</span><span class="nf">my-fun</span> <span class="nv">next-rep-num</span><span class="p">)))</span>
+      <span class="p">(</span><span class="nf">post</span> <span class="nv">:DONE</span><span class="p">))))</span>
+
+<span class="c1">;; start it up</span>
+<span class="p">(</span><span class="k">delay </span><span class="mi">1000</span> <span class="p">(</span><span class="k">lambda </span><span class="p">()(</span><span class="nf">my-fun</span> <span class="nv">global-num-reps</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="controlling-recursive-processes">
+<h2>Controlling Recursive Processes<a class="headerlink" href="#controlling-recursive-processes" title="Permalink to this headline">¶</a></h2>
+<p>We might need to be able to stop a process early, so we can also check
+a global to see if we should still be playing before scheduling the next
+iteration:</p>
+<div class="highlight-scm notranslate"><div class="highlight"><pre><span></span><span class="c1">;; toggle for stopping playback</span>
+<span class="p">(</span><span class="k">define </span><span class="nv">playing</span> <span class="no">#t</span><span class="p">)</span>
+<span class="p">(</span><span class="k">define </span><span class="nv">global-num-reps</span> <span class="mi">100</span><span class="p">)</span>
+
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">my-fun</span> <span class="nv">rep-num</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">post</span> <span class="s">&quot;rep:&quot;</span> <span class="nv">rep-num</span><span class="p">)</span>
+  <span class="c1">;; do stuff for this iteration</span>
+
+  <span class="c1">;; make arguments for next iteration</span>
+  <span class="p">(</span><span class="k">let </span><span class="p">((</span><span class="nf">next-rep-num</span> <span class="p">(</span><span class="nb">- </span><span class="nv">rep-num</span> <span class="mi">1</span><span class="p">)))</span>
+
+    <span class="c1">;; schedule next iteration only if next-rep-num is greater than zero</span>
+    <span class="c1">;; otherwise, post :done</span>
+    <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="k">and </span><span class="nv">playing</span> <span class="p">(</span><span class="nb">&gt; </span><span class="nv">next-rep-num</span> <span class="mi">0</span><span class="p">))</span>
+      <span class="p">(</span><span class="k">delay </span><span class="mi">1000</span> <span class="p">(</span><span class="k">lambda </span><span class="p">()</span> <span class="p">(</span><span class="nf">my-fun</span> <span class="nv">next-rep-num</span><span class="p">)))</span>
+      <span class="p">(</span><span class="nf">post</span> <span class="nv">:DONE</span><span class="p">))))</span>
+
+<span class="c1">;; start it up</span>
+<span class="p">(</span><span class="k">delay </span><span class="mi">1000</span> <span class="p">(</span><span class="k">lambda </span><span class="p">()(</span><span class="nf">my-fun</span> <span class="nv">global-num-reps</span><span class="p">)))</span>
+<span class="c1">;; stop playback early</span>
+<span class="p">(</span><span class="k">set! </span><span class="nv">playing</span> <span class="no">#f</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Finally, what if we want to be able to stop only certain processes? If
+we capture the callback handle for each delay call in a top level
+variable, we can cancel recursion for a process at anytime by cancelling that handle:</p>
+<div class="highlight-scm notranslate"><div class="highlight"><pre><span></span><span class="c1">;; toggle for stopping playback</span>
+<span class="p">(</span><span class="k">define </span><span class="nv">playing</span> <span class="no">#t</span><span class="p">)</span>
+<span class="p">(</span><span class="k">define </span><span class="nv">global-num-reps</span> <span class="mi">100</span><span class="p">)</span>
+<span class="p">(</span><span class="k">define </span><span class="nv">process-handle</span> <span class="no">#f</span><span class="p">)</span>
+
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">my-fun</span> <span class="nv">rep-num</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">post</span> <span class="s">&quot;rep:&quot;</span> <span class="nv">rep-num</span><span class="p">)</span>
+  <span class="c1">;; do stuff for this iteration</span>
+
+  <span class="c1">;; make arguments for next iteration</span>
+  <span class="p">(</span><span class="k">let </span><span class="p">((</span><span class="nf">next-rep-num</span> <span class="p">(</span><span class="nb">- </span><span class="nv">rep-num</span> <span class="mi">1</span><span class="p">)))</span>
+
+    <span class="c1">;; schedule next iteration only if next-rep-num is greater than zero</span>
+    <span class="c1">;; otherwise, post :done</span>
+    <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="k">and </span><span class="nv">playing</span> <span class="p">(</span><span class="nb">&gt; </span><span class="nv">next-rep-num</span> <span class="mi">0</span><span class="p">))</span>
+      <span class="c1">;; schedule and save the handle to the global process-handle var</span>
+      <span class="p">(</span><span class="k">set! </span><span class="nv">process-handle</span> <span class="p">(</span><span class="k">delay </span><span class="mi">1000</span> <span class="p">(</span><span class="k">lambda </span><span class="p">()</span> <span class="p">(</span><span class="nf">my-fun</span> <span class="nv">next-rep-num</span><span class="p">))))</span>
+      <span class="p">(</span><span class="nf">post</span> <span class="nv">:DONE</span><span class="p">))))</span>
+
+<span class="c1">;; start the process, saving the callback handle</span>
+<span class="p">(</span><span class="k">set! </span><span class="nv">process-handle</span> <span class="p">(</span><span class="k">delay </span><span class="mi">1000</span> <span class="p">(</span><span class="k">lambda </span><span class="p">()(</span><span class="nf">my-fun</span> <span class="nv">global-num-reps</span><span class="p">))))</span>
+
+<span class="c1">;; stop only this process</span>
+<span class="p">(</span><span class="nf">cancel-delay</span> <span class="nv">process-handle</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="building.html" class="btn btn-neutral float-right" title="Building From Source" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="api.html" class="btn btn-neutral float-left" title="S4M Scheme API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Iain CT Duncan.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
