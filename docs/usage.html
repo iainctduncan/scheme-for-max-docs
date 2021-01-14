@@ -1,42 +1,45 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Using Scheme For Max &mdash; Scheme For Max 0.1 documentation</title>
   
 
   
-  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
   
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
-        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Building From Source" href="building.html" />
-    <link rel="prev" title="Setup and Installation" href="installation.html" /> 
+    <link rel="next" title="S4M Scheme API" href="api.html" />
+    <link rel="prev" title="Max Threads, the Scheduler and the S7 Garbage Collector" href="threading.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -73,6 +76,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -85,26 +89,28 @@
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="motivations.html">Motivation - Why Lisp in Max?</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Setup and Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="threading.html">Max Threads, the Scheduler and the S7 Garbage Collector</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Using Scheme For Max</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#s4m">s4m</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#arguments-properties">arguments &amp; properties</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#messages-to-inlet-0">messages to inlet 0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#messages-to-inlet-1">messages to inlet 1+</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#scheme-api">Scheme API</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#file-loading">File Loading</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#console-output">Console Output</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#outputs">Outputs</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#listeners">Listeners</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#the-s4m-object">The s4m object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#arguments-attributes">Arguments &amp; Attributes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reserved-words-and-naming-conventions">Reserved Words and Naming Conventions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#messages-to-inlet-0">Messages to inlet 0</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#messages-reference-for-inlet-0">Messages reference for inlet 0:</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#messages-to-inlet-1">Messages to inlet 1+</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#registering-listeners-for-max-messages">Registering Listeners for Max messages</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#inlet-0">Inlet 0</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#inlet-1">Inlet 1+</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#sending-messages">Sending Messages</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#s4m-repl-patcher">s4m.repl patcher</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">S4M Scheme API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="algo_procs.html">Algorithmic Processes and Live-Coding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="building.html">Building From Source</a></li>
 <li class="toctree-l1"><a class="reference internal" href="s7.html">Why S7 Scheme?</a></li>
 </ul>
@@ -112,6 +118,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -146,18 +153,20 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
       <li>Using Scheme For Max</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
             <a href="_sources/usage.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -173,227 +182,235 @@
             
   <div class="section" id="using-scheme-for-max">
 <h1>Using Scheme For Max<a class="headerlink" href="#using-scheme-for-max" title="Permalink to this headline">¶</a></h1>
-<p>This page details all functionality offically released in the v0.1.
-The <strong>s4m</strong> help file includes example patches for everything here.</p>
-<div class="section" id="s4m">
-<h2>s4m<a class="headerlink" href="#s4m" title="Permalink to this headline">¶</a></h2>
-<p>The s4m object is the core patcher object for Scheme For Max. It works
-fairly similarly to the JS object, and can have a source file argument to load.
+<p>This page details all functionality offically released in the v0.2.
+The <strong>s4m</strong> help file includes example patches for most of what is here.</p>
+<div class="section" id="the-s4m-object">
+<h2>The s4m object<a class="headerlink" href="#the-s4m-object" title="Permalink to this headline">¶</a></h2>
+<p>The <strong>s4m</strong> object is the core patcher object for Scheme For Max. It works
+fairly similarly to the <strong>js</strong> object, and can have a source file argument to load.
 The interpreter is thread safe, so we can have multiple objects in a patch,
-with isolated scheme environments.</p>
+with each running its own isolated Scheme environments.</p>
+<p>On creation of an <strong>s4m</strong> object, the interpreter first loads <strong>s4m.scm</strong>, which
+boostraps the S4M environment with any housekeeping that has been implemented in Scheme.
+This includes loading several other files, all of which must be present in the Max
+file path. If you have installed S4M from a package, this should all “just work”.
+If you’re getting errors about missing .scm files, you have likely installed the package
+incorrectly, have moved somethings, or have an error with your Max filepaths settings.
+Max <em>must</em> be able to find both the compiled s4m external and the scm files for bootstrapping.</p>
+<p>One of the files loaded by <strong>s4m.scm</strong> is <strong>s74.scm</strong>. This holds pure Scheme
+functions that have nothing to do with Max, but augment S7 with convenience functions
+you may want to use. If you want to run pure S7, you can comment out this inclusion.
+It’s mostly functions that are common in more batteries-included Schemes, such
+as Racket or Clojure.</p>
+<p>You can change the <strong>s4m.scm</strong> file if you want to change bootstrap behaviour across all
+your <strong>s4m</strong> objects as well, such as to always load a personal library of Scheme
+definitions.</p>
 </div>
-<div class="section" id="arguments-properties">
-<h2>arguments &amp; properties<a class="headerlink" href="#arguments-properties" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="arguments-attributes">
+<h2>Arguments &amp; Attributes<a class="headerlink" href="#arguments-attributes" title="Permalink to this headline">¶</a></h2>
 <dl class="simple">
-<dt><strong>{filename.scm}</strong></dt><dd><p>A source file name as the first argument in the s4m object box
-will be loaded automatically, searching the Max file search path.
-Changing this file in the box will always wipe the scheme environment and reload
-the file, as this recreates the object. Resets will reload this file.</p>
+<dt><strong>{filename.scm}</strong></dt><dd><p>An (optional) source filename as the first argument in the s4m object box
+will be loaded automatically (after the bootstrap files) searching the Max file search path.
+Changing this file in the box will always wipe the Scheme environment and reloads
+the file, as this recreates the <strong>s4m</strong> object. Reset messages will also reload this file.</p>
 </dd>
-<dt><strong>&#64;ins {num}</strong></dt><dd><p>Sets the number of inlets to num. Changing will reset the interpreter.</p>
+<dt><strong>&#64;ins {num}</strong></dt><dd><p>Sets the number of inlets to num. This can only be set in the object box.
+Changing will reset the interpreter as it recreates the object.</p>
 </dd>
-<dt><strong>&#64;outs {num)</strong></dt><dd><p>Sets the number of outlets to num. Changing will reset the interpreter.</p>
+<dt><strong>&#64;outs {num)</strong></dt><dd><p>Sets the number of outlets to num. This can only be set in the object box.
+Changing will reset the interpreter as it recreates the object.</p>
+</dd>
+<dt><strong>&#64;thread { h | l | a }</strong></dt><dd><p>Sets the thread in which Scheme code is executed. Setting to <strong>h</strong> will
+ensure all messages are promoted to the high-priority scheduler thread, while
+<strong>l</strong> defers all inputs to the low priority main thread. Setting to <strong>a</strong> (any)
+allows execution in whichever thread the incoming message is in, with no
+promotion or deferal. (<strong>a</strong> is meant for testing/debugging and is unstable.)
+This attribute can only be set in the object box.
+Changing will reset the interpreter as it recreates the object.</p>
+</dd>
+<dt><strong>&#64;log-repl {1 | 0}</strong></dt><dd><p>Sets whether the interpreter prints the output from the REPL to the Max console.
+When log-repl is enabled, any Scheme expression evaluated will have its return value printed.
+This can be changed anytime in both the inspector and by sending a <strong>log-repl 1</strong> message.</p>
+</dd>
+<dt><strong>&#64;log-null {1 | 0}</strong></dt><dd><p>Sets whether the interpreter prints the output from the REPL to the Max console
+when the output is the null list in Scheme, returned by many Scheme functions
+that are called for their side effect. It is often useful to turn this off
+when running scheduled Scheme functions on a timer, for example.
+This can be changed anytime in both the inspector and by sending a <strong>log-null 1</strong> message.</p>
 </dd>
 </dl>
-<p>Note, there is currently an issue whereby these can <em>only</em> be changed in the
-object box, and thus must wipe the environment. This may be made dynamic
-at a later date. Change in the property inspector or attempt to set
-dynamically with messages at this time will not work.</p>
 <p>When a source file has been listed in the object box, double clicking the
 object will open the file in the editor. The file will be reloaded on save,
-which will <em>not</em> reboot the scheme interpreter. We can reboot the interpreter
+which will <em>not</em> reboot the Scheme interpreter. We can reboot the interpreter
 at any time with the <strong>reset</strong> message.</p>
 </div>
+<div class="section" id="reserved-words-and-naming-conventions">
+<h2>Reserved Words and Naming Conventions<a class="headerlink" href="#reserved-words-and-naming-conventions" title="Permalink to this headline">¶</a></h2>
+<p>In Max, messages to an object that consist of the name of an attribute and a value are
+(typically) executed automatically to set that attribute, if the object permits it. This means
+that we can’t have Scheme functions with names that collide with attributes of <strong>s4m</strong>
+if we want these functions to be callable as automatically evaluated s-expressions on
+inlet 0 - the message will never get to the Scheme interpreter. A further complication is
+that in Max, the messages <strong>int</strong>, <strong>float</strong>, <strong>symbol</strong>, and <strong>list</strong> are implicit -
+if you send an object the message <strong>int 4</strong> or <strong>list a b c</strong>, they are treated by the
+receiving object as being the exact same as the message <strong>4</strong> or <strong>a b c</strong>.</p>
+<p>In addition, S4M has some internal private functions used where the public API function
+calls a private helper implemented in C. These begin with <strong>s4m-</strong>.</p>
+<p>The easiest solution is to avoid using the following as names in Scheme unless you know
+exactly why you are doing it:</p>
+<p>Max reserved words: <strong>int</strong>, <strong>float</strong>, <strong>symbol</strong>, <strong>get</strong>, <strong>set</strong></p>
+<p>S4M attributes: <strong>thread</strong>, <strong>ins</strong>, <strong>outs</strong>, <strong>log-repl</strong>, <strong>log-null</strong></p>
+<p>S4M commands: <strong>reset</strong>, <strong>scan</strong>, <strong>read</strong>, <strong>eval-string</strong></p>
+<p>S4M internal functions: anything starting with <strong>s4m-</strong></p>
+<p>The astute reader will have noticed that <strong>list</strong> is missing above. This is because
+<strong>list</strong> is already a Scheme function. This is also why our handlers for bang, int, float, and
+list are called <strong>f-bang</strong>, <strong>f-int</strong>, <strong>f-float</strong>, and <strong>f-list</strong> - to avoid a weird
+inconsistency as we can’t call the Scheme list hander <strong>list</strong>.</p>
+<p>S4M does not yet use the <strong>get</strong> and <strong>set</strong> message for anything special, but it’s
+common in Max to use these to set state of an object, so consider them reserved
+for future use. Fortunately for us, in Scheme the set command is <strong>set!</strong>, so we
+can happily have <strong>set foo bar</strong> messages implemented in the object (but not in Scheme)
+in future without collision.</p>
+<p>With regard to naming conventions, Scheme variables and functions can accept special characters
+and normally separate words with hyphens. Reader functions are usually <strong>(foobar-ref {key})</strong> and
+setter functions are usually <strong>(foobar-set! {key} {value})</strong>.
+We are following Scheme and Max naming conventions
+where possible, with Scheme as the priority when in doubt. Predicates end in ? and
+functions with side effects end in !, so we have for example: <strong>dict-ref</strong>, <strong>dict-set!</strong>,
+and <strong>dict?</strong>.</p>
+<p>S4M also includes short form aliases for most function names to simplify live coding
+and building s-expressions in Max messages where space may be at a premium. These
+are 4 to 6 character abbreviations and do not follow Scheme conventions (e.g. <strong>tabr</strong>, <strong>tabs</strong>, etc.)
+Aliases do not create an extra stack frame; they are registered at the C level
+so there is no speed penatly in using them.</p>
+<p>There are various functions defined in the bootstrap files. If you want to know
+whether your function name is going to shadow anything already defined, just evaluate
+it in the REPL and see if you get anything. You should get an ‘unbound variable’ error
+in the console if there is no naming collision.</p>
+</div>
 <div class="section" id="messages-to-inlet-0">
-<h2>messages to inlet 0<a class="headerlink" href="#messages-to-inlet-0" title="Permalink to this headline">¶</a></h2>
-<p>Messages to inlet 0 are either handled directly by the s4m object,
-or executed as scheme code if no direct handling exists. The interpreter will
-evaluate the token list as a scheme s-expression that is being called, with
-any symbols evaluating to the their value in the scheme environment. Essentially
-they are executed as if wrapped in an outer pair of parentheses. For example,
-the message <strong>foobar 1 2 3</strong> will be evaluated in scheme as <strong>(foobar 1 2 3)</strong>.
-This means that the message <strong>out a</strong> will only execute properly if the variable <strong>a</strong>
-has been defined. To have <strong>a</strong> treated as a max symbol, not a scheme variable,
-we single quote it. For example, <strong>out 0 ‘a</strong> will send the symbo “a” out output
-0, having evaluated as <strong>(out 0 ‘a)</strong> in scheme.</p>
+<h2>Messages to inlet 0<a class="headerlink" href="#messages-to-inlet-0" title="Permalink to this headline">¶</a></h2>
+<p>Messages to inlet 0 are either handled directly by the s4m object as a Max message,
+or evaluated as Scheme code if no direct handling exists. If the message is not
+handled by the <strong>s4m</strong> object as a Max message, the interpreter will
+evaluate the message as a Scheme s-expression that is being called, with
+any symbols evaluating to their value in the Scheme environment.
+This means messages are essentially executed as if wrapped in an outer pair of parentheses. For example,
+the message <strong>foobar 1 2 3</strong> will be evaluated in Scheme as <strong>(foobar 1 2 3)</strong>.
+This also means that the message <strong>out a</strong> will only execute properly if the variable <strong>a</strong>
+has been defined. To have <strong>a</strong> treated as a Max symbol, not a Scheme variable,
+we need to quote it in the standard Lisp fashion. For example, <strong>out 0 ‘a</strong> will send
+the symbol “a” out output 0, having been evaluated as <strong>(out 0 ‘a)</strong> in Scheme.</p>
 <p>The messages <strong>reset</strong>, <strong>read</strong>, <strong>scan</strong>, and <strong>eval-string</strong> are handled
-by the s4m object, but nontheless the semantics are the same.
-<strong>eval-string “(define a 99)”</strong> will execute as <strong>(eval-string “(define a 99)”)</strong>,
-which is defined in S7 scheme.</p>
-<p>Messages reference for inlet 0:</p>
+directly by the <strong>s4m</strong> object, without passing to the interpreter (see Message reference below).</p>
+<p>To evaluate a block of code which includes punctuation that is problematic in regular
+Max message boxes, the code should be converted to a string
+symbol with the <strong>tosymbol</strong> object, and then sent to Scheme by using a
+<strong>prepend eval-string</strong> object. This will result in <strong>s4m</strong> receiving something like
+<strong>eval-string “(define a 99)”</strong>, which will execute as <strong>(eval-string “(define a 99)”)</strong>
+in the Scheme interpreter.</p>
+<p>Practically speaking, there is no difference in execution between sending inlet
+0 of an <strong>s4m</strong> object either <strong>define a 99</strong> or <strong>eval-string “(define a 99)”</strong>,
+but the second will allow nested s-expressions, as in
+<strong>eval-string “(define my-list (list 1 2 3))”</strong>.</p>
+<div class="section" id="messages-reference-for-inlet-0">
+<h3>Messages reference for inlet 0:<a class="headerlink" href="#messages-reference-for-inlet-0" title="Permalink to this headline">¶</a></h3>
 <dl class="simple">
-<dt><strong>reset</strong></dt><dd><p>Resets the scheme intepreter, wiping all active definitions, and reloading any
+<dt><strong>reset</strong></dt><dd><p>Resets the Scheme intepreter, wiping all active definitions, and reloading any
 sourcefile specified in the s4m object box itself.</p>
 </dd>
 <dt><strong>read {filename}</strong></dt><dd><p>Loads the file {filename} from the Max search path. Executes the Scheme <strong>load</strong>
-function internally, after finding the full file path. Loading does not erase any
-already active definitions unless they are redefined.</p>
+function internally, after finding the full filepath by searching the Max filepaths.
+Loading does not erase any already active definitions unless they are redefined.
+Rereading a file will redefined any definitions.</p>
 </dd>
 <dt><strong>scan</strong></dt><dd><p>Scans the current patcher and all descendents for objects with scripting names,
 adding them to an internal registry so that they can receive messages with the
 <strong>send</strong> scheme function.</p>
 </dd>
-<dt><strong>{bang|int|float|list}</strong></dt><dd><p>Evaluates the function <strong>f-bang</strong>, <strong>f-int</strong>, <strong>f-float</strong>, or <strong>f-list</strong>, with
+<dt><strong>{bang | int | float | list}</strong></dt><dd><p>Evaluates the function <strong>f-bang</strong>, <strong>f-int</strong>, <strong>f-float</strong>, or <strong>f-list</strong>, with
 the respective max atom(s) as argument(s). I.E. the int <strong>4</strong> sent to inlet 0
 will executes in Scheme as <strong>(f-int 4)</strong>. If no f-type function defined, prints
-an error message to console. Result of evaluation is printed to console if
-not null, or if the <strong>s4m-log-nulls</strong> variable has been set to <strong>#t</strong>.</p>
+an error message to console. Return value of evaluation is printed to the Max console.</p>
 </dd>
 <dt><strong>eval-string {string}</strong></dt><dd><p>Evaluates {string} in scheme. This is used by the REPL object by converting
 the text output to a single symbol with <strong>tosymbol</strong> and the prepending
-<strong>eval-string</strong>. Result of evaluation is printed to console.</p>
+<strong>eval-string</strong>. Return value of evaluation is printed to the Max console.</p>
 </dd>
-<dt><strong>{symbol …}</strong></dt><dd><p>Evalues the symbol or list of symbols as a scheme s-expression. I.E. If sent
+<dt><strong>{symbol …}</strong></dt><dd><p>Evalues the symbol or list of symbols as a Scheme s-expression. If sent
 the list <strong>my-fun 1 2 3</strong>, scheme will evaluate <strong>(my-fun 1 2 3)</strong>. Any symbols will
-be evaluated as scheme variables unless quoted. For example, on <strong>my-fun 1 a</strong>,
-there will be an error if <strong>a</strong> has not been defined. Result of evaluation
-printed to console. If the first symbol is not callable as a scheme procedure,
-will produce an error.</p>
+be evaluated as Scheme variables unless quoted. For example, on <strong>my-fun 1 a</strong>,
+there will be an error if <strong>a</strong> has not been defined. Return value of evaluation is
+printed to the Max console. If the first symbol is not callable as a Scheme procedure,
+will produce an error (as if a symbol is evaluated surrounded with parentheses).</p>
 </dd>
 </dl>
 </div>
+</div>
 <div class="section" id="messages-to-inlet-1">
-<h2>messages to inlet 1+<a class="headerlink" href="#messages-to-inlet-1" title="Permalink to this headline">¶</a></h2>
+<h2>Messages to inlet 1+<a class="headerlink" href="#messages-to-inlet-1" title="Permalink to this headline">¶</a></h2>
 <p>Messages to inlet 1+ are treated as plain Max values or lists of Max atoms; they
-are not evaluated as scheme code.
+are not evaluated as Scheme code.
 Symbols will become quoted symbols in scheme, with no variable evaluation. As these are
-not evaluated as code, the messages may begin with any type. Keywords are
-a good choice as it indicates that the message is not a function call, becauses keywords
-can not take the first position in a scheme function call. I.E. <strong>(:foobar 1 2)</strong> is always
-an error in scheme, and thus <strong>:foobar 1 2</strong> will always be an invalid message to inlet 0, but
-is valid in inlet 1+. It won’t <em>do</em> anything unless we have registered a listener
-function on the inlet receiving the message, with the keyword <strong>:foobar</strong>.
-See Registering Listeners below.</p>
+not evaluated as code, the messages may begin with any type. Keywords are useful here
+as they indicate visually that the message is not a function call, becauses keywords
+can not be used as function names in Scheme. Thus <strong>(:foobar 1 2)</strong> is always
+an error in Scheme. This means <strong>:foobar 1 2</strong> will always be an invalid message to inlet 0, but
+may be valid in inlet 1+ depending on what we have defined. It won’t <em>do</em> anything unless we
+have registered a listener function on the inlet receiving the message, with the keyword <strong>:foobar</strong>.
+See Registering Listeners below. (If all this is confusing, skip it for now - you could use
+s4m productively without ever using inlets 1+)</p>
 <p>Messages reference for inlet 0:</p>
 <dl class="simple">
-<dt><strong>{bang|int|float|list}</strong></dt><dd><p>Evaluates scheme function <strong>(s4m-dispatch {inlet} {:bang|:int|:float|:list} {arg})</strong>,
+<dt><strong>{bang | int | float | list}</strong></dt><dd><p>Evaluates Scheme function <strong>(s4m-dispatch {inlet} {:bang | :int | :float | :list} {arg})</strong>,
 which will call registered listener functions, with inlet as arg 1, and data as arg 2.
 For example, the message <strong>4</strong> on inlet 1 will call <strong>(s4m-dispatch 1 :int 4)</strong>, which will in turn
-call a listener function if registered.
+call a listener function if a matching listener is registered.
 If no listener function is registered for the inlet used and the associated keyword
-(:int, :bang, etc), will produce an error. See Registering Listeners.</p>
+(:int, :bang, etc), this will produce an error. See Registering Listeners.</p>
 </dd>
 <dt><strong>{symbol …}</strong></dt><dd><p>Evaluates scheme function <strong>(s4m-dispatch {inlet} {symbol} arg)</strong>, dispatching
 to listener functions registered with the symbol. Any arguments after the first
 symbol will be bound up in a list passed as <strong>arg</strong>, which may be empty.
 For example, the message <strong>:foobar 1 2 3</strong> on inlet 2 will call
-<strong>(s4m-dispatch 2 :foobar arg)</strong>, where <strong>arg</strong> is the scheme object <strong>(list 1 2 3)</strong>.
+<strong>(s4m-dispatch 2 :foobar arg)</strong>, where <strong>arg</strong> is the Scheme value <strong>(list 1 2 3)</strong>.
 This will in turn call a listener function if registered.
-If no listener function is registered for the inlet used and the associated symbol
+If no listener function is registered for the inlet used and the associated symbol, this
 will produce an error. See Registering Listeners for more details.</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="scheme-api">
-<h2>Scheme API<a class="headerlink" href="#scheme-api" title="Permalink to this headline">¶</a></h2>
-<p>Below are details of the Scheme API. Core S7 functions are not listed here,
-only functions added by Scheme-For-Max. Scheme functions are either defined
-in <strong>s4m.c</strong> using the S7 Foreign Function Interface, or in Scheme code boostrapped
-from the initial load of <strong>scm4max.scm</strong>.</p>
-<div class="section" id="file-loading">
-<h3>File Loading<a class="headerlink" href="#file-loading" title="Permalink to this headline">¶</a></h3>
-<dl class="simple">
-<dt><strong>(load-from-max {filename string})</strong></dt><dd><p>Load a file into Scheme. Acts excactly like Scheme standard <strong>load</strong> but finds
-the full path on the Max file search path first.</p>
-</dd>
-</dl>
-</div>
-<div class="section" id="console-output">
-<h3>Console Output<a class="headerlink" href="#console-output" title="Permalink to this headline">¶</a></h3>
-<dl class="simple">
-<dt><strong>(post {args…})</strong></dt><dd><p>Post to the Max console. All arguments will be converted to string representations
-automatically. Post returns the null list.</p>
-</dd>
-</dl>
-<div class="highlight-scm notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define </span><span class="nv">a</span> <span class="mi">99</span><span class="p">)</span>
-<span class="p">(</span><span class="nf">post</span> <span class="s">&quot;my var a is&quot;</span> <span class="nv">a</span><span class="p">)</span>
-<span class="nv">s4m&gt;</span> <span class="nv">my</span> <span class="nv">var</span> <span class="nv">a</span> <span class="nv">is</span> <span class="mi">99</span>
-</pre></div>
-</div>
-<p>Note: Console output by default does not print null responses, so that the console
-does not print a message on every function call for side effects, such as <strong>out</strong>.
-This can be changed by setting <strong>s4m-log-nulls</strong>.</p>
-<div class="highlight-scm notranslate"><div class="highlight"><pre><span></span><span class="c1">;; output value 99 from out 9</span>
-<span class="p">(</span><span class="nf">out</span> <span class="mi">0</span> <span class="mi">99</span><span class="p">)</span>
-<span class="c1">;; no logging appears on console</span>
-<span class="p">(</span><span class="k">set! </span><span class="nv">s4m-log-nulls</span> <span class="no">#t</span><span class="p">)</span>
-<span class="p">(</span><span class="nf">out</span> <span class="mi">0</span> <span class="mi">99</span><span class="p">)</span>
-<span class="nv">s4m&gt;</span> <span class="p">()</span>
-</pre></div>
-</div>
-<dl class="simple">
-<dt><strong>(s4m-filter-result res)</strong></dt><dd><p>Hook function to allow users to customize which results will be logged to the
-console. Redefine or alter this to return the keyword value <strong>:no-log</strong> to
-indicate result should not be logged.</p>
-</dd>
-</dl>
-<div class="highlight-scm notranslate"><div class="highlight"><pre><span></span><span class="c1">;; if we replace what would be returned (res) by :no-log, s4m will not print to console</span>
-<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">s4m-filter-result</span> <span class="nv">res</span><span class="p">)</span>
-   <span class="p">(</span><span class="nf">cond</span>
-     <span class="c1">;; turn off logging of the null list if set to do so</span>
-     <span class="p">((</span><span class="k">and </span><span class="p">(</span><span class="nb">null? </span><span class="nv">res</span><span class="p">)</span> <span class="p">(</span><span class="nb">not </span><span class="nv">s4m-log-nulls</span><span class="p">))</span> <span class="nv">:no-log</span><span class="p">)</span>
-     <span class="c1">;; use the same setting to mute logging lists of nulls: (() () ())</span>
-     <span class="p">((</span><span class="k">and </span><span class="p">(</span><span class="nb">list? </span><span class="nv">res</span><span class="p">)</span> <span class="p">(</span><span class="nf">every?</span> <span class="nv">null?</span> <span class="nv">res</span><span class="p">)</span> <span class="p">(</span><span class="nb">not </span><span class="nv">s4m-log-nulls</span><span class="p">))</span> <span class="nv">:no-log</span><span class="p">)</span>
-     <span class="p">(</span><span class="k">else </span><span class="nv">res</span><span class="p">)))</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="outputs">
-<h3>Outputs<a class="headerlink" href="#outputs" title="Permalink to this headline">¶</a></h3>
-<dl class="simple">
-<dt><strong>(out {outlet} {value})</strong></dt><dd><p>Output {value} through outlet {outlet}. Value must be a single object.
-Returns the null list, thus by default does not log to console.</p>
-</dd>
-</dl>
-<div class="highlight-scm notranslate"><div class="highlight"><pre><span></span><span class="c1">;; output number 99</span>
-<span class="p">(</span><span class="nf">out</span> <span class="mi">0</span> <span class="mi">99</span><span class="p">)</span>
-<span class="c1">;; XXX: issued on this. output a max list of ints</span>
-<span class="p">(</span><span class="nf">out</span> <span class="mi">0</span> <span class="p">(</span><span class="nb">list </span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">))</span>
-<span class="p">(</span><span class="nf">out</span> <span class="mi">0</span> <span class="o">&#39;</span><span class="p">(</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">))</span>
-<span class="c1">;; output a bang</span>
-<span class="p">(</span><span class="nf">out</span> <span class="mi">0</span> <span class="ss">&#39;bang</span><span class="p">)</span>
-<span class="c1">;; output the value of my-var</span>
-<span class="p">(</span><span class="nf">out</span> <span class="mi">0</span> <span class="nv">my-var</span><span class="p">)</span>
-<span class="c1">;; output the max symbol &quot;set&quot;</span>
-<span class="p">(</span><span class="nf">out</span> <span class="mi">0</span> <span class="ss">&#39;set</span><span class="p">)</span>
-<span class="c1">;; XXX should output the max message &quot;set 99&quot;, not working</span>
-<span class="p">(</span><span class="nf">out</span> <span class="mi">0</span> <span class="p">(</span><span class="nb">list </span><span class="ss">&#39;set</span> <span class="mi">99</span><span class="p">))</span>
-</pre></div>
-</div>
-<dl class="simple">
-<dt><strong>(out-0 {value})</strong></dt><dd><p>Convenience helper for <strong>out X</strong>, as sometimes a single argument function is helpful.
-Defined for outs 0-7, to add more, edit <strong>scm4max.scm</strong>
-Returns the null list, thus by default does not log to console.</p>
-</dd>
-</dl>
-</div>
-<div class="section" id="listeners">
-<h3>Listeners<a class="headerlink" href="#listeners" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="registering-listeners-for-max-messages">
+<h3>Registering Listeners for Max messages<a class="headerlink" href="#registering-listeners-for-max-messages" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="inlet-0">
 <h4>Inlet 0<a class="headerlink" href="#inlet-0" title="Permalink to this headline">¶</a></h4>
 <p>For inlet 0 to respond to bang, int, float, or list, we define functions named
-accordingly.</p>
-<div class="highlight-scm notranslate"><div class="highlight"><pre><span></span><span class="c1">;; respond to bang messages by logging to console and sending bang out</span>
-<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">f-bang</span><span class="p">)</span>
-   <span class="p">(</span><span class="nf">post</span> <span class="s">&quot;f-bang got the bang!&quot;</span><span class="p">)</span>
-   <span class="p">(</span><span class="nf">out</span> <span class="mi">0</span> <span class="ss">&#39;bang</span><span class="p">))</span>
+as below:</p>
+<div class="highlight-scm notranslate"><div class="highlight"><pre><span></span> <span class="c1">;; respond to bang messages by logging to console and sending bang out</span>
+ <span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">f-bang</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">post</span> <span class="s">&quot;f-bang got the bang!&quot;</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">out</span> <span class="mi">0</span> <span class="ss">&#39;bang</span><span class="p">))</span>
 
-<span class="c1">;; respond to int messages by logging to console and sending int + 1</span>
-<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">f-int</span> <span class="nv">num</span><span class="p">)</span>
-   <span class="c1">;; log and output num + 1</span>
-   <span class="p">(</span><span class="nf">post</span> <span class="s">&quot;f-int got the int: &quot;</span><span class="o">,</span> <span class="nv">num</span><span class="p">)</span>
-   <span class="p">(</span><span class="nf">out</span> <span class="mi">0</span> <span class="p">(</span><span class="nb">+ </span><span class="mi">1</span> <span class="nv">num</span><span class="p">)))</span>
+ <span class="c1">;; respond to int messages by logging to console and sending int + 1</span>
+ <span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">f-int</span> <span class="nv">num</span><span class="p">)</span>
+    <span class="c1">;; log and output num + 1</span>
+    <span class="p">(</span><span class="nf">post</span> <span class="s">&quot;f-int got the int: &quot;</span><span class="o">,</span> <span class="nv">num</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">out</span> <span class="mi">0</span> <span class="p">(</span><span class="nb">+ </span><span class="mi">1</span> <span class="nv">num</span><span class="p">)))</span>
 
-<span class="c1">;; respond to lists by sending out in reverse the list elements</span>
-<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">f-list</span> <span class="nv">list-arg</span><span class="p">)</span>
-   <span class="p">(</span><span class="nb">map </span><span class="nv">out-0</span> <span class="p">(</span><span class="nb">reverse </span><span class="nv">list-arg</span><span class="p">)))</span>
+<span class="c1">;; respond to float messages by sending out arg * 0.5</span>
+ <span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">f-float</span> <span class="nv">num</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">post</span> <span class="s">&quot;f-float got the float: &quot;</span><span class="o">,</span> <span class="nv">num</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">out</span> <span class="mi">0</span> <span class="p">(</span><span class="nb">* </span><span class="mf">0.5</span> <span class="nv">num</span><span class="p">)))</span>
+
+ <span class="c1">;; respond to lists by sending out in reverse the list elements as sequential messages</span>
+ <span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">f-list</span> <span class="nv">list-arg</span><span class="p">)</span>
+    <span class="p">(</span><span class="nb">map </span><span class="nv">out-0</span> <span class="p">(</span><span class="nb">reverse </span><span class="nv">list-arg</span><span class="p">)))</span>
 </pre></div>
 </div>
 <p>Note that the f-list function will not respond to lists starting with a <em>symbol</em>.
 Max doesn’t consider those to be <em>list</em> messages, they are the message of
 the first <em>symbol</em>.</p>
-<p>Any message starting with a symbol that is not alread reserved by s4m will be called
-as a scheme function.</p>
+<p>Any message starting with a symbol that is not alread reserved by S4M will be called
+as a Scheme function.</p>
 <div class="highlight-scm notranslate"><div class="highlight"><pre><span></span><span class="c1">;; responds to max message &quot;foobar 99&quot; by outputing 99</span>
 <span class="c1">;; if sent max message &quot;foobar my-var&quot;, will output the value of variable my-var</span>
 <span class="c1">;; if sent max message &quot;foobar 1 2 3&quot;, will be &quot;too many arguments&quot; error</span>
@@ -413,7 +430,7 @@ as a scheme function.</p>
 </pre></div>
 </div>
 <p>Note that in the above example we need to explictly check length args is &gt; 0,
-as in scheme, anything except #false is #true - there is no automatic cast from 0 to #f!</p>
+because in Scheme anything except <strong>#false</strong> is <strong>#true</strong> - there is no automatic cast from <strong>0</strong> to <strong>#f</strong>.</p>
 </div>
 <div class="section" id="inlet-1">
 <h4>Inlet 1+<a class="headerlink" href="#inlet-1" title="Permalink to this headline">¶</a></h4>
@@ -460,62 +477,25 @@ put an empty function in:</p>
 </pre></div>
 </div>
 <p>Note that if you redefine a named listener function, it will not
-change what happens on the listened to message until you re-register
-it, by virtue of how scheme functions work. (We are registering the
-actual function, not the symbol of the function.)</p>
+change what happens on the listened-to message until you re-register
+it, by virtue of how Scheme functions work. (We are registering the
+actual function, not the symbol of the function!)</p>
 </div>
-</div>
-<div class="section" id="sending-messages">
-<h3>Sending Messages<a class="headerlink" href="#sending-messages" title="Permalink to this headline">¶</a></h3>
-<p>We can send arbitrary Max messages to other Max objects that have been given
-a scripting name. Before doing so, we must send the <strong>scan</strong> message to the
-s4m object, which will scan the current patcher and all descendents,
-registering scripting names interally in s4m object (in the C code).</p>
-<dl class="simple">
-<dt><strong>(send {target} {msg} … {atoms})</strong></dt><dd><p>Send the message {msg}, which may be followed by any number of
-values to be handled as Max atoms.</p>
-</dd>
-</dl>
-<div class="highlight-scm notranslate"><div class="highlight"><pre><span></span><span class="c1">;; update the contents of a number box with scripting name num-target</span>
-<span class="c1">;; we quote num-target below as we want the symbol num-target, not the</span>
-<span class="c1">;; value of a variable named num-target.</span>
-<span class="p">(</span><span class="nf">send</span> <span class="ss">&#39;num-target</span> <span class="mi">99</span><span class="p">)</span>
-
-<span class="c1">;; send a message box a message to update to the contens &quot;foobar 1 2 3&quot;</span>
-<span class="p">(</span><span class="nf">send</span> <span class="ss">&#39;msg-target</span> <span class="ss">&#39;set</span> <span class="ss">&#39;foobar</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">)</span>
-
-<span class="c1">;; this means we can send a message as list using scheme&#39;s apply function</span>
-<span class="p">(</span><span class="k">define </span><span class="nv">msg-list</span> <span class="p">(</span><span class="nb">list </span><span class="ss">&#39;set</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">))</span>
-<span class="p">(</span><span class="nb">apply </span><span class="nv">send</span> <span class="p">(</span><span class="nb">cons </span><span class="ss">&#39;msg-target</span> <span class="nv">msg-list</span><span class="p">))</span>
-</pre></div>
-</div>
-<p>This is defined for us as send-list.</p>
-<dl class="simple">
-<dt><strong>(send-list {target} {msg-list})</strong></dt><dd><p>Send the message {msg-list}, a single arg of a list.</p>
-</dd>
-</dl>
-<div class="highlight-scm notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define </span><span class="nv">msg-list</span> <span class="p">(</span><span class="nb">list </span><span class="ss">&#39;set</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">))</span>
-<span class="p">(</span><span class="nf">send-list</span> <span class="ss">&#39;msg-target</span> <span class="nv">msg-list</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>This can be used to integrate with all kinds of max objects, including
-updating colls, dicts, tables, etc. We can copy whatever message the object
-receives and send them.</p>
 </div>
 </div>
 <div class="section" id="s4m-repl-patcher">
 <h2>s4m.repl patcher<a class="headerlink" href="#s4m-repl-patcher" title="Permalink to this headline">¶</a></h2>
 <p>The s4m.repl object is intended to be put in a <strong>bpatcher</strong> and then hooked up.
 The left outlet sends the output as a single text symbol. To evaluate
-as scheme, we send it to a <strong>prepend eval-string</strong> object and send to inlet
+as Scheme, we send it to a <strong>prepend eval-string</strong> object and send to inlet
 0. This makes it the equivalent of:</p>
 <div class="highlight-scm notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="nf">eval-string</span> <span class="s">&quot;(define a 99)&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The right outlet sends out a bang on each output to let you know it went.</p>
+<p>The right outlet sends out a bang on each output to let you know it went out.</p>
 <p>The s4m.repl patcher wraps the <strong>textedit</strong> box, which has some quirks/bugs.
 It wants to send out a bang when one bangs or hits enter in an empty box.
-In order to prevent scheme error messages on this instance, <strong>s4m.repl</strong> filters
+In order to prevent Scheme error messages on this instance, <strong>s4m.repl</strong> filters
 these out.</p>
 <p>If you select <strong>Control Keys</strong> on it, the <strong>s4m.repl</strong> object is listening
 to <em>all</em> key strokes, no matter where your focus is. So if you use this feature,
@@ -530,29 +510,29 @@ you have multiple REPLs in different Max windows!</p>
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="building.html" class="btn btn-neutral float-right" title="Building From Source" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="installation.html" class="btn btn-neutral float-left" title="Setup and Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+        <a href="api.html" class="btn btn-neutral float-right" title="S4M Scheme API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="threading.html" class="btn btn-neutral float-left" title="Max Threads, the Scheduler and the S7 Garbage Collector" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2020, Iain CT Duncan
+        &#169; Copyright 2020, Iain CT Duncan.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 
@@ -560,7 +540,6 @@ you have multiple REPLs in different Max windows!</p>
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {
