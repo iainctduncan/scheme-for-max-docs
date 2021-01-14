@@ -1,42 +1,45 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Building From Source &mdash; Scheme For Max 0.1 documentation</title>
   
 
   
-  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
   
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
-        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Why S7 Scheme?" href="s7.html" />
-    <link rel="prev" title="Using Scheme For Max" href="usage.html" /> 
+    <link rel="prev" title="Algorithmic Processes and Live-Coding" href="algo_procs.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -73,6 +76,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -85,7 +89,10 @@
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="motivations.html">Motivation - Why Lisp in Max?</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Setup and Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="threading.html">Max Threads, the Scheduler and the S7 Garbage Collector</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Using Scheme For Max</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">S4M Scheme API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="algo_procs.html">Algorithmic Processes and Live-Coding</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Building From Source</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#short-version">Short version</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#long-version">Long version</a></li>
@@ -97,6 +104,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -131,18 +139,20 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
       <li>Building From Source</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
             <a href="_sources/building.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -158,15 +168,21 @@
             
   <div class="section" id="building-from-source">
 <h1>Building From Source<a class="headerlink" href="#building-from-source" title="Permalink to this headline">¶</a></h1>
-<p>If you are not running OSX and Max 8, you will currently have to build from source.</p>
+<p>Below are some (in progress) instructions for building from source. Help in improving this area
+would be much appreciated, please get in touch if you want to build from source and are not managing.</p>
 <div class="section" id="short-version">
 <h2>Short version<a class="headerlink" href="#short-version" title="Permalink to this headline">¶</a></h2>
-<p>I’m using the Max 8 SDK, though I think the Max 7 should work too.</p>
+<p>I’m using the Max 8 SDK, though I think the Max 7 should work too. We are using the
+“canonical” C API, not the newer C++ API, as it is much better documented at this point.</p>
 <p>The repo includes <strong>s7.c</strong>, <strong>s7.h</strong>, and an empty file <strong>mus-config.h</strong>. You
 need <strong>mus-config.h</strong> to build <strong>s7.o</strong>, and then you need to link in <strong>s7.o</strong>.
 There is only one source file for the external, <strong>s4m.c</strong>.
 Building it will build the Max external <strong>s4m</strong>. The other objects
 are just standard Max patchers.</p>
+<p>There is an XCode and a VisualStudio project file in the repo. The VS one works properly,
+the XCode one is not set up right as I haven’t figured out how to get S7 buidling
+properly in XCode, so I’m just being stupid and compiling S7 to object code with GCC
+and linking it in. (Pull requests or patches to fix the XCode file would be lovely!)</p>
 <p>My linker flags:</p>
 <ul class="simple">
 <li><p>-framework MaxAudioAPI</p></li>
@@ -183,11 +199,11 @@ are just standard Max patchers.</p>
 <p>To build from your source, you’ll need to have installed the <a class="reference external" href="https://cycling74.com/downloads/sdk">Max 8 SDK</a>.
 I believe S4M should compile fine with the Max 7 SDK as well, but this has not been verified. If you have
 not previously compiled a Max external with the SDK, I recommend you start by compiling some of the samples that
-come with the SDK, as the XCode setup is finicky. It should theoretically
+come with the SDK, as the XCode and VisualStudio setup is finicky. It should theoretically
 be possible to build without the full XCode IDE, but I haven’t managed to make this
 work. If you know how, please let me know.</p>
 <p>The SDK comes with sample projects with project files for XCode and VisualStudio. I’ll be honest, I know just
-enough about XCode to be dangerous, so the instructions below are likely not optimal. I
+enough about XCode to be dangerous, so the instructions below are not “the right way”.  I
 altered a sample XCode project file from the samples in the SDK, and my alterations are detailed here.</p>
 <p>Note than on XCode at least, these XCode project files from C74 assume that the SDK files are in a specific place
 relative to your code. So you should clone the repository such that you have the following path layout,
@@ -223,11 +239,13 @@ Double click this to add Linker Flags. My linker flags are the following:</p>
 <li><p>-lm</p></li>
 </ul>
 <p>The first three are for the C74 SDK, and the rest are linking in S7.
-With these in place, we should be able to build. Building will generate lot of warnings
-about S7 pointers. I need to figure out how to tell XCode it’s ok, as I’m following examples
+With these in place, we should be able to build. Building will generate <em>a lot</em> of warnings
+about S7 pointers casts. I need to either figure out how to tell XCode it’s ok or fix these, as I’m following examples
 from the S7 FFI, but they are harmless right now.</p>
-<p>A successful build should build a new version of <strong>s4m.mxo</strong>, by default in <strong>Packages/max-sdk-8.x.x/externals</strong>.
-If you want to change where this goes you can do so, it’s somewhere in the XCode config labyrinth.</p>
+<p>A successful build should build a new version of the external, by default in <strong>Packages/max-sdk-8.x.x/externals</strong>.
+If you want to change where this goes you can do so, it’s somewhere in the XCode config labyrinth.
+Note that on Windows, you need to build the 32 and 64 bit versions separately by compiling with
+different targets.</p>
 <p>If you plan on hacking on Scheme for Max, you’ll want to get Max launching automatically on compile.
 To make the development workflow better, under <strong>Product -&gt; Scheme</strong> you should see <strong>max-external</strong>.
 Choose <strong>Edit Scheme</strong> and the <strong>Run</strong> submenu.
@@ -237,7 +255,9 @@ so you don’t have to close and open Max to load your new external whenever you
 package path to make sure you get the right external loading. The Python script <strong>make-release.py</strong>
 automates bundling up a build, putting the tarball in the right place, and moving my SDK package
 out of view so that I can test a new build. <strong>uninstall.py</strong> just puts things back. You can
-alter these for your system if they seem useful.</p>
+alter these for your system if they seem useful, but be warned, it makes file system changes!
+This is <em>not</em> necessary for building, it’s just a convenience tool to make testing releases
+more practical.</p>
 <p>If you want to experiment further with S7, you can download the S7 source directly from
 CCRMA. It comes with a lot of examples of using S7 with C. If you want to add features
 to Scheme For Max, you’ll probably want to do this. But all we need for simple compilation
@@ -245,6 +265,14 @@ is <strong>s7.c</strong>, <strong>s7.h</strong>, and an empty <strong>mus-config
 <p>I will happily improve these instructions with feedback, and add a section on VisualStudio if someone
 can help there. If you get a build going off the instructions, please let me know on the Google
 Group so I know someone has managed. If you need help, post there too.</p>
+<p>There is a regression test suite in the patchers folder. Some of the stuff tested requires
+delays to avoid interacting tests. You might not get the same results as I do. If they
+ever pass, we are good. If they sometimes fail (or fail when you try to run them all) there
+is a good chance it’s just execution time differences on your system - you can try
+running the subsuites separately, or even openin those and running the tests. I do make sure they
+all pass on both OSX and Windows prior to releases. Hopefully they can eventually
+be made robust enough to work everywhere. They allow complete regression testing from the click of one
+button though, so that’s something!</p>
 </div>
 </div>
 
@@ -253,29 +281,29 @@ Group so I know someone has managed. If you need help, post there too.</p>
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="s7.html" class="btn btn-neutral float-right" title="Why S7 Scheme?" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="usage.html" class="btn btn-neutral float-left" title="Using Scheme For Max" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+        <a href="s7.html" class="btn btn-neutral float-right" title="Why S7 Scheme?" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="algo_procs.html" class="btn btn-neutral float-left" title="Algorithmic Processes and Live-Coding" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2020, Iain CT Duncan
+        &#169; Copyright 2020, Iain CT Duncan.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 
@@ -283,7 +311,6 @@ Group so I know someone has managed. If you need help, post there too.</p>
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

@@ -1,0 +1,747 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>S4M Scheme API &mdash; Scheme For Max 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Algorithmic Processes and Live-Coding" href="algo_procs.html" />
+    <link rel="prev" title="Using Scheme For Max" href="usage.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Scheme For Max
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="motivations.html">Motivation - Why Lisp in Max?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Setup and Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="threading.html">Max Threads, the Scheduler and the S7 Garbage Collector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Using Scheme For Max</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">S4M Scheme API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#file-loading">File Loading</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#console-output">Console Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#outputs">Outputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sending-messages">Sending Messages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#table-i-o">Table I/O</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#buffer-i-o">Buffer I/O</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dictionary-i-o-hash-tables">Dictionary I/O &amp; hash-tables</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#s7-hash-table-and-keyword-examples">S7 hash-table and keyword examples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#max-dictionary-api">Max Dictionary API</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#max-time-and-transport-api">Max Time and Transport API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#scheduling-delays-timers">Scheduling, Delays, &amp; Timers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#helpful-functions">Helpful Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#delay-functions">Delay Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#timer-functions">Timer Functions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="algo_procs.html">Algorithmic Processes and Live-Coding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="building.html">Building From Source</a></li>
+<li class="toctree-l1"><a class="reference internal" href="s7.html">Why S7 Scheme?</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Scheme For Max</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>S4M Scheme API</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/api.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="s4m-scheme-api">
+<h1>S4M Scheme API<a class="headerlink" href="#s4m-scheme-api" title="Permalink to this headline">¶</a></h1>
+<p>Below are details of the Scheme API. Core S7 functions are not listed here,
+only functions added by S4M. Scheme functions are either defined
+in <strong>s4m.c</strong> using the S7 Foreign Function Interface, or in Scheme code boostrapped
+from the initial load of <strong>s4m.scm</strong>, including the <strong>s74.scm</strong> file.</p>
+<div class="section" id="file-loading">
+<h2>File Loading<a class="headerlink" href="#file-loading" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt><strong>(load-from-max {filename string})</strong></dt><dd><p>Load a file into Scheme. Acts excactly like Scheme standard <strong>load</strong> but finds
+the full path on the Max file search path first.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="console-output">
+<h2>Console Output<a class="headerlink" href="#console-output" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt><strong>(post {args…})</strong></dt><dd><p>Post to the Max console. All arguments will be converted to string representations
+automatically. Post returns the null list.</p>
+</dd>
+</dl>
+<div class="highlight-scm notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define </span><span class="nv">a</span> <span class="mi">99</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">post</span> <span class="s">&quot;my var a is&quot;</span> <span class="nv">a</span><span class="p">)</span>
+<span class="nv">s4m&gt;</span> <span class="nv">my</span> <span class="nv">var</span> <span class="nv">a</span> <span class="nv">is</span> <span class="mi">99</span>
+</pre></div>
+</div>
+<p>Note: Console output by default does not print null responses, so that the console
+does not print a message on every function call for side effects, such as <strong>out</strong>.
+This can be changed by setting <strong>log-null</strong> to 1, with either a message, the attribute,
+or the inspector.</p>
+<dl class="simple">
+<dt><strong>(s4m-filter-result res)</strong></dt><dd><p>Hook function to allow users to customize which results will be logged to the
+console. Redefine or alter this to return the keyword value <strong>:no-log</strong> to
+indicate result should not be logged.</p>
+</dd>
+</dl>
+<div class="highlight-scm notranslate"><div class="highlight"><pre><span></span><span class="c1">;; if we replace what would be returned (res) by :no-log, s4m will not print to console</span>
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">s4m-filter-result</span> <span class="nv">res</span><span class="p">)</span>
+   <span class="p">(</span><span class="nf">cond</span>
+     <span class="c1">;; turn off logging of the returned integers</span>
+     <span class="p">((</span><span class="nf">int?</span> <span class="nv">res</span><span class="p">)</span> <span class="nv">:no-log</span><span class="p">)</span>
+     <span class="c1">;; for everything else, do the normal thing</span>
+     <span class="p">(</span><span class="k">else </span><span class="nv">res</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="outputs">
+<h2>Outputs<a class="headerlink" href="#outputs" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt><strong>(out {outlet} {value})</strong></dt><dd><p>Output {value} through outlet {outlet}. Value must be a single object.
+Returns the null list, thus by default does not log to console.</p>
+</dd>
+</dl>
+<div class="highlight-scm notranslate"><div class="highlight"><pre><span></span><span class="c1">;; output number 99</span>
+<span class="p">(</span><span class="nf">out</span> <span class="mi">0</span> <span class="mi">99</span><span class="p">)</span>
+<span class="c1">;; output a max list of ints</span>
+<span class="p">(</span><span class="nf">out</span> <span class="mi">0</span> <span class="p">(</span><span class="nb">list </span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">))</span>
+<span class="p">(</span><span class="nf">out</span> <span class="mi">0</span> <span class="o">&#39;</span><span class="p">(</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">))</span>
+<span class="c1">;; output a bang</span>
+<span class="p">(</span><span class="nf">out</span> <span class="mi">0</span> <span class="ss">&#39;bang</span><span class="p">)</span>
+<span class="c1">;; output the value of my-var</span>
+<span class="p">(</span><span class="nf">out</span> <span class="mi">0</span> <span class="nv">my-var</span><span class="p">)</span>
+<span class="c1">;; output the max symbol &quot;set&quot;</span>
+<span class="p">(</span><span class="nf">out</span> <span class="mi">0</span> <span class="ss">&#39;set</span><span class="p">)</span>
+<span class="c1">;; output the max message &quot;set 99&quot;</span>
+<span class="p">(</span><span class="nf">out</span> <span class="mi">0</span> <span class="p">(</span><span class="nb">list </span><span class="ss">&#39;set</span> <span class="mi">99</span><span class="p">))</span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt><strong>(out-0 {value})</strong></dt><dd><p>Convenience helper for <strong>out X</strong>, as sometimes a single argument function is helpful.
+Defined for outs 0-7, to add more, edit <strong>s4.scm</strong>
+Returns the null list, thus by default does not log to console.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="sending-messages">
+<h2>Sending Messages<a class="headerlink" href="#sending-messages" title="Permalink to this headline">¶</a></h2>
+<p>We can send arbitrary Max messages to other Max objects that have been given
+a scripting name. Before doing so, we must send the <strong>scan</strong> message to the
+<strong>s4m</strong> object, which will scan the current patcher and all descendents,
+registering scripting names interally in the <strong>s4m</strong> object (in the C code).</p>
+<dl class="simple">
+<dt><strong>(send {target} {msg} … {atoms})</strong></dt><dd><p>Send the message {msg}, which may be followed by any number of
+values to be handled as Max atoms.</p>
+</dd>
+</dl>
+<div class="highlight-scm notranslate"><div class="highlight"><pre><span></span><span class="c1">;; update the contents of a number box that has scripting name num-target</span>
+<span class="c1">;; we quote num-target below as we want the symbol num-target, not the</span>
+<span class="c1">;; value of a variable named num-target.</span>
+<span class="p">(</span><span class="nf">send</span> <span class="ss">&#39;num-target</span> <span class="mi">99</span><span class="p">)</span>
+
+<span class="c1">;; send a message box a message to update to the contents &quot;foobar 1 2 3&quot;</span>
+<span class="p">(</span><span class="nf">send</span> <span class="ss">&#39;msg-target</span> <span class="ss">&#39;set</span> <span class="ss">&#39;foobar</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">)</span>
+
+<span class="c1">;; this means we can send a message as list using scheme&#39;s apply function</span>
+<span class="p">(</span><span class="k">define </span><span class="nv">msg-list</span> <span class="p">(</span><span class="nb">list </span><span class="ss">&#39;set</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">))</span>
+<span class="p">(</span><span class="nb">apply </span><span class="nv">send</span> <span class="p">(</span><span class="nb">cons </span><span class="ss">&#39;msg-target</span> <span class="nv">msg-list</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>There is also a convenience helper, <strong>send-list</strong>.</p>
+<dl class="simple">
+<dt><strong>(send-list {target} {msg-list})</strong></dt><dd><p>Send the message {msg-list}, a single arg of a list.</p>
+</dd>
+</dl>
+<div class="highlight-scm notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="k">define </span><span class="nv">msg-list</span> <span class="p">(</span><span class="nb">list </span><span class="ss">&#39;set</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">))</span>
+<span class="p">(</span><span class="nf">send-list</span> <span class="ss">&#39;msg-target</span> <span class="nv">msg-list</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This can be used to integrate with all kinds of Max objects, including
+updating colls, dicts, tables, etc. We can copy whatever message the object
+receives and send them.</p>
+</div>
+<div class="section" id="table-i-o">
+<h2>Table I/O<a class="headerlink" href="#table-i-o" title="Permalink to this headline">¶</a></h2>
+<p>We can write and read integer data directly to and from named Max tables, as well as query
+for the existence and size of Max tables. Max tables are useful
+for storing integer data that we want to share between an <strong>s4m</strong> object
+and the rest of Max (or another <strong>s4m</strong> object. Tables are queried in each function, so if you want
+to read or write a lot of data, the vector conversions functions will be faster than a loop
+of single point table operations.</p>
+<p>Short form aliases exist for all functions and are identical except for the function name.</p>
+<dl class="simple">
+<dt><strong>(table? {table-name})</strong></dt><dd><p>Returns #true if the symbol {table-name} corresponds to a named Max table.</p>
+</dd>
+<dt><strong>(table-length {table-name})</strong></dt><dd><p>Returns integer length of table {table-name}. Error if not a valid table.
+Alias: <strong>tabl</strong></p>
+</dd>
+<dt><strong>(table-ref {table-name} {index})</strong></dt><dd><p>Returns value at {index} in table {table-name}. Alias: <strong>tabr</strong></p>
+</dd>
+<dt><strong>(table-set! {table-name} {index} {value})</strong></dt><dd><p>Sets value at {index} in table {table-name} to {value}. Alias: <strong>tabs</strong></p>
+</dd>
+<dt><strong>(table-&gt;vector {table-name} {opt. index} {opt. count})</strong></dt><dd><p>Returns a new Scheme vector from contents of a table, starting
+at index 0 or {index} in the table, copying entire table or {count} points
+if optional {count} given. Alias <strong>t-&gt;v</strong></p>
+</dd>
+<dt><strong>(table-set-from-vector! {table-name} {table-index} {vector} {opt. vector-index} {opt. count})</strong></dt><dd><p>Sets contents in a table from a Scheme vector, starting at {table-index}. Copies the entire
+vector, or from {vector-index} for a total of {count} points if given. If table is not large
+enough, copies whatever fits. Returns a new vector of the contents copied.
+Alias: <strong>tabsfv</strong></p>
+</dd>
+<dt><strong>(vector-set-from-table! {vector-name} {vector-index} {table-name} {opt. table-index} {opt. count})</strong></dt><dd><p>Sets content in an existing vector from a Max table, starting at {vector-index}. Copies
+the entire table, or from {table-index} for a total of {count} points if given. If vector
+is not large enough, copies whatever fits. Returns a new vector of the contents copied.
+Alias: <strong>vecsft</strong></p>
+</dd>
+</dl>
+</div>
+<div class="section" id="buffer-i-o">
+<h2>Buffer I/O<a class="headerlink" href="#buffer-i-o" title="Permalink to this headline">¶</a></h2>
+<p>We can write and read float data directly to and from named Max buffers, as well as query
+for the existence and size of Max buffers. Max buffers are useful
+for storing float data that we want to share between an <strong>s4m</strong> object
+and the rest of Max (or another <strong>s4m</strong> object, they do not need to be used for audio samples
+but can hold any collection of floats. Buffers are queried and locked in each function, so if you want
+to read or write a lot of data, the vector conversions functions will be faster than a loop
+of single point buffer operations.</p>
+<p>Short form aliases exist for all functions and are identical except for the function name.</p>
+<dl class="simple">
+<dt><strong>(buffer? {buffer-name})</strong></dt><dd><p>Returns #true if the symbol {buffer-name} corresponds to a named Max buffer.</p>
+</dd>
+<dt><strong>(buffer-samples {buffer-name})</strong></dt><dd><p>Returns integer length of buffer {buffer-name}. Error if not a valid buffer.
+Note that this is called buffer-size and not buffer-length to match Max naming, where
+length gives the length in seconds and size in samples.
+Alias: <strong>bufsmp</strong></p>
+</dd>
+<dt><strong>(buffer-ref {buffer-name} {opt. channel} {index})</strong></dt><dd><p>Returns value at {index} in buffer {buffer-name}. If called with two arguments,
+channel defaults to zero. Alias: <strong>bufr</strong></p>
+</dd>
+<dt><strong>(buffer-set! {buffer-name} {opt. channel} {index} {value})</strong></dt><dd><p>Sets value at {index} in buffer {buffer-name} to {value}. If called with two
+arguments, channel defaults to zero. Alias: <strong>bufs</strong></p>
+</dd>
+<dt><strong>(buffer-&gt;vector {buffer-name} {opt. channel} {opt. index} {opt. count})</strong></dt><dd><p>Returns a new Scheme vector from contents of a buffer, reading from {channel} or channel zero,
+starting at index 0 or {index} in the buffer, copying entire buffer or {count} points
+if optional {count} given. Alias <strong>b-&gt;v</strong></p>
+</dd>
+<dt><strong>(buffer-set-from-vector! {buffer-name} {opt. buffer-channel} {opt. buffer-index} {vector} {opt. vector-index} {opt. count})</strong></dt><dd><p>Sets contents in a buffer from a Scheme vector, using {buffer-channel} or channel zero and
+starting at {buffer-index} or index zero. Copies the entire vector, or from {vector-index} for
+a total of {count} points if given. If buffer is not large enough, copies whatever fits.
+Returns a new vector of the contents copied.
+Alias: <strong>bufsv</strong></p>
+</dd>
+</dl>
+<p>Note: there is not yet a buffer version of table-set-from-vector!</p>
+<dl class="simple">
+<dt><strong>(vector-set-from-buffer! {vector-name} {vector-index} {buffer-name} {opt. buffer-index} {opt. count})</strong></dt><dd><p>Sets content in an existing vector from a Max buffer, starting at {vector-index}. Copies
+the entire buffer, or from {buffer-index} for a total of {count} points if given. If vector
+is not large enough, copies whatever fits. Returns a new vector of the contents copied.
+Alias: <strong>bufsft</strong></p>
+</dd>
+</dl>
+</div>
+<div class="section" id="dictionary-i-o-hash-tables">
+<h2>Dictionary I/O &amp; hash-tables<a class="headerlink" href="#dictionary-i-o-hash-tables" title="Permalink to this headline">¶</a></h2>
+<p>We can read and write key-value stores in Max dictionaries and S7 Scheme hash-tables,
+which are unordered key-value hashmaps. When converting nested values in Max dictionaries to Scheme,
+arrays become Scheme vectors, and nested dictionaries become Scheme hash-tables. Only symbol, keyword, or
+string keys are supported by the conversion functions.</p>
+<p>In Lisp dialects that support keywords, the idiomatic practice is to generally use keywords for
+hash-table keys. A keyword is a symbol that starts with a colon, and always evaluates to itself,
+which means that they do not need to be quoted.
+This works well in Max too, Max will simply treat them as string keys that happen to start with a colon.
+This ensures you never get mixed up about whether a symbol in
+a Max message is supposed to be evaluated or not - if it’s a keyword it won’t matter if this
+gets eval’d by the interpreter. Keywords are recommended as dict and hash-table keys wherever possible.</p>
+<p>Note that in S7, querying a hash-table for a non-existent key returns <strong>#false</strong>. In Max, there
+is no boolean false value, and booleans are usually expressed as <strong>0</strong>. This means <strong>0</strong> is often
+a valid value to store, and thus getting <strong>#false</strong> back can be misleading. Instead of returning
+a potentially valid value on a key error, the Max dict functions raise Scheme errors, which can
+be caught to return a default value of your choosing.</p>
+<div class="section" id="s7-hash-table-and-keyword-examples">
+<h3>S7 hash-table and keyword examples<a class="headerlink" href="#s7-hash-table-and-keyword-examples" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-scm notranslate"><div class="highlight"><pre><span></span><span class="c1">;; a keyword always evaluates to itself</span>
+<span class="p">(</span><span class="nb">eval </span><span class="nv">:foobar</span><span class="p">)</span>
+<span class="nv">s4m&gt;</span> <span class="nv">:foobar</span>
+
+<span class="p">(</span><span class="k">define </span><span class="nv">key</span> <span class="nv">:foobar</span><span class="p">)</span>
+<span class="p">(</span><span class="nb">eval </span><span class="nv">key</span><span class="p">)</span>
+<span class="nv">s4m&gt;</span> <span class="nv">:foobar</span>
+
+<span class="c1">;; which means quoting is unnecessary and does nothing</span>
+<span class="p">(</span><span class="nb">eval </span><span class="ss">&#39;:foobar</span><span class="p">)</span>
+<span class="nv">s4m&gt;</span> <span class="nv">foobar</span>
+
+<span class="c1">;; make a hashtable with two keyword slots</span>
+<span class="p">(</span><span class="k">define </span><span class="nv">my-hash</span> <span class="p">(</span><span class="nf">hash-table</span> <span class="nv">:a</span> <span class="mi">1</span> <span class="nv">:b</span> <span class="mi">2</span><span class="p">))</span>
+<span class="nv">s4m&gt;</span> <span class="p">(</span><span class="nf">hash-table</span> <span class="nv">:a</span> <span class="mi">1</span> <span class="nv">:b</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="c1">;; get value at :a</span>
+<span class="p">(</span><span class="nf">hash-table-ref</span> <span class="nv">my-hash</span> <span class="nv">:a</span><span class="p">)</span>
+<span class="nv">s4m&gt;</span> <span class="mi">1</span>
+
+<span class="c1">;; applicative syntax of the same</span>
+<span class="p">(</span><span class="nf">my-hash</span> <span class="nv">:a</span><span class="p">)</span>
+<span class="nv">s4m&gt;</span> <span class="mi">1</span>
+
+<span class="c1">;; a non-existing key from an S7 hash-table returns false (not an error!)</span>
+<span class="p">(</span><span class="nf">my-hash</span> <span class="nv">:z</span><span class="p">)</span>
+<span class="nv">s4m&gt;</span> <span class="no">#f</span>
+
+<span class="c1">;; set a value in a hash-table, sets value and returns value</span>
+<span class="p">(</span><span class="nf">hash-table-set!</span> <span class="nv">my-hash</span> <span class="nv">:foobar</span> <span class="mi">99</span><span class="p">)</span>
+<span class="nv">s4m&gt;</span> <span class="mi">99</span>
+
+<span class="c1">;; applicative syntax of the same</span>
+<span class="p">(</span><span class="k">set! </span><span class="p">(</span><span class="nf">my-hash</span> <span class="nv">:foobar</span><span class="p">)</span> <span class="mi">99</span><span class="p">)</span>
+<span class="nv">s4m&gt;</span> <span class="mi">99</span>
+
+<span class="c1">;; make a nested hash-table</span>
+<span class="p">(</span><span class="k">set! </span><span class="p">(</span><span class="nf">my-hash</span> <span class="nv">:pets</span><span class="p">)</span> <span class="p">(</span><span class="nf">hash-table</span><span class="p">))</span>
+<span class="nv">s4m&gt;</span> <span class="p">(</span><span class="nf">hash-table</span><span class="p">)</span>
+
+<span class="c1">;; now we can set and get recursively using applicative syntax</span>
+<span class="p">(</span><span class="k">set! </span><span class="p">(</span><span class="nf">my-hash</span> <span class="nv">:pets</span> <span class="nv">:dog</span><span class="p">)</span> <span class="ss">&#39;Poppy-Poodle</span><span class="p">)</span>
+<span class="nv">s4m&gt;</span> <span class="nv">Poppy-Poodle</span>
+
+<span class="p">(</span><span class="nb">eval </span><span class="nv">my-hash</span><span class="p">)</span>
+<span class="nv">s4m&gt;</span> <span class="p">(</span><span class="nf">hash-table</span> <span class="nv">:a</span> <span class="mi">1</span> <span class="nv">:b</span> <span class="mi">2</span> <span class="nv">:foobar</span> <span class="mi">99</span> <span class="nv">:pets</span> <span class="p">(</span><span class="nf">hash-table</span> <span class="nv">:dog</span> <span class="nv">Poppy-Poodle</span><span class="p">))</span>
+
+<span class="p">(</span><span class="nf">hash-table-ref</span> <span class="nv">my-hash</span> <span class="nv">:pets</span> <span class="nv">:dog</span><span class="p">)</span>
+<span class="nv">s4m&gt;</span> <span class="nv">Poppy-Poodle</span>
+<span class="p">(</span><span class="nf">my-hash</span> <span class="nv">:pets</span> <span class="nv">:dog</span><span class="p">)</span>
+<span class="nv">s4m&gt;</span> <span class="nv">Poppy-poodle</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="max-dictionary-api">
+<h3>Max Dictionary API<a class="headerlink" href="#max-dictionary-api" title="Permalink to this headline">¶</a></h3>
+<p>Examples below can be used with the tests-dict.maxpat test patcher in the patchers directory.</p>
+<dl class="simple">
+<dt><strong>(dict-ref {dict-name} {symbol|list key} )</strong></dt><dd><p>Return value in dict {dict-name} at {key}, where dict-name is a symbol, and key can be either
+a list or symbol. If key is a list, recurses through the list. Raises an <strong>‘key-error’</strong> error
+if the key is invalid. Alias <strong>dictr</strong></p>
+</dd>
+</dl>
+<div class="highlight-scm notranslate"><div class="highlight"><pre><span></span><span class="c1">;; get a value from max dict named &quot;test-dict&quot;, at key &quot;a&quot;</span>
+<span class="p">(</span><span class="nf">dict-ref</span> <span class="ss">&#39;test-dict</span> <span class="ss">&#39;a</span><span class="p">)</span>
+<span class="nv">s4m&gt;</span> <span class="mi">1</span>
+
+<span class="c1">;; get a value that is a nested dict, becomes a hash-table</span>
+<span class="p">(</span><span class="nf">dict-ref</span> <span class="ss">&#39;test-dict</span> <span class="ss">&#39;b</span><span class="p">)</span>
+<span class="nv">s4m&gt;</span> <span class="p">(</span><span class="nf">hash-table</span> <span class="ss">&#39;ba</span> <span class="mi">2</span> <span class="ss">&#39;bb</span> <span class="mi">3</span><span class="p">)</span>
+
+<span class="c1">;; get value at key &quot;ba&quot; in nested dict at key &quot;b&quot;</span>
+<span class="p">(</span><span class="nf">dict-ref</span> <span class="ss">&#39;test-dict</span> <span class="p">(</span><span class="nb">list </span><span class="ss">&#39;b</span> <span class="ss">&#39;ba</span><span class="p">)</span> <span class="p">)</span>
+<span class="c1">;; same thing with alternative quoting syntax</span>
+<span class="p">(</span><span class="nf">dict-ref</span> <span class="ss">&#39;test-dict</span> <span class="o">&#39;</span><span class="p">(</span><span class="nv">b</span> <span class="nv">ba</span><span class="p">))</span>
+<span class="nv">s4m&gt;</span> <span class="mi">2</span>
+
+<span class="c1">;; get the value at index 2 in the nested vector at key &quot;c&quot;</span>
+<span class="p">(</span><span class="nf">dict-ref</span> <span class="ss">&#39;test-dict</span> <span class="o">&#39;</span><span class="p">(</span><span class="nv">c</span> <span class="mi">2</span><span class="p">)</span> <span class="p">)</span>
+<span class="nv">s4m&gt;</span> <span class="mi">33</span>
+
+<span class="c1">;; out of range index 3 raises error</span>
+<span class="p">(</span><span class="nf">dict-ref</span> <span class="ss">&#39;test-dict</span> <span class="o">&#39;</span><span class="p">(</span><span class="nv">c</span> <span class="mi">3</span><span class="p">)</span> <span class="p">)</span>
+<span class="nv">s4m&gt;</span> <span class="nv">ERROR</span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt><strong>(dict-set! {dict-name} {symbol|list key} {value} )</strong></dt><dd><p>Sets value in dict {dict-name} at {key}, where dict-name is a symbol, and key can be either
+a list or symbol. If key is a list, recurses through the list. Returns value set.
+Raises error if key invalid.
+Alias <strong>dicts</strong></p>
+</dd>
+</dl>
+<div class="highlight-scm notranslate"><div class="highlight"><pre><span></span><span class="c1">;; set a value in max dict named &quot;test-dict&quot;, at key &quot;z&quot;</span>
+<span class="p">(</span><span class="nf">dict-set!</span> <span class="ss">&#39;test-dict</span> <span class="ss">&#39;z</span> <span class="mi">44</span><span class="p">)</span>
+<span class="nv">s4m&gt;</span> <span class="mi">44</span>
+
+<span class="c1">;; set a value that is a hash-table, becomes a nested dict</span>
+<span class="p">(</span><span class="nf">dict-set!</span> <span class="ss">&#39;test-dict</span> <span class="ss">&#39;y</span> <span class="p">(</span><span class="nf">hash-table</span> <span class="nv">:a</span> <span class="mi">1</span> <span class="nv">:b</span> <span class="mi">2</span><span class="p">))</span>
+<span class="nv">s4m&gt;</span> <span class="p">(</span><span class="nf">hash-table</span> <span class="nv">:a</span> <span class="mi">1</span> <span class="nv">:b</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="c1">;; set value at key &quot;bc&quot; in nested dict at key &quot;b&quot;</span>
+<span class="p">(</span><span class="nf">dict-set!</span> <span class="ss">&#39;test-dict</span> <span class="p">(</span><span class="nb">list </span><span class="ss">&#39;b</span> <span class="ss">&#39;bc</span><span class="p">)</span> <span class="mi">111</span><span class="p">)</span>
+<span class="nv">s4m&gt;</span> <span class="mi">111</span>
+
+<span class="c1">;; attempt set at invalid key list (there is no &#39;foo entry to recurse through)</span>
+<span class="p">(</span><span class="nf">dict-set!</span> <span class="ss">&#39;test-dict</span> <span class="p">(</span><span class="nb">list </span><span class="ss">&#39;foo</span> <span class="ss">&#39;b</span><span class="p">)</span> <span class="mi">99</span><span class="p">)</span>
+<span class="nv">s4m&gt;</span> <span class="nv">ERROR</span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt><strong>(dict-replace! {dict-name} {symbol|list key} {value} )</strong></dt><dd><p>Sets value in dict {dict-name} at {key}, where dict-name is a symbol, and key is a list
+of symbols or integers. If the list recursion hits an unused key, creates a nested dict
+for it, similar to the Max “replace” message to dicts. (Nested arrays do <em>not</em> get automatically
+created, also like the Max replace message).
+Returns value set.  Raises error message if key or dict invalid.
+Alias <strong>dicts*</strong></p>
+</dd>
+</dl>
+<div class="highlight-scm notranslate"><div class="highlight"><pre><span></span><span class="c1">;; set a value that is a hash-table, creating an intermediate hash-table automatically</span>
+<span class="p">(</span><span class="nf">dict-replace!</span> <span class="ss">&#39;test-dict</span> <span class="p">(</span><span class="nb">list </span><span class="ss">&#39;foo</span> <span class="ss">&#39;bar</span><span class="p">)</span> <span class="mi">99</span><span class="p">)</span>
+<span class="nv">s4m&gt;</span> <span class="mi">99</span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt><strong>(dict-&gt;hash-table {dict-name})</strong></dt><dd><p>Return a hash-table of a Max dictionary. Nested dicts become nested hash-tables, arrays
+become vectors. Raises error on bad dict-name. Alias <strong>d-&gt;h</strong></p>
+</dd>
+<dt><strong>(hash-table-&gt;dict {hash-table} {dict-name})</strong></dt><dd><p>Write entire contents of a hash-table to a named Max dict. If {dict-name} does not exist,
+creates a dictionary. If {dict-name} already exists, replaces entire contents. Alias <strong>h-&gt;d</strong>.</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="max-time-and-transport-api">
+<h2>Max Time and Transport API<a class="headerlink" href="#max-time-and-transport-api" title="Permalink to this headline">¶</a></h2>
+<p>Transport functions exist to interact with the Max master transport. Named transports in addition
+to the master transport are not yet supported, and behaviour in Max For Live is unknown (but will be tackled
+in future!).</p>
+<dl class="simple">
+<dt><strong>(time)</strong></dt><dd><p>Returns current time in float ms. This is the global Max time, <em>not</em> the transport time.
+This only resets to 0 on restarting Max.</p>
+</dd>
+<dt><strong>(transport-state)</strong></dt><dd><p>Returns <strong>#t</strong> if transport is running, <strong>#f</strong> otherwise. Alias <strong>t-state</strong></p>
+</dd>
+<dt><strong>(transport-state-set! {boolean|int state})</strong></dt><dd><p>Starts master transport on <strong>#t</strong> or <strong>1</strong>, stops on <strong>#f</strong> or <strong>0</strong>. Returns state set. Alias <strong>t-state!</strong>.</p>
+</dd>
+<dt><strong>(transport-bpm-set! {int bpm})</strong></dt><dd><p>Starts master transport tempo to bpm. Note, there is no get version in the Max C SDK, strangely.
+Returns bpm set. Alias <strong>t-bpm!</strong></p>
+</dd>
+<dt><strong>(transport-time-sig)</strong></dt><dd><p>Returns current time signature as list of (numerator denominator).  Alias <strong>t-time-sig</strong></p>
+</dd>
+<dt><strong>(transport-time-sig-set! {int numerator} {int denominator})</strong></dt><dd><p>Sets master transport time signature.  Alias <strong>t-time-sig!</strong></p>
+</dd>
+<dt><strong>(transport-ticks)</strong></dt><dd><p>Returns current master transport location in ticks (float).  Alias <strong>t-ticks</strong></p>
+</dd>
+<dt><strong>(transport-seek {opt. bars} {opt. int beats} {float|int ticks})</strong></dt><dd><p>Sets master transport location immediately. If called with three arguments,
+sets with Max bbu (bars beats units) format, otherwise sets location in ticks.
+Returns new transport location in ticks (float). Alias <strong>t-seek</strong></p>
+</dd>
+<dt><strong>(ticks-&gt;ms {number ticks})</strong></dt><dd><p>Converts ticks to float ms according to current settings of the master transport.</p>
+</dd>
+<dt><strong>(ticks-&gt;bbu {number ticks})</strong></dt><dd><p>Converts ticks to list of (bars, beats, ticks) according to current settings of the master transport.</p>
+</dd>
+<dt><strong>(ms-&gt;ticks {number ms})</strong></dt><dd><p>Converts ms to float ticks according to current settings of the master transport.</p>
+</dd>
+<dt><strong>(ms-&gt;bbu {number ms})</strong></dt><dd><p>Converts ms to list of (bars beats units) according to current settings of the master transport.</p>
+</dd>
+<dt><strong>(bbu-&gt;ms {int bars} {int beats} {number units})</strong></dt><dd><p>Converts bars-beats-units to float ms according to current settings of the master transport.</p>
+</dd>
+<dt><strong>(bbu-&gt;ticks {int bars} {int beats} {number units})</strong></dt><dd><p>Converts bars-beats-units to float ticks according to current settings of the master transport.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="scheduling-delays-timers">
+<h2>Scheduling, Delays, &amp; Timers<a class="headerlink" href="#scheduling-delays-timers" title="Permalink to this headline">¶</a></h2>
+<p>Because we can run S4M in the high-priority thread, we can interact with the Max scheduler to
+create sample-accurate delays and timers. These are only currently supported in the high-priority
+thread, so will raise errors if called from <strong>s4m &#64;thread l</strong> objects. Future support for low-priority
+delays is planned. Delays can also interact with the global transport, including quantizing to
+transport-aware time values.</p>
+<p>Internally, delays register callback functions in the global <strong>s4m-callback-registry</strong> hash-table.
+Cancelling an event consists of removing the callback function. Functions that are scheduled
+with the <strong>delay</strong> functions or used as clock listeners must take no arguments, with the exception
+of the tick listeners, which will get the current tick as a single argument.</p>
+<div class="section" id="helpful-functions">
+<h3>Helpful Functions<a class="headerlink" href="#helpful-functions" title="Permalink to this headline">¶</a></h3>
+<p>Some helpful functions for working with timers and delay functions.</p>
+<dl class="simple">
+<dt><strong>(isr?)</strong></dt><dd><p>Returns true if exectuting in the the high-priority scheduler thread.</p>
+</dd>
+<dt><strong>(time)</strong></dt><dd><p>Returns current Max time in ms.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="delay-functions">
+<h3>Delay Functions<a class="headerlink" href="#delay-functions" title="Permalink to this headline">¶</a></h3>
+<p>Functions to schedule execution of a Scheme function in the Max scheduler.</p>
+<dl class="simple">
+<dt><strong>(delay {number time} {function})</strong></dt><dd><p>Schedule function to execute in {time} ms. Returns a symbol of the callback key, which is the
+key underwhich the generated callback function is registered, and which can be used to cancel
+an event.</p>
+</dd>
+</dl>
+<div class="highlight-scm notranslate"><div class="highlight"><pre><span></span><span class="c1">;; schedule a function that posts to the console in 1 sec</span>
+<span class="p">(</span><span class="k">delay </span><span class="mi">1000</span> <span class="p">(</span><span class="k">lambda </span><span class="p">()</span> <span class="p">(</span><span class="nf">post</span> <span class="nv">:tada</span><span class="p">)))</span>
+
+<span class="c1">;; or</span>
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">delayed-func</span><span class="p">)</span> <span class="p">(</span><span class="nf">post</span> <span class="nv">:tada</span><span class="p">))</span>
+<span class="p">(</span><span class="k">delay </span><span class="mi">1000</span> <span class="nv">delayed-func</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt><strong>(delay-eval {number time} {var-args} )</strong></dt><dd><p>Convenience function to allow calling delay without having to make a function. If called with
+1 arg in var-args and it is a list, it will be evaluated at the time scheduled. If called
+with many args, they will be treated as a list and evaluated at the time scheduled.</p>
+</dd>
+</dl>
+<div class="highlight-scm notranslate"><div class="highlight"><pre><span></span><span class="c1">;; schedule a function that outputs 99 from outlet 0 in 1 second</span>
+<span class="p">(</span><span class="nf">delay-eval</span> <span class="mi">1000</span> <span class="p">(</span><span class="nb">list </span><span class="nv">out</span> <span class="mi">0</span> <span class="mi">99</span><span class="p">)</span> <span class="p">)</span>
+
+<span class="c1">;; or</span>
+<span class="p">(</span><span class="nf">delay-eval</span> <span class="mi">1000</span> <span class="nv">out</span> <span class="mi">0</span> <span class="mi">99</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt><strong>(delay-t {number|symbol time} {function})</strong></dt><dd><p>Transport aware version of delay. Time can be number of ticks, or Max time notation
+such as <strong>4n</strong>. If using time notation as a symbol, you will need to quote it or pass
+it in a variable. Otherwise identical to delay.</p>
+</dd>
+</dl>
+<div class="highlight-scm notranslate"><div class="highlight"><pre><span></span><span class="c1">;; delay for 480 ticks (1 quarter note)</span>
+<span class="p">(</span><span class="nf">delay-t</span> <span class="mi">480</span> <span class="nv">my-function</span><span class="p">)</span>
+
+<span class="c1">;; or</span>
+<span class="p">(</span><span class="nf">delay-t</span> <span class="ss">&#39;4n</span> <span class="nv">my-function</span><span class="p">)</span>
+
+<span class="c1">;; or</span>
+<span class="p">(</span><span class="k">define </span><span class="nv">quarter</span> <span class="ss">&#39;4n</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">delay-t</span> <span class="nv">quarter</span> <span class="nv">my-function</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt><strong>(delay-t-eval {number|symbol time} {var args})</strong></dt><dd><p>Transport aware version of delay-eval.</p>
+</dd>
+<dt><strong>(delay-tq {number|symbol time} {number|symbol quantize-time} {function})</strong></dt><dd><p>Transport aware and quantized version of delay. Time and quantize-time can be number of ticks,
+or Max time notation such as <strong>4n</strong>. Execution is scheduled for the next boundary of
+{quantize-time}. Note that this is independent of whether the transport is playing - the
+correct time is calculated and scheduled. Stopping the transport does not cancel the event.</p>
+</dd>
+<dt><strong>(delay-tq-eval {number|symbol time} {number|symbol quantize-time} {var args})</strong></dt><dd><p>Eval version of delay-tq.</p>
+</dd>
+<dt><strong>(cancel-delay {handle} )</strong></dt><dd><p>Given a delay call that returns {handle}, cancel execution of the function. Note that
+this function is used for all the delay variants, as they all return guaranteed unique
+callback handles.</p>
+</dd>
+</dl>
+<div class="highlight-scm notranslate"><div class="highlight"><pre><span></span><span class="c1">;; schedule a function and then cancel it</span>
+<span class="p">(</span><span class="k">define </span><span class="nv">cb-handle</span> <span class="p">(</span><span class="k">delay </span><span class="mi">1000</span> <span class="p">(</span><span class="k">lambda </span><span class="p">()</span> <span class="p">(</span><span class="nf">post</span> <span class="nv">:tada</span><span class="p">))))</span>
+<span class="p">(</span><span class="nf">cancel-delay</span> <span class="nv">cb-handle</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="timer-functions">
+<h3>Timer Functions<a class="headerlink" href="#timer-functions" title="Permalink to this headline">¶</a></h3>
+<p>Several functions are available to register periodic timers, with or without following
+the global transport. These are implemented at present only for the high-priority thread.
+(Low priority timers to be implemented in future). These all return the keyword <strong>:clock-registered</strong>
+to let you know they succeeded.</p>
+<dl class="simple">
+<dt><strong>(clock-ms {number ms} {function callback})</strong></dt><dd><p>Register function {callback} to be executed every {ms} milliseconds. The callback
+registered should accept no arguments, but can get the the current time by calling
+<strong>(time)</strong> in its body.</p>
+</dd>
+</dl>
+<div class="highlight-scm notranslate"><div class="highlight"><pre><span></span><span class="c1">;; register a time callback to post current time in ms every second</span>
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">time-callback</span><span class="p">)</span> <span class="p">(</span><span class="nf">post</span> <span class="s">&quot;current time&quot;</span> <span class="p">(</span><span class="nf">time</span><span class="p">)))</span>
+<span class="p">(</span><span class="nf">listen-ms</span> <span class="mf">1000.0</span> <span class="nv">time-callback</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt><strong>(cancel-clock-ms)*</strong></dt><dd><p>Cancels the listen-ms timer.</p>
+</dd>
+<dt><strong>(clock-ms-t {number ms} {function callback})</strong></dt><dd><p>Transport aware version of <strong>clock-ms</strong>. The clock used only advances if transport is playing.</p>
+</dd>
+<dt><strong>(cancel-clock-ms)*</strong></dt><dd><p>Cancels the clock-ms-t timer.</p>
+</dd>
+<dt><strong>(clock-ticks {number ticks} {function callback})</strong></dt><dd><p>Transport aware version that receives the current transport tick location as its argument.</p>
+</dd>
+</dl>
+<div class="highlight-scm notranslate"><div class="highlight"><pre><span></span><span class="c1">;; register a time callback to post current ticks every quarter note</span>
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">tick-callback</span> <span class="nv">current-tick</span><span class="p">)</span> <span class="p">(</span><span class="nf">post</span> <span class="s">&quot;current tick:&quot;</span> <span class="p">(</span><span class="nf">current-tick</span><span class="p">)))</span>
+<span class="p">(</span><span class="nf">clock-ticks</span> <span class="mi">480</span> <span class="nv">tick-callback</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt><strong>(cancel-clock-ms)*</strong></dt><dd><p>Cancels the listen-ticks timer.</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="algo_procs.html" class="btn btn-neutral float-right" title="Algorithmic Processes and Live-Coding" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="usage.html" class="btn btn-neutral float-left" title="Using Scheme For Max" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Iain CT Duncan.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
