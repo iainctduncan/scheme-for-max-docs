@@ -571,7 +571,11 @@ Returns new transport location in ticks (float). Alias <strong>t-seek</strong></
 <h2>Scheduling, Delays, &amp; Timers<a class="headerlink" href="#scheduling-delays-timers" title="Permalink to this headline">¶</a></h2>
 <p>Because we can run S4M in the high-priority thread, we can interact with the Max scheduler to
 create sample-accurate delays and timers. These are only currently supported in the high-priority
-thread, so will raise errors if called from <strong>s4m &#64;thread l</strong> objects. Future support for low-priority
+thread, so will raise errors if called from <strong>s4m &#64;thread l</strong> objects. Note that this includes
+the load of a file from the main object box, so if you want to call scheduling functions
+in your main file, you will need to wrap them in a function that you call from the high-priority
+thread after file load.</p>
+<p>Future support for low-priority
 delays is planned. Delays can also interact with the global transport, including quantizing to
 transport-aware time values.</p>
 <p>Internally, delays register callback functions in the global <strong>s4m-callback-registry</strong> hash-table.

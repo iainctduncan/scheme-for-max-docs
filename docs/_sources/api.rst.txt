@@ -439,7 +439,12 @@ Scheduling, Delays, & Timers
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Because we can run S4M in the high-priority thread, we can interact with the Max scheduler to
 create sample-accurate delays and timers. These are only currently supported in the high-priority
-thread, so will raise errors if called from **s4m @thread l** objects. Future support for low-priority
+thread, so will raise errors if called from **s4m @thread l** objects. Note that this includes
+the load of a file from the main object box, so if you want to call scheduling functions
+in your main file, you will need to wrap them in a function that you call from the high-priority
+thread after file load.
+
+Future support for low-priority
 delays is planned. Delays can also interact with the global transport, including quantizing to 
 transport-aware time values.
 
