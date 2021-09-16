@@ -1,8 +1,8 @@
 Setup and Installation
 =======================
 
-Scheme for Max is currently available as a package for Max 8 on OSX, and as source code
-that should compile for Max 7, and on Windows. 
+Scheme for Max is currently available as a package for Max 8 on OSX or Windows, and as source code
+that should compile for Max 7, and on Windows.  
 
 The Scheme For Max package can be downloaded from the Releases tab on  `GitHub <https://github.com/iainctduncan/Scheme-for-max.com>`_.
 
@@ -22,7 +22,7 @@ In addition the Max external, the package contains:
 
 * patchers/
    * The repl patcher, **s4m.repl**
-   * The main s4m Scheme file, **scm4max.scm**   
+   * The main s4m Scheme file, **s4m.scm**   
    * Optional extra Scheme files from s4m or base S7 that you may want 
 
 **Important:** When you install a Max Package, the patchers, extras, and help directories are

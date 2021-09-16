@@ -1,70 +1,31 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
-  <title>Max Threads, the Scheduler and the S7 Garbage Collector &mdash; Scheme For Max 0.1 documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-
-  
-  
-
-  
-  
-
-  
-
-  
+  <title>Max Threads, the Scheduler and the S7 Garbage Collector &mdash; Scheme For Max 0.1 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+  <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
-    
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-
-    
+    <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Using Scheme For Max" href="usage.html" />
     <link rel="prev" title="Setup and Installation" href="installation.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
-
-          
             <a href="index.html" class="icon icon-home"> Scheme For Max
-          
-
-          
           </a>
-
-          
-            
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -72,18 +33,7 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
@@ -110,73 +60,32 @@
 <li class="toctree-l1"><a class="reference internal" href="s7.html">Why S7 Scheme?</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">Scheme For Max</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-        
       <li>Max Threads, the Scheduler and the S7 Garbage Collector</li>
-    
-    
       <li class="wy-breadcrumbs-aside">
-        
-          
             <a href="_sources/threading.rst.txt" rel="nofollow"> View page source</a>
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
+             
   <div class="section" id="max-threads-the-scheduler-and-the-s7-garbage-collector">
-<h1>Max Threads, the Scheduler and the S7 Garbage Collector<a class="headerlink" href="#max-threads-the-scheduler-and-the-s7-garbage-collector" title="Permalink to this headline">¶</a></h1>
+<h1>Max Threads, the Scheduler and the S7 Garbage Collector<a class="headerlink" href="#max-threads-the-scheduler-and-the-s7-garbage-collector" title="Permalink to this headline"></a></h1>
 <p>One of S4M’s distinguishing features is its support for execution in either the Max
 high-priority scheduler or low priority UI thread, not possible with either the JS or Node For Max objects. This
 allows S4M to be used for precise timing and scheduling operations for sequencing, live coding,
@@ -184,28 +93,25 @@ altering real-time musical input, and for algorithmic composition.
 This page discusses how threading works within Max and S4M and why it matters,
 and what you should know about Max Settings to get the best performance.</p>
 <div class="section" id="max-s-scheduling-model">
-<h2>Max’s scheduling model<a class="headerlink" href="#max-s-scheduling-model" title="Permalink to this headline">¶</a></h2>
+<h2>Max’s scheduling model<a class="headerlink" href="#max-s-scheduling-model" title="Permalink to this headline"></a></h2>
 <p>To understand scheduling and threading in Scheme For Max, we need to understand
 how Max’s scheduler and threading model works. In Max, there are normally between one and three threads running,
 depending on your configuration settings and what you have in your patch. These are the main thread, the scheduler thread,
 and the audio thread. (There could also be additional threads if a Max object explictly creates
 and manages them, but this is not relevant for our purposes, and can be safely ignored for now.)</p>
 <div class="section" id="main-thread">
-<h3>Main thread<a class="headerlink" href="#main-thread" title="Permalink to this headline">¶</a></h3>
+<h3>Main thread<a class="headerlink" href="#main-thread" title="Permalink to this headline"></a></h3>
 <p>The main thread is also called the UI thread, and runs with the lowest priority. When we initiate
 activity by using Max user interface objects (clicking bangs and messages, moving sliders, etc),
 we trigger execution in this thread. This thread is also responsible for screen redrawing and
 file i/o, and executes at a lower priority so that the screen can refresh without interupting
-audio playback or delaying musical events. Operations that involve loading files, refreshing UI
-elements, or creating visuals (with Jitter for example) should be done in this thread.
-All Max messages that run in the main thread are internally implemented on a queue dedicated
-to the main thread, with a certain number of them executed per thread pass. We can tune
-how this thread works by setting the ‘Event Interval’ setting in the Scheduler preferences to control
-how frequently the main thread runs, and by setting the ‘Queue Throttle’ setting to control
-the maximum number of events that will be handled in one pass of the main thread.</p>
+audio playback or delaying musical events. Generally speaking, operations that involve loading
+files, refreshing UI elements, or creating visuals (with Jitter for example) should be done in this thread.
+In Max For Live, the Live API also runs in the low priority thread, similar to control surface
+scripts in Live.</p>
 </div>
 <div class="section" id="scheduler-thread">
-<h3>Scheduler thread<a class="headerlink" href="#scheduler-thread" title="Permalink to this headline">¶</a></h3>
+<h3>Scheduler thread<a class="headerlink" href="#scheduler-thread" title="Permalink to this headline"></a></h3>
 <p>The scheduler thread is also called the high-priority thread. This is where timing critical Max
 messages should execute, and by default MIDI i/o and <strong>metro</strong> object messages execute in this thread, as well
 as any events triggered from the <strong>transport</strong> object. We also
@@ -215,36 +121,40 @@ Overdrive moves the scheduler thread into an Interupt Service Routine for high t
 frequent scheduling. The only reason not to enable Overdrive is if a patch is entirely aimed at visuals.
 We can configure this thread by setting the ‘Scheduler Interval’ setting in Scheduler
 preferences to control how frequently the thread runs (the default is 1ms) and the Poll Throttle setting
-to set the maximum number of event messages processed on one scheduler thread pass.</p>
+to set the maximum number of event messages processed on one scheduler thread pass. (Though
+as is explained shortly, these don’t actually matter if you also have selected Audio in Interupt.)</p>
 </div>
 <div class="section" id="audio-thread">
-<h3>Audio thread<a class="headerlink" href="#audio-thread" title="Permalink to this headline">¶</a></h3>
+<h3>Audio thread<a class="headerlink" href="#audio-thread" title="Permalink to this headline"></a></h3>
 <p>The audio thread is used to calculate MSP audio rendering. It only runs if audio processing is turned
 on, and is the thread that executes all real-time audio processing. On each pass, it calculates the audio samples
 necessary to fill up one signal vector of samples. Max is a buffered audio system, meaning that
 each audio pass calculates a series of audio samples that are then sent out in a chunk. We set
 this number of samples with the Signal Vector Size setting in the Audio Status window. This setting also
 affects audio latency as we will always have a latency of at least the size of the Signal Vector multiplied
-by the time for one sample at the current sample rate (before adding any sound card latency).</p>
+by the time for one sample at the current sample rate (before adding any sound card latency).
+Note that in Max For Live, the signal vector size is locked at 64 samples.</p>
 </div>
 <div class="section" id="audio-in-interrupt">
-<h3>Audio in Interrupt<a class="headerlink" href="#audio-in-interrupt" title="Permalink to this headline">¶</a></h3>
-<p>If in Audio Status window, we have selected Audio Interrupt as well as Scheduler Overdrive, we
-will actually have only two threads running, as the
+<h3>Audio in Interrupt<a class="headerlink" href="#audio-in-interrupt" title="Permalink to this headline"></a></h3>
+<p>If, in the Audio Status window, we have selected Audio Interrupt as well as Scheduler Overdrive, or we
+are running in Max For Live, we will actually have only two threads running, because the
 audio thread and the scheduler thread are merged into one thread that alternates between
-rendering a vector of audio samples and handling events taken from the scheduler thread queue.
-This may or may not be better for your use case, depending on how big your audio vector size is
+rendering a vector of audio samples and handling scheduler events.
+This also means that events are processed once per signal vector size, with event onset times
+quantized to this boundary.</p>
+<p>This may or may not be better for your use case, depending on how big your audio vector size is
 and how much audio CPU intensive processing your patch needs to do. For example, if you are running
 heavy audio calculation and thus need a large signal vector size, you might see scheduler thread
 activity get delayed by the time for one signal vector of audio samples.</p>
 </div>
 </div>
 <div class="section" id="delay-and-defer-operations">
-<h2>Delay and Defer operations:<a class="headerlink" href="#delay-and-defer-operations" title="Permalink to this headline">¶</a></h2>
+<h2>Delay and Defer operations:<a class="headerlink" href="#delay-and-defer-operations" title="Permalink to this headline"></a></h2>
 <p>Max has several objects for delaying Max events and moving them into different threads.
 The <strong>delay</strong> and <strong>pipe</strong> objects delay bangs and messages respectively by some number of milliseconds,
 putting the delayed message on the <em>scheduler thread</em> queue to execute in the scheduler thread at a later time. To move
-an event from the main thread into the scheduler thread,  we can send it through a <strong>delay</strong> or
+an event from the main (UI) thread into the scheduler thread,  we can send it through a <strong>delay</strong> or
 <strong>pipe</strong> object with the delay time set to zero, which will put the message on to the scheduler
 thread’s queue for execution on the <em>next</em> pass of the scheduler thread.</p>
 <p>The <strong>defer</strong> and <strong>deferlow</strong> objects do the opposite: any incoming messages will be
@@ -255,27 +165,34 @@ will be moved to the back of the queue, while a low priority event into a <stron
 the message through without change.</p>
 </div>
 <div class="section" id="the-s7-garbage-collector">
-<h2>The S7 Garbage Collector<a class="headerlink" href="#the-s7-garbage-collector" title="Permalink to this headline">¶</a></h2>
+<h2>The S7 Garbage Collector<a class="headerlink" href="#the-s7-garbage-collector" title="Permalink to this headline"></a></h2>
 <p>S7 Scheme is a garbage-collected language, meaning that interpreter occasionally does a check
 for memory that has been allocated but no longer has any references to it, and can thus be freed.
 This saves as us from having to manually manage memory, as one does in languages like C, but has
 latency implications because we never know when it will run.  Garbage collectors (GCs) are also used in
 dynamic languages such as JavaScript, Lisp, Ruby, and Python. (S7’s GC is a mark-and-sweep
 garbage collector in case your into that sort of thing.) It will run occasionally, and
-typically takes 1-2 ms to run on my machine. We can tell it to run on demand by calling
-<strong>(gc #t)</strong> from Scheme.</p>
+typically takes 1-2 ms to run on my machine, depending on how long it has been since it
+last ran, how many s7 objects are in memory, and how much memory s7 is using.</p>
+<p>We can tell the gc to run on demand by calling <strong>(gc-run)</strong> from Scheme.
+We can enable and disable the garbage collector as well, with <strong>(gc-enable)</strong> and <strong>(gc-disable)</strong>,
+and ask to run it only if it’s enabled with <strong>(gc-try)</strong>. Most users won’t need to bother
+with these, but if you are trying to achieve low-latency with a large Scheme program,
+manually running the gc at certain intervals or turning it off for the duration of a piece
+and then running it between pieces can be helpful.</p>
 <p>In practical terms, this means Scheme is not likely to work well for <em>audio</em> generation, where
 2 ms is a long time, but for manipulation of musical events or musical input, it’s not
 noticeable. We notice a lag of 5 ms as smearing, and 20 ms as a discrete event, so a 2 ms
 lag of the scheduler is not discernable, and if we are running with an audio latency of
-over this, it probably won’t have any effect at all. For example, if we have and i/o
-vector and singal vector set such that the system has an overall latency of 5-10ms, the
-lag from the garbage collector is likely to be lower than the lag from our built in latency.</p>
+over this, it probably won’t have any effect at all. For example, if we have an i/o
+vector and signal vector set such that the system has an overall latency of 5-10ms, the
+lag from the garbage collector is likely to be lower than the lag from our built in latency
+and won’t cause any issues.</p>
 </div>
 <div class="section" id="s4m-thread-selection">
-<h2>S4M Thread Selection<a class="headerlink" href="#s4m-thread-selection" title="Permalink to this headline">¶</a></h2>
-<p>The <strong>s4m</strong> object can be locked to <em>either</em> the high
-priority or low priority thread with the <strong>&#64;thread</strong> attribute. This can be set to
+<h2>S4M Thread Selection<a class="headerlink" href="#s4m-thread-selection" title="Permalink to this headline"></a></h2>
+<p>The <strong>s4m</strong> object is locked to <em>either</em> the high priority or low priority thread with
+the <strong>&#64;thread</strong> attribute. This can be set to
 <strong>h</strong> or <strong>l</strong>, and is <strong>h</strong> by default if you don’t set it explicitly. In the s4m object,
 any incoming message will be promoted or defered to ensure it’s handled in the right thread
 before being evaluated by the Scheme intepreter.
@@ -295,15 +212,15 @@ and if you wanted to, you could even implement a three-priority actor model by h
 object only receive messages that had gone through a <strong>deferlow</strong>. This would delay events to the
 third (lowest) <strong>s4m</strong> object such that they will only get serviced if Max has time
 to get through the whole low priority queue on the main thread pass.</p>
-<p>There exists a third option that can be used for testing, but is not guaranteed to be safe.
-If <strong>&#64;thread a</strong> is chosen, <strong>s4m</strong> can run in <strong>any</strong> thread. This can be useful for testing
-purposes, combined with the <strong>(isr?)</strong> function, which returns <strong>true</strong> (1, in Max) if the
-thread is excuting is the scheduler thread. Note that while using <strong>&#64;thread a</strong> will seem to work
-without issue almost all the time, it is definitely possible for a thread interuption to
-corrupt data with unpredicatble results, which could potentially include a complete crash.</p>
+<p>Note that this is also how the Ableton Live API objects work in Max For Live - it is always
+in the low thread and any incoming messages are defered. So if you want to interact programmatically
+with the Live API, you should do it from a low-thread s4m object. If you want to interact
+with the Live API from a seqencer you’re running in the high thread, you should have your
+high thread s4m object send the low thread object a message telling it to trigger an API
+action.</p>
 </div>
 <div class="section" id="comparison-to-js-and-node-for-max">
-<h2>Comparison to JS and Node For Max<a class="headerlink" href="#comparison-to-js-and-node-for-max" title="Permalink to this headline">¶</a></h2>
+<h2>Comparison to JS and Node For Max<a class="headerlink" href="#comparison-to-js-and-node-for-max" title="Permalink to this headline"></a></h2>
 <p>The <strong>js</strong> (JavaScript) object in Max <em>only</em> executes in the low priority thread. This is done
 to ensure there is no chance of a thread context switch corrupting data and creating unknown
 conditions, as detailed above. The fact that the <strong>js</strong> object always defers messages to the low
@@ -314,7 +231,7 @@ they only create a <em>minimum</em> delay. The event
 won’t be serviced until the delay is done, and the low priority thread gets to run again.
 It’s not at all uncommon for the low priority thread to hiccup: visual redrawing
 operations or any file system interaction can do it. The upshot of this is that while the
-<strong>js</strong> object has quite a comprehensive set of features, it’s not reliable for timing critical operations.
+<strong>js</strong> object has quite a comprehensive set of features, it’s not really reliable for timing critical operations.
 Note that this only matters for events that will be rendered to <em>audio</em> - user interface and Jitter operations
 execute in the low priority thread anyway, making <strong>js</strong> suitable for UI or Jitter manipulation.</p>
 <p>There is often some confusion about how Node For Max fits into all this. Node For Max uses
@@ -341,50 +258,33 @@ them accessible in Max dictionaries that <strong>s4m</strong> can read.</p>
 
 
            </div>
-           
           </div>
-          <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="usage.html" class="btn btn-neutral float-right" title="Using Scheme For Max" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="installation.html" class="btn btn-neutral float-left" title="Setup and Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="usage.html" class="btn btn-neutral float-right" title="Using Scheme For Max" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2020, Iain CT Duncan.
-
-    </p>
+    <p>&#169; Copyright 2020, Iain CT Duncan.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

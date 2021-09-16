@@ -67,11 +67,20 @@ Arguments & Attributes
    when running scheduled Scheme functions on a timer, for example.
    This can be changed anytime in both the inspector and by sending a **log-null 1** message.
 
-When a source file has been listed in the object box, double clicking the 
-object will open the file in the editor. The file will be reloaded on save,
-which will *not* reboot the Scheme interpreter. We can reboot the interpreter
-at any time with the **reset** message.
+**@heap {integer in KB}**
+   Sets the initial heap-size for s7. The default is 64KB, and lowest possible is
+   8KB (set with **@heap 8**). The heap-size changes how fast the gc runs - it takes longer
+   to run over a large heap. The interpreter will resize the heap as needed, but this does
+   introduce some latency every time it's done, so you may find performance increases if 
+   you set this to a value close to what you will need. To watch the gc-stats, 
+   run **(set! (*s7* 'gc-stats) #t)**, and you'll see information on the heap-size and
+   the gc runs in the console.
 
+When a source file has been listed in the object box, double clicking the 
+object will display the full path to the file in the console. 
+We can reboot the interpreter at any time with the **reset** message, which will
+also reload this file.
+ 
 Reserved Words and Naming Conventions
 -------------------------------------
 In Max, messages to an object that consist of the name of an attribute and a value are
@@ -91,7 +100,7 @@ exactly why you are doing it:
 
 Max reserved words: **int**, **float**, **symbol**, **get**, **set**
 
-S4M attributes: **thread**, **ins**, **outs**, **log-repl**, **log-null**
+S4M attributes: **thread**, **ins**, **outs**, **log-repl**, **log-null**, **heap-size**
 
 S4M commands: **reset**, **scan**, **read**, **eval-string**
 
@@ -114,7 +123,8 @@ setter functions are usually **(foobar-set! {key} {value})**.
 We are following Scheme and Max naming conventions
 where possible, with Scheme as the priority when in doubt. Predicates end in ? and
 functions with side effects end in !, so we have for example: **dict-ref**, **dict-set!**, 
-and **dict?**. 
+and **dict?**. Some people also use the convention of ear-muffs for globals. The
+special globals **\*s7\*** and **\*s4m\*** follow this. 
 
 S4M also includes short form aliases for most function names to simplify live coding
 and building s-expressions in Max messages where space may be at a premium. These
@@ -128,36 +138,35 @@ it in the REPL and see if you get anything. You should get an 'unbound variable'
 in the console if there is no naming collision.
 
 
-
-
 Messages to inlet 0 
 --------------------------------------------------------------------------------
 Messages to inlet 0 are either handled directly by the s4m object as a Max message,
-or evaluated as Scheme code if no direct handling exists. If the message is not
-handled by the **s4m** object as a Max message, the interpreter will
-evaluate the message as a Scheme s-expression that is being called, with
+or evaluated as Scheme code if no direct handling exists. If the incoming message
+starts with a **(** character, S4M assumes this is code and evaluates it. 
+If it doesn't, there are two possibilities.
+
+If the message is not handled by the **s4m** object as a Max message, the interpreter will
+essentially pretend the message is enclosed in parentheses, evaluating the message
+as a Scheme s-expression to be called, with
 any symbols evaluating to their value in the Scheme environment. 
-This means messages are essentially executed as if wrapped in an outer pair of parentheses. For example,
-the message **foobar 1 2 3** will be evaluated in Scheme as **(foobar 1 2 3)**.
-This also means that the message **out a** will only execute properly if the variable **a**
+For example, the message **foobar 1 2 3** will be evaluated in Scheme as **(foobar 1 2 3)**.
+This also means that the message **out 0 a** will only execute properly if the variable **a**
 has been defined. To have **a** treated as a Max symbol, not a Scheme variable,
 we need to quote it in the standard Lisp fashion. For example, **out 0 'a** will send 
-the symbol "a" out output 0, having been evaluated as **(out 0 'a)** in Scheme.   
+the symbol **"a"** out output 0, having been evaluated as **(out 0 'a)** in Scheme.   
 
 The messages **reset**, **read**, **scan**, and **eval-string** are handled
 directly by the **s4m** object, without passing to the interpreter (see Message reference below).
 
-To evaluate a block of code which includes punctuation that is problematic in regular
-Max message boxes, the code should be converted to a string 
-symbol with the **tosymbol** object, and then sent to Scheme by using a 
+To evaluate a string as a code (for example, if received over the network
+from a udpreceive object), we prepend the message by using a 
 **prepend eval-string** object. This will result in **s4m** receiving something like
 **eval-string "(define a 99)"**, which will execute as **(eval-string "(define a 99)")** 
 in the Scheme interpreter.
 
 Practically speaking, there is no difference in execution between sending inlet
-0 of an **s4m** object either **define a 99** or **eval-string "(define a 99)"**,
-but the second will allow nested s-expressions, as in 
-**eval-string "(define my-list (list 1 2 3))"**. 
+0 of an **s4m** object either **define a 99**, **(define a 99)**, 
+or **eval-string "(define a 99)"**.
 
 
 Messages reference for inlet 0:
@@ -165,7 +174,8 @@ Messages reference for inlet 0:
  
 **reset** 
    Resets the Scheme intepreter, wiping all active definitions, and reloading any
-   sourcefile specified in the s4m object box itself.
+   sourcefile specified in the s4m object box itself. Also scans the current patcher
+   for scripting names (see entry for scan).
 
 **read {filename}** 
    Loads the file {filename} from the Max search path. Executes the Scheme **load** 
@@ -185,9 +195,7 @@ Messages reference for inlet 0:
    an error message to console. Return value of evaluation is printed to the Max console.
 
 **eval-string {string}** 
-   Evaluates {string} in scheme. This is used by the REPL object by converting
-   the text output to a single symbol with **tosymbol** and the prepending
-   **eval-string**. Return value of evaluation is printed to the Max console.
+   Evaluates {string} in scheme. Return value of evaluation is printed to the Max console.
 
 **{symbol ...}**
    Evalues the symbol or list of symbols as a Scheme s-expression. If sent
@@ -345,7 +353,6 @@ change what happens on the listened-to message until you re-register
 it, by virtue of how Scheme functions work. (We are registering the
 actual function, not the symbol of the function!)
  
-
 
 s4m.repl patcher
 -----------------

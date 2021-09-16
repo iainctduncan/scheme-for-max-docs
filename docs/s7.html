@@ -1,69 +1,30 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
-  <title>Why S7 Scheme? &mdash; Scheme For Max 0.1 documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-
-  
-  
-
-  
-  
-
-  
-
-  
+  <title>Why S7 Scheme? &mdash; Scheme For Max 0.1 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+  <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
-    
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-
-    
+    <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="prev" title="Building From Source" href="building.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
-
-          
             <a href="index.html" class="icon icon-home"> Scheme For Max
-          
-
-          
           </a>
-
-          
-            
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -71,18 +32,7 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
@@ -123,75 +73,34 @@
 </li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">Scheme For Max</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-        
       <li>Why S7 Scheme?</li>
-    
-    
       <li class="wy-breadcrumbs-aside">
-        
-          
             <a href="_sources/s7.rst.txt" rel="nofollow"> View page source</a>
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
+             
   <div class="section" id="why-s7-scheme">
-<h1>Why S7 Scheme?<a class="headerlink" href="#why-s7-scheme" title="Permalink to this headline">¶</a></h1>
+<h1>Why S7 Scheme?<a class="headerlink" href="#why-s7-scheme" title="Permalink to this headline"></a></h1>
 <div class="section" id="about-s7-and-s74-scheme">
-<h2>About S7 and S74 Scheme<a class="headerlink" href="#about-s7-and-s74-scheme" title="Permalink to this headline">¶</a></h2>
+<h2>About S7 and S74 Scheme<a class="headerlink" href="#about-s7-and-s74-scheme" title="Permalink to this headline"></a></h2>
 <p>The purpose of this page is to provide an intro to S7 along with the rationale
 for choosing it, aimed at people with some Lisp familiarity. Those interested in
 Lisp related languages in general may find this interesting - regular users can skip it.</p>
@@ -225,7 +134,7 @@ and it has various other features that aren’t in all all Scheme implementation
 </ul>
 </div>
 <div class="section" id="s74-scheme">
-<h2>S74 Scheme<a class="headerlink" href="#s74-scheme" title="Permalink to this headline">¶</a></h2>
+<h2>S74 Scheme<a class="headerlink" href="#s74-scheme" title="Permalink to this headline"></a></h2>
 <p>The author of S7 intends to keep S7 as minimal as is practical. While great for
 ensuring it’s small and easy to embed, this means the language is missing many convenience
 functions that users coming from Clojure or Racket might be used to. S74 is
@@ -235,11 +144,11 @@ easily which functions are added to S7 by S74. S74 additions are implemented (so
 as Scheme code and can be disable if the user desires by altering the bootstrap files.</p>
 </div>
 <div class="section" id="advantages-of-s7">
-<h2>Advantages of S7<a class="headerlink" href="#advantages-of-s7" title="Permalink to this headline">¶</a></h2>
+<h2>Advantages of S7<a class="headerlink" href="#advantages-of-s7" title="Permalink to this headline"></a></h2>
 <p>The remainder of this page goes into more detail on the decision to use S7 and
 its drivers, and may or may not be of interest to the reader.</p>
 <div class="section" id="our-use-case">
-<h3><strong>Our Use Case</strong><a class="headerlink" href="#our-use-case" title="Permalink to this headline">¶</a></h3>
+<h3><strong>Our Use Case</strong><a class="headerlink" href="#our-use-case" title="Permalink to this headline"></a></h3>
 <p>In order to evaluate whether S7’s feature set is a good one for Scheme
 For Max, let’s examine our use case. The goal here is to
 make building and extending music systems in Max easier, more
@@ -272,7 +181,7 @@ can used advanced tools to make a very smart engine, that is then
 and how they fit in with our needs.</p>
 </div>
 <div class="section" id="scheme-simplicity">
-<h3><strong>Scheme Simplicity</strong><a class="headerlink" href="#scheme-simplicity" title="Permalink to this headline">¶</a></h3>
+<h3><strong>Scheme Simplicity</strong><a class="headerlink" href="#scheme-simplicity" title="Permalink to this headline"></a></h3>
 <p>Being a Scheme, S7 has a single name space for functions and variables, tail call optimization, and
 named let, among other things. In my personal opinion, these lead to recursive code that is smaller
 and easier to read than Common Lisp, and make it simpler to write dynamically evaluated
@@ -287,7 +196,7 @@ We can point the user at <a class="reference external" href="https://mitpress.mi
 and when they come back, they’ll be happily writing tiny code.</p>
 </div>
 <div class="section" id="keywords">
-<h3><strong>Keywords</strong><a class="headerlink" href="#keywords" title="Permalink to this headline">¶</a></h3>
+<h3><strong>Keywords</strong><a class="headerlink" href="#keywords" title="Permalink to this headline"></a></h3>
 <p>Keywords (in Lisps that support them) are symbols that always evaluate
 to themselves. In S7, these are symbols starting with a colon.
 Keywords are really useful in situations
@@ -300,7 +209,7 @@ readable because it’s clear at a glance what a message
 with a keyword will be when in Scheme.</p>
 </div>
 <div class="section" id="applicative-syntax">
-<h3><strong>Applicative Syntax</strong><a class="headerlink" href="#applicative-syntax" title="Permalink to this headline">¶</a></h3>
+<h3><strong>Applicative Syntax</strong><a class="headerlink" href="#applicative-syntax" title="Permalink to this headline"></a></h3>
 <p>Applicative syntax allows us to use data structures in the function
 slots of s-expressions, with arguments to get their contents. In
 S7 we can do this automatically with lists, vectors, and hash-tables.
@@ -316,7 +225,7 @@ in Max messages.</p>
 </div>
 </div>
 <div class="section" id="first-class-environments">
-<h3><strong>First class environments</strong><a class="headerlink" href="#first-class-environments" title="Permalink to this headline">¶</a></h3>
+<h3><strong>First class environments</strong><a class="headerlink" href="#first-class-environments" title="Permalink to this headline"></a></h3>
 <p>In S7, environments are first class objects, meaning we can easily
 capture lexical bindings and pass them around. Again, we’re doing
 a lot of dynamic evaluation as we cross the boundary, so it’s helpful
@@ -327,7 +236,7 @@ between environments.
 Environments are also used in S7 to prevent hygeine issues in macros.</p>
 </div>
 <div class="section" id="cl-macros">
-<h3><strong>CL Macros:</strong><a class="headerlink" href="#cl-macros" title="Permalink to this headline">¶</a></h3>
+<h3><strong>CL Macros:</strong><a class="headerlink" href="#cl-macros" title="Permalink to this headline"></a></h3>
 <p>S7 supports Common Lisp style macros, with <strong>defmacro</strong> and <strong>gensym</strong>,
 and some other more advanced CL style macro options (see the S7 docs).
 It does not do syntax-case or syntax-rules Scheme/Racket style macros.
@@ -343,7 +252,7 @@ Also with S7’s first-class environments, macro-hygeine is not a big concern
 - details on this are in the S7 reference page for the macro enthusiast.</p>
 </div>
 <div class="section" id="simple-ffi-and-embedding">
-<h3><strong>Simple FFI and embedding</strong><a class="headerlink" href="#simple-ffi-and-embedding" title="Permalink to this headline">¶</a></h3>
+<h3><strong>Simple FFI and embedding</strong><a class="headerlink" href="#simple-ffi-and-embedding" title="Permalink to this headline"></a></h3>
 <p>Embedding S7 is a snap: there’s one C file to build
 and link, and one header file to include. And the S7 FFI is
 really easy to use. It’s simple to define Scheme
@@ -356,7 +265,7 @@ itself, and after looking at the embedding story for Chicken, Chez, Gambit, and 
 I realized this would make a big difference to the accessibility of the code.</p>
 </div>
 <div class="section" id="use-in-music">
-<h3><strong>Use in music</strong><a class="headerlink" href="#use-in-music" title="Permalink to this headline">¶</a></h3>
+<h3><strong>Use in music</strong><a class="headerlink" href="#use-in-music" title="Permalink to this headline"></a></h3>
 <p>Another big advantage of S7 is its use in music circles already.
 Common Music, by Heinrich Taube, is a very mature algorithmic composition toolkit
 with a rich library of music related functions that will be helpful to
@@ -372,7 +281,7 @@ I felt this would be very valuable in encouraging adoption in music hackers.</p>
 </div>
 </div>
 <div class="section" id="disadvantages-of-s7">
-<h2>Disadvantages of S7<a class="headerlink" href="#disadvantages-of-s7" title="Permalink to this headline">¶</a></h2>
+<h2>Disadvantages of S7<a class="headerlink" href="#disadvantages-of-s7" title="Permalink to this headline"></a></h2>
 <p>Of course, S7 has some disadvantages too.</p>
 <p>It’s not well known, being used in a small specialist community.
 Adoption in the larger Scheme world has not been a priority of the project,
@@ -401,7 +310,7 @@ as so much of Scheme can be extended from Scheme itsel, that I should be able
 to get a long way on library modules added to S7.</p>
 </div>
 <div class="section" id="other-options-that-were-considered">
-<h2>Other options that were considered<a class="headerlink" href="#other-options-that-were-considered" title="Permalink to this headline">¶</a></h2>
+<h2>Other options that were considered<a class="headerlink" href="#other-options-that-were-considered" title="Permalink to this headline"></a></h2>
 <p>When beginning the project, I looked for quite a while at many Scheme and
 Lisp options. If you care about that sort of thing, you might find this interesting.
 These included:</p>
@@ -420,7 +329,7 @@ Scheme For Max to another Scheme. (I’d love to see the results if you do!)
 None of the others have extensive computer music usage (with the exception of Common
 Lisp) so I won’t even list that as a disadvantage - take it as given.</p>
 <div class="section" id="clojure">
-<h3><strong>Clojure</strong><a class="headerlink" href="#clojure" title="Permalink to this headline">¶</a></h3>
+<h3><strong>Clojure</strong><a class="headerlink" href="#clojure" title="Permalink to this headline"></a></h3>
 <p>Clojure is it’s own lisp-like langauge, that runs on the Java Virtual Machine.
 It has a lot of adoption, with the resuting rich library of books and
 documentation resources. However, it only runs on the Java Virtual Machine or
@@ -438,7 +347,7 @@ of S7 (sparse docs, small community size) without the computer music specific
 maturity.</p>
 </div>
 <div class="section" id="guile">
-<h3><strong>Guile</strong><a class="headerlink" href="#guile" title="Permalink to this headline">¶</a></h3>
+<h3><strong>Guile</strong><a class="headerlink" href="#guile" title="Permalink to this headline"></a></h3>
 <p>Guile is a very nice minimal, embeddable scheme. It’s easy to embed,
 is working towards R7RS, and has excellent documentation. It’s under very
 active development, though mostly by one person, and it’s pretty small.
@@ -447,7 +356,7 @@ If S7 weren’t around, version 1 would probably be Guile. Like S7
 Guile is just an interperter, making the FFI situation pretty simple.</p>
 </div>
 <div class="section" id="chicken">
-<h3><strong>Chicken</strong><a class="headerlink" href="#chicken" title="Permalink to this headline">¶</a></h3>
+<h3><strong>Chicken</strong><a class="headerlink" href="#chicken" title="Permalink to this headline"></a></h3>
 <p>Chicken is a modern (R7RS) scheme that compiles to C. It’s got great
 docs, a great module system with lots of libraries, and a really great community.
 It’s popular as a scheme to build products in for business
@@ -456,7 +365,7 @@ out of the box, and the FFI docs were minimal. The embedding situation is also
 not as simple as Guile or S7, as it’s both a compiler and interpreter.</p>
 </div>
 <div class="section" id="gambit">
-<h3><strong>Gambit</strong><a class="headerlink" href="#gambit" title="Permalink to this headline">¶</a></h3>
+<h3><strong>Gambit</strong><a class="headerlink" href="#gambit" title="Permalink to this headline"></a></h3>
 <p>Gambit is a large, mature, industrial strength Scheme that has been around
 for 30 years.  It compiles down to highly performant C, and supports many kinds
 of macros. Gambit was another high contender. The big issue for Gambit
@@ -466,7 +375,7 @@ some interesting developments in Gambit such as compiling to JavaScript,
 and it is very flexible with how it interacts with C.</p>
 </div>
 <div class="section" id="chez">
-<h3><strong>Chez</strong><a class="headerlink" href="#chez" title="Permalink to this headline">¶</a></h3>
+<h3><strong>Chez</strong><a class="headerlink" href="#chez" title="Permalink to this headline"></a></h3>
 <p>Chez is similar to Gambit, in that it’s a big, industrial grade Scheme,
 with high performance. Racket is being redone on top of Chez. Also like
 Gambit, the embedding and FFI story scared me off pretty quickly.
@@ -476,7 +385,7 @@ tons of code. They are like the Common Lisps of Scheme, with Chez being
 R6RS, meaning it’s got a lot in the language, by Scheme standards.</p>
 </div>
 <div class="section" id="racket">
-<h3><strong>Racket</strong><a class="headerlink" href="#racket" title="Permalink to this headline">¶</a></h3>
+<h3><strong>Racket</strong><a class="headerlink" href="#racket" title="Permalink to this headline"></a></h3>
 <p>Racket was originally called PLT Scheme, and came out of the academic side
 of scheme. It has a very advanced macro system, and fairly accessible
 syntax. Unfortunately, it changes a lot (currently being redone on Chez)
@@ -486,7 +395,7 @@ very cumbersome. Racket also does not support Common Lisp macros with defmacro,
 which I wanted. It does have fantastic documentation though!</p>
 </div>
 <div class="section" id="gerbil">
-<h3><strong>Gerbil</strong><a class="headerlink" href="#gerbil" title="Permalink to this headline">¶</a></h3>
+<h3><strong>Gerbil</strong><a class="headerlink" href="#gerbil" title="Permalink to this headline"></a></h3>
 <p>Gerbil is a modern “opinionated” (their words) Scheme built on top
 of Gambit. It does not support defmacro macros. It is aimed at system
 programming primarily. By the time I looked at Gerbil closely, I was
@@ -495,7 +404,7 @@ at more closely for other Scheme uses.</p>
 </div>
 </div>
 <div class="section" id="final-thoughts">
-<h2>Final Thoughts<a class="headerlink" href="#final-thoughts" title="Permalink to this headline">¶</a></h2>
+<h2>Final Thoughts<a class="headerlink" href="#final-thoughts" title="Permalink to this headline"></a></h2>
 <p>Overall, after several months of evaluation, S7 was elected. Four
 months in, I’ve been happy with the decision. The ease of the FFI
 has been a huge win, and I’m really looking forward to supporting Common
@@ -517,49 +426,32 @@ Victoria BC, Apr 2020.</p>
 
 
            </div>
-           
           </div>
-          <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="building.html" class="btn btn-neutral float-left" title="Building From Source" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2020, Iain CT Duncan.
-
-    </p>
+    <p>&#169; Copyright 2020, Iain CT Duncan.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

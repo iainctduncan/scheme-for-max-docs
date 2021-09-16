@@ -78,6 +78,17 @@ Outputs
    Defined for outs 0-7, to add more, edit **s4.scm**
    Returns the null list, thus by default does not log to console.
 
+**(out* {list or vector})**
+   Unpacks the argument and spreads across all available outlets. Input lists
+   with more items than there are outlets have the remaining items sent out as 
+   list out the final outlet. 
+
+.. code:: scm
+
+   ;; assuming there are 3 outlets
+   (out* '(a b c d))
+   ;; out 0: a, out 1: b, out 2: c d
+   
   
 Sending Messages
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -106,7 +117,7 @@ registering scripting names interally in the **s4m** object (in the C code).
    (apply send (cons 'msg-target msg-list)) 
 
 
-There is also a convenience helper, **send-list**.
+There are also two convenience helper, **send-list** and **send\***.
 
 **(send-list {target} {msg-list})**
    Send the message {msg-list}, a single arg of a list.
@@ -115,6 +126,14 @@ There is also a convenience helper, **send-list**.
    
    (define msg-list (list 'set 1 2 3))
    (send-list 'msg-target msg-list)
+
+**(send* {args})**
+   Flattens all lists passed as arguments and calls send
+
+.. code:: scm
+   
+   (send-list 'msg-target 'set '(a b c) '(1 2 3))
+   ; calls (send 'msg-target 'a 'b 'c 1 2 3)
    
 
 This can be used to integrate with all kinds of Max objects, including
@@ -437,15 +456,12 @@ in future!).
 
 Scheduling, Delays, & Timers 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Because we can run S4M in the high-priority thread, we can interact with the Max scheduler to
-create sample-accurate delays and timers. These are only currently supported in the high-priority
-thread, so will raise errors if called from **s4m @thread l** objects. Note that this includes
-the load of a file from the main object box, so if you want to call scheduling functions
-in your main file, you will need to wrap them in a function that you call from the high-priority
-thread after file load.
+S4M uses Max's clock facilities to interact with the Max scheduler to
+create accurate delays and timers. As of 0.3, these can be run from both high priority 
+and low priority thread objects. In the low priority thread, they are scheduled with the 
+high priority scheduler, but defered when they start. 
 
-Future support for low-priority
-delays is planned. Delays can also interact with the global transport, including quantizing to 
+Delays can also interact with the global transport, including quantizing to 
 transport-aware time values.
 
 Internally, delays register callback functions in the global **s4m-callback-registry** hash-table.
@@ -557,15 +573,15 @@ to let you know they succeeded.
 
     ;; register a time callback to post current time in ms every second
     (define (time-callback) (post "current time" (time)))
-    (listen-ms 1000.0 time-callback)
+    (clock-ms 1000.0 time-callback)
 
-**(cancel-clock-ms)***
-    Cancels the listen-ms timer.
+**(cancel-clock-ms)**
+    Cancels the clock-ms timer.
 
 **(clock-ms-t {number ms} {function callback})**
     Transport aware version of **clock-ms**. The clock used only advances if transport is playing.
 
-**(cancel-clock-ms)***
+**(cancel-clock-ms-t)**
     Cancels the clock-ms-t timer.
 
 **(clock-ticks {number ticks} {function callback})**
@@ -577,6 +593,55 @@ to let you know they succeeded.
     (define (tick-callback current-tick) (post "current tick:" (current-tick)))
     (clock-ticks 480 tick-callback)
 
-**(cancel-clock-ms)***
-    Cancels the listen-ticks timer.
+**(cancel-clock-ticks)**
+    Cancels the clock-ticks timer.
+
+
+Garbage Collector Functions
++++++++++++++++++++++++++++
+Advanced users may want to tweak how the garbage collector runs to allow running with lower latency
+and larger programs. For example, one might set the heap-size quite low and deliberately run
+the gc very frequently off a timer, quantized such that it runs at an unimportant time musically
+such as between 16th notes every 4th 16th note or something. Or we might decide not to run it at
+all until a song is over, and then run when the music is paused.
+
+**(gc-disable)**
+  Turn off the gc. Note that your heap-size will grow, and once you turn it back on, it will
+  take a lot longer to run the gc if the heap is now big.
+
+**(gc-enable)**
+  Enables the gc. This does not tell the gc to run though.
+
+**(gc-try)**
+  Runs the gc if it's enabled, does nothing if not.
+
+**(gc-run)**
+  Forces the gc to run, whether or not it's enabled. Does not change the enable status.
+
+**(set! (\*s7\* 'gc-stats #t))** 
+  Turns on and off gc stats logging to the console, which will show you how fast its running 
+  and over how much memory.
+
+**(\*s7\* 'heap-size)** 
+  Returns the current heap size. You can use this to see how big the heap got while you
+  had the gc disabled.
+
+**(\*s4m\* :heap-size)**
+  Returns the s4m *starting* heap-size. You can use this to set how much s4m allocates
+  at the beginning to prevent unnecessary heap resizes if you're planning on locking out the gc.
+
+Note that once the heap has grown, the only way to shrink it again is to recreate your
+s4m object by editing the s4m box. Reset does not shrink the heap. 
+
+If you want to run with no gc, the best thing to do is to turn on stats, play for
+as long as you plan to run, and note the heap-size. Then start your s4m object
+off with this heap-size. This will avoid the work of resizing the heap during playback.
+However, this does mean any gc run will be slow, so you will need to keep it disabled
+until you can afford an underrun.
+
+Alternately, you can set the heap-size very low, and run the gc proactively very frequently.
+This will not run as fast as locking it out entirely (assuming you've made sure the heap
+won't resize), but avoids the problem of eventually needing to run a really slow gc round.
+
+ 
 

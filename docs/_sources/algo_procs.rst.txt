@@ -1,13 +1,16 @@
 Algorithmic Processes and Live-Coding
 ----------------------------------------------------------
-We can use the **delay** and **listen** functions to create
+We can use the **delay** and **clock** functions to create
 sequencers and repeating algorithmic processes, and interact
 with these in real-time by changing variables or redefining functions.
 This section provides some helpful examples and tips. This document
 assumes familiarity with lambda functions and let blocks, though
 one could certainly use the examples here to learn them.
 
-This kind of algorithmic composition is explored in detail in the (highly 
+The Scheme for Max Sequencer Toolkit tutorial uses these functions
+extensively, and is here: https://iainctduncan.github.io/s4m-stk/
+
+This kind of algorithmic composition is also explored in detail in the (highly 
 recommended!) book **Notes from the Metalevel**, by Dr Heinrich Taube. 
 The book uses S7 Scheme with the Common Music runtime, but examples are easily adapted to 
 Scheme For Max.
@@ -17,7 +20,7 @@ Dynamically Redefining Scheduled Functions
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 We can use the interpreter to redefine scheduled functions on the fly, but this
 requires some care to get the behaviour you are expecting. When we register
-a scheduled function or a listener function, we are registering the *function*,
+a scheduled function or a clock listener function, we are registering the *function*,
 not the *symbol for the function*. This means that if a function is registered in the
 scheduler (whether as a listener or using delay), redefining the function 
 attached to the symbol for the function's *name* has no effect on the function called 
@@ -36,7 +39,7 @@ symbol used to define the function:
     (define (my-listener) (post :foobar))
     
     ;; register it to get evaluated every second
-    (listen-ms 1000 my-listener)
+    (clock-ms 1000 my-listener)
 
     ;; now we see :foobar posted every second 
 
@@ -46,8 +49,8 @@ symbol used to define the function:
     ;; no change to what is getting posted, because the old 
     ;; my-listener function is still registered!
 
-    ;; register the new function, replacing the function registered for listen-ms
-    (listen-ms 1000 my-listener)
+    ;; register the new function, replacing the function registered for clock-ms
+    (clock-ms 1000 my-listener)
 
     ;; now we get :foobaz posted 
 
@@ -62,9 +65,9 @@ will have an immediate effect:
     
     ;; register a lambda function that evaluates whatever is currently
     ;; attached to the symbol 'my-listener 
-    (listen-ms 1000 (lambda () (eval (list 'my-listener))))
+    (clock-ms 1000 (lambda () (eval (list 'my-listener))))
     ;; same, different syntax
-    (listen-ms 1000 (lambda () (eval '(my-listener))))
+    (clock-ms 1000 (lambda () (eval '(my-listener))))
 
     ;; every second we are getting :foobar posted now
 
@@ -85,7 +88,7 @@ we have those functions use values looked up from global symbols:
     (define note-num 60)
     (define (my-listener) (out 0 note-num))
 
-    (listen-ms 1000 my-listener)
+    (clock-ms 1000 my-listener)
     ;; function is outputing 60 
 
     (set! note-num 72)
@@ -107,7 +110,7 @@ closure. There are several ways of doing this, one is to use a **let** block.
       (let ((captured-note-num note-num))
         (lambda () (out 0 captured-note-num))))
     
-    (listen-ms 1000 my-listener)
+    (clock-ms 1000 my-listener)
 
     ;; 60 now coming out every second
 
@@ -140,7 +143,7 @@ that takes no arguments as the actualy delayed callback:
         (lambda ()
           (my-delay-fun captured-note-num))))
     
-    (listen-ms 1000 my-delay-fun-callback)
+    (clock-ms 1000 my-delay-fun-callback)
 
     ;; 60 now coming out every second
     (set! note-num 72)
@@ -165,7 +168,7 @@ and captured variables:
         ;; captured-note-num is in the let, but velocity is global
         (lambda () (out 0 (list captured-note-num velocity)))))
     
-    (listen-ms 1000 my-listener)
+    (clock-ms 1000 my-listener)
 
     ;; 60 90 now coming out every second
 

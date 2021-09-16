@@ -22,13 +22,10 @@ The main thread is also called the UI thread, and runs with the lowest priority.
 activity by using Max user interface objects (clicking bangs and messages, moving sliders, etc),
 we trigger execution in this thread. This thread is also responsible for screen redrawing and
 file i/o, and executes at a lower priority so that the screen can refresh without interupting
-audio playback or delaying musical events. Operations that involve loading files, refreshing UI
-elements, or creating visuals (with Jitter for example) should be done in this thread. 
-All Max messages that run in the main thread are internally implemented on a queue dedicated
-to the main thread, with a certain number of them executed per thread pass. We can tune
-how this thread works by setting the 'Event Interval' setting in the Scheduler preferences to control
-how frequently the main thread runs, and by setting the 'Queue Throttle' setting to control
-the maximum number of events that will be handled in one pass of the main thread.
+audio playback or delaying musical events. Generally speaking, operations that involve loading 
+files, refreshing UI elements, or creating visuals (with Jitter for example) should be done in this thread.
+In Max For Live, the Live API also runs in the low priority thread, similar to control surface
+scripts in Live. 
 
 Scheduler thread
 ^^^^^^^^^^^^^^^^^^^^^^^
@@ -41,7 +38,8 @@ Overdrive moves the scheduler thread into an Interupt Service Routine for high t
 frequent scheduling. The only reason not to enable Overdrive is if a patch is entirely aimed at visuals.
 We can configure this thread by setting the 'Scheduler Interval' setting in Scheduler
 preferences to control how frequently the thread runs (the default is 1ms) and the Poll Throttle setting
-to set the maximum number of event messages processed on one scheduler thread pass. 
+to set the maximum number of event messages processed on one scheduler thread pass. (Though 
+as is explained shortly, these don't actually matter if you also have selected Audio in Interupt.) 
 
 Audio thread
 ^^^^^^^^^^^^^^^^^^^^^^^
@@ -52,13 +50,17 @@ each audio pass calculates a series of audio samples that are then sent out in a
 this number of samples with the Signal Vector Size setting in the Audio Status window. This setting also
 affects audio latency as we will always have a latency of at least the size of the Signal Vector multiplied
 by the time for one sample at the current sample rate (before adding any sound card latency).
+Note that in Max For Live, the signal vector size is locked at 64 samples.
 
 Audio in Interrupt
 ^^^^^^^^^^^^^^^^^^^^^^^
-If in Audio Status window, we have selected Audio Interrupt as well as Scheduler Overdrive, we 
-will actually have only two threads running, as the 
+If, in the Audio Status window, we have selected Audio Interrupt as well as Scheduler Overdrive, or we
+are running in Max For Live, we will actually have only two threads running, because the 
 audio thread and the scheduler thread are merged into one thread that alternates between
-rendering a vector of audio samples and handling events taken from the scheduler thread queue. 
+rendering a vector of audio samples and handling scheduler events.
+This also means that events are processed once per signal vector size, with event onset times
+quantized to this boundary.
+
 This may or may not be better for your use case, depending on how big your audio vector size is
 and how much audio CPU intensive processing your patch needs to do. For example, if you are running
 heavy audio calculation and thus need a large signal vector size, you might see scheduler thread 
@@ -69,7 +71,7 @@ Delay and Defer operations:
 Max has several objects for delaying Max events and moving them into different threads. 
 The **delay** and **pipe** objects delay bangs and messages respectively by some number of milliseconds, 
 putting the delayed message on the *scheduler thread* queue to execute in the scheduler thread at a later time. To move
-an event from the main thread into the scheduler thread,  we can send it through a **delay** or 
+an event from the main (UI) thread into the scheduler thread,  we can send it through a **delay** or 
 **pipe** object with the delay time set to zero, which will put the message on to the scheduler 
 thread's queue for execution on the *next* pass of the scheduler thread. 
 
@@ -88,22 +90,29 @@ This saves as us from having to manually manage memory, as one does in languages
 latency implications because we never know when it will run.  Garbage collectors (GCs) are also used in 
 dynamic languages such as JavaScript, Lisp, Ruby, and Python. (S7's GC is a mark-and-sweep 
 garbage collector in case your into that sort of thing.) It will run occasionally, and 
-typically takes 1-2 ms to run on my machine. We can tell it to run on demand by calling 
-**(gc #t)** from Scheme. 
+typically takes 1-2 ms to run on my machine, depending on how long it has been since it
+last ran, how many s7 objects are in memory, and how much memory s7 is using.
+
+We can tell the gc to run on demand by calling **(gc-run)** from Scheme. 
+We can enable and disable the garbage collector as well, with **(gc-enable)** and **(gc-disable)**,
+and ask to run it only if it's enabled with **(gc-try)**. Most users won't need to bother
+with these, but if you are trying to achieve low-latency with a large Scheme program,
+manually running the gc at certain intervals or turning it off for the duration of a piece
+and then running it between pieces can be helpful.
 
 In practical terms, this means Scheme is not likely to work well for *audio* generation, where
 2 ms is a long time, but for manipulation of musical events or musical input, it's not
 noticeable. We notice a lag of 5 ms as smearing, and 20 ms as a discrete event, so a 2 ms
 lag of the scheduler is not discernable, and if we are running with an audio latency of 
-over this, it probably won't have any effect at all. For example, if we have and i/o
-vector and singal vector set such that the system has an overall latency of 5-10ms, the
-lag from the garbage collector is likely to be lower than the lag from our built in latency.
-
+over this, it probably won't have any effect at all. For example, if we have an i/o
+vector and signal vector set such that the system has an overall latency of 5-10ms, the
+lag from the garbage collector is likely to be lower than the lag from our built in latency
+and won't cause any issues.
 
 S4M Thread Selection 
 --------------------
-The **s4m** object can be locked to *either* the high
-priority or low priority thread with the **@thread** attribute. This can be set to 
+The **s4m** object is locked to *either* the high priority or low priority thread with 
+the **@thread** attribute. This can be set to 
 **h** or **l**, and is **h** by default if you don't set it explicitly. In the s4m object,
 any incoming message will be promoted or defered to ensure it's handled in the right thread
 before being evaluated by the Scheme intepreter.
@@ -125,12 +134,12 @@ object only receive messages that had gone through a **deferlow**. This would de
 third (lowest) **s4m** object such that they will only get serviced if Max has time
 to get through the whole low priority queue on the main thread pass.
 
-There exists a third option that can be used for testing, but is not guaranteed to be safe. 
-If **@thread a** is chosen, **s4m** can run in **any** thread. This can be useful for testing
-purposes, combined with the **(isr?)** function, which returns **true** (1, in Max) if the 
-thread is excuting is the scheduler thread. Note that while using **@thread a** will seem to work 
-without issue almost all the time, it is definitely possible for a thread interuption to 
-corrupt data with unpredicatble results, which could potentially include a complete crash. 
+Note that this is also how the Ableton Live API objects work in Max For Live - it is always
+in the low thread and any incoming messages are defered. So if you want to interact programmatically
+with the Live API, you should do it from a low-thread s4m object. If you want to interact
+with the Live API from a seqencer you're running in the high thread, you should have your
+high thread s4m object send the low thread object a message telling it to trigger an API
+action.
 
 Comparison to JS and Node For Max 
 ---------------------------------
@@ -144,7 +153,7 @@ they only create a *minimum* delay. The event
 won't be serviced until the delay is done, and the low priority thread gets to run again.
 It's not at all uncommon for the low priority thread to hiccup: visual redrawing
 operations or any file system interaction can do it. The upshot of this is that while the 
-**js** object has quite a comprehensive set of features, it's not reliable for timing critical operations.
+**js** object has quite a comprehensive set of features, it's not really reliable for timing critical operations.
 Note that this only matters for events that will be rendered to *audio* - user interface and Jitter operations
 execute in the low priority thread anyway, making **js** suitable for UI or Jitter manipulation.
 

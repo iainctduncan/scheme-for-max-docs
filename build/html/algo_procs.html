@@ -1,70 +1,31 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
-  <title>Algorithmic Processes and Live-Coding &mdash; Scheme For Max 0.1 documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-
-  
-  
-
-  
-  
-
-  
-
-  
+  <title>Algorithmic Processes and Live-Coding &mdash; Scheme For Max 0.1 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+  <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
-    
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-
-    
+    <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Building From Source" href="building.html" />
+    <link rel="next" title="Max Threads, the Scheduler and the S7 Garbage Collector" href="threading.html" />
     <link rel="prev" title="S4M Scheme API" href="api.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
-
-          
             <a href="index.html" class="icon icon-home"> Scheme For Max
-          
-
-          
           </a>
-
-          
-            
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -72,24 +33,12 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="motivations.html">Motivation - Why Lisp in Max?</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Setup and Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="threading.html">Max Threads, the Scheduler and the S7 Garbage Collector</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Using Scheme For Max</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">S4M Scheme API</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Algorithmic Processes and Live-Coding</a><ul>
@@ -100,92 +49,54 @@
 <li class="toctree-l2"><a class="reference internal" href="#controlling-recursive-processes">Controlling Recursive Processes</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="threading.html">Max Threads, the Scheduler and the S7 Garbage Collector</a></li>
 <li class="toctree-l1"><a class="reference internal" href="building.html">Building From Source</a></li>
 <li class="toctree-l1"><a class="reference internal" href="s7.html">Why S7 Scheme?</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">Scheme For Max</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-        
       <li>Algorithmic Processes and Live-Coding</li>
-    
-    
       <li class="wy-breadcrumbs-aside">
-        
-          
             <a href="_sources/algo_procs.rst.txt" rel="nofollow"> View page source</a>
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
+             
   <div class="section" id="algorithmic-processes-and-live-coding">
-<h1>Algorithmic Processes and Live-Coding<a class="headerlink" href="#algorithmic-processes-and-live-coding" title="Permalink to this headline">¶</a></h1>
-<p>We can use the <strong>delay</strong> and <strong>listen</strong> functions to create
+<h1>Algorithmic Processes and Live-Coding<a class="headerlink" href="#algorithmic-processes-and-live-coding" title="Permalink to this headline"></a></h1>
+<p>We can use the <strong>delay</strong> and <strong>clock</strong> functions to create
 sequencers and repeating algorithmic processes, and interact
 with these in real-time by changing variables or redefining functions.
 This section provides some helpful examples and tips. This document
 assumes familiarity with lambda functions and let blocks, though
 one could certainly use the examples here to learn them.</p>
-<p>This kind of algorithmic composition is explored in detail in the (highly
+<p>The Scheme for Max Sequencer Toolkit tutorial uses these functions
+extensively, and is here: <a class="reference external" href="https://iainctduncan.github.io/s4m-stk/">https://iainctduncan.github.io/s4m-stk/</a></p>
+<p>This kind of algorithmic composition is also explored in detail in the (highly
 recommended!) book <strong>Notes from the Metalevel</strong>, by Dr Heinrich Taube.
 The book uses S7 Scheme with the Common Music runtime, but examples are easily adapted to
 Scheme For Max.</p>
 <div class="section" id="dynamically-redefining-scheduled-functions">
-<h2>Dynamically Redefining Scheduled Functions<a class="headerlink" href="#dynamically-redefining-scheduled-functions" title="Permalink to this headline">¶</a></h2>
+<h2>Dynamically Redefining Scheduled Functions<a class="headerlink" href="#dynamically-redefining-scheduled-functions" title="Permalink to this headline"></a></h2>
 <p>We can use the interpreter to redefine scheduled functions on the fly, but this
 requires some care to get the behaviour you are expecting. When we register
-a scheduled function or a listener function, we are registering the <em>function</em>,
+a scheduled function or a clock listener function, we are registering the <em>function</em>,
 not the <em>symbol for the function</em>. This means that if a function is registered in the
 scheduler (whether as a listener or using delay), redefining the function
 attached to the symbol for the function’s <em>name</em> has no effect on the function called
@@ -199,7 +110,7 @@ symbol used to define the function:</p>
 <span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">my-listener</span><span class="p">)</span> <span class="p">(</span><span class="nf">post</span> <span class="nv">:foobar</span><span class="p">))</span>
 
 <span class="c1">;; register it to get evaluated every second</span>
-<span class="p">(</span><span class="nf">listen-ms</span> <span class="mi">1000</span> <span class="nv">my-listener</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">clock-ms</span> <span class="mi">1000</span> <span class="nv">my-listener</span><span class="p">)</span>
 
 <span class="c1">;; now we see :foobar posted every second</span>
 
@@ -209,8 +120,8 @@ symbol used to define the function:</p>
 <span class="c1">;; no change to what is getting posted, because the old</span>
 <span class="c1">;; my-listener function is still registered!</span>
 
-<span class="c1">;; register the new function, replacing the function registered for listen-ms</span>
-<span class="p">(</span><span class="nf">listen-ms</span> <span class="mi">1000</span> <span class="nv">my-listener</span><span class="p">)</span>
+<span class="c1">;; register the new function, replacing the function registered for clock-ms</span>
+<span class="p">(</span><span class="nf">clock-ms</span> <span class="mi">1000</span> <span class="nv">my-listener</span><span class="p">)</span>
 
 <span class="c1">;; now we get :foobaz posted</span>
 </pre></div>
@@ -222,9 +133,9 @@ will have an immediate effect:</p>
 
 <span class="c1">;; register a lambda function that evaluates whatever is currently</span>
 <span class="c1">;; attached to the symbol &#39;my-listener</span>
-<span class="p">(</span><span class="nf">listen-ms</span> <span class="mi">1000</span> <span class="p">(</span><span class="k">lambda </span><span class="p">()</span> <span class="p">(</span><span class="nb">eval </span><span class="p">(</span><span class="nb">list </span><span class="ss">&#39;my-listener</span><span class="p">))))</span>
+<span class="p">(</span><span class="nf">clock-ms</span> <span class="mi">1000</span> <span class="p">(</span><span class="k">lambda </span><span class="p">()</span> <span class="p">(</span><span class="nb">eval </span><span class="p">(</span><span class="nb">list </span><span class="ss">&#39;my-listener</span><span class="p">))))</span>
 <span class="c1">;; same, different syntax</span>
-<span class="p">(</span><span class="nf">listen-ms</span> <span class="mi">1000</span> <span class="p">(</span><span class="k">lambda </span><span class="p">()</span> <span class="p">(</span><span class="nb">eval </span><span class="o">&#39;</span><span class="p">(</span><span class="nv">my-listener</span><span class="p">))))</span>
+<span class="p">(</span><span class="nf">clock-ms</span> <span class="mi">1000</span> <span class="p">(</span><span class="k">lambda </span><span class="p">()</span> <span class="p">(</span><span class="nb">eval </span><span class="o">&#39;</span><span class="p">(</span><span class="nv">my-listener</span><span class="p">))))</span>
 
 <span class="c1">;; every second we are getting :foobar posted now</span>
 
@@ -242,7 +153,7 @@ we have those functions use values looked up from global symbols:</p>
 <span class="p">(</span><span class="k">define </span><span class="nv">note-num</span> <span class="mi">60</span><span class="p">)</span>
 <span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">my-listener</span><span class="p">)</span> <span class="p">(</span><span class="nf">out</span> <span class="mi">0</span> <span class="nv">note-num</span><span class="p">))</span>
 
-<span class="p">(</span><span class="nf">listen-ms</span> <span class="mi">1000</span> <span class="nv">my-listener</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">clock-ms</span> <span class="mi">1000</span> <span class="nv">my-listener</span><span class="p">)</span>
 <span class="c1">;; function is outputing 60</span>
 
 <span class="p">(</span><span class="k">set! </span><span class="nv">note-num</span> <span class="mi">72</span><span class="p">)</span>
@@ -251,7 +162,7 @@ we have those functions use values looked up from global symbols:</p>
 </div>
 </div>
 <div class="section" id="capturing-variables-with-lexical-closures">
-<h2>Capturing variables with lexical closures<a class="headerlink" href="#capturing-variables-with-lexical-closures" title="Permalink to this headline">¶</a></h2>
+<h2>Capturing variables with lexical closures<a class="headerlink" href="#capturing-variables-with-lexical-closures" title="Permalink to this headline"></a></h2>
 <p>To capture the value of a global (or outer) variable, but keep the listener function using
 it regardless of any subsequent changes to the global variable, we need to use a lexical
 closure. There are several ways of doing this, one is to use a <strong>let</strong> block.</p>
@@ -262,7 +173,7 @@ closure. There are several ways of doing this, one is to use a <strong>let</stro
   <span class="p">(</span><span class="k">let </span><span class="p">((</span><span class="nf">captured-note-num</span> <span class="nv">note-num</span><span class="p">))</span>
     <span class="p">(</span><span class="k">lambda </span><span class="p">()</span> <span class="p">(</span><span class="nf">out</span> <span class="mi">0</span> <span class="nv">captured-note-num</span><span class="p">))))</span>
 
-<span class="p">(</span><span class="nf">listen-ms</span> <span class="mi">1000</span> <span class="nv">my-listener</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">clock-ms</span> <span class="mi">1000</span> <span class="nv">my-listener</span><span class="p">)</span>
 
 <span class="c1">;; 60 now coming out every second</span>
 
@@ -290,7 +201,7 @@ that takes no arguments as the actualy delayed callback:</p>
     <span class="p">(</span><span class="k">lambda </span><span class="p">()</span>
       <span class="p">(</span><span class="nf">my-delay-fun</span> <span class="nv">captured-note-num</span><span class="p">))))</span>
 
-<span class="p">(</span><span class="nf">listen-ms</span> <span class="mi">1000</span> <span class="nv">my-delay-fun-callback</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">clock-ms</span> <span class="mi">1000</span> <span class="nv">my-delay-fun-callback</span><span class="p">)</span>
 
 <span class="c1">;; 60 now coming out every second</span>
 <span class="p">(</span><span class="k">set! </span><span class="nv">note-num</span> <span class="mi">72</span><span class="p">)</span>
@@ -310,7 +221,7 @@ and captured variables:</p>
     <span class="c1">;; captured-note-num is in the let, but velocity is global</span>
     <span class="p">(</span><span class="k">lambda </span><span class="p">()</span> <span class="p">(</span><span class="nf">out</span> <span class="mi">0</span> <span class="p">(</span><span class="nb">list </span><span class="nv">captured-note-num</span> <span class="nv">velocity</span><span class="p">)))))</span>
 
-<span class="p">(</span><span class="nf">listen-ms</span> <span class="mi">1000</span> <span class="nv">my-listener</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">clock-ms</span> <span class="mi">1000</span> <span class="nv">my-listener</span><span class="p">)</span>
 
 <span class="c1">;; 60 90 now coming out every second</span>
 
@@ -322,7 +233,7 @@ and captured variables:</p>
 </div>
 </div>
 <div class="section" id="temporal-recursion-recursive-scheduling">
-<h2>Temporal Recursion / Recursive Scheduling<a class="headerlink" href="#temporal-recursion-recursive-scheduling" title="Permalink to this headline">¶</a></h2>
+<h2>Temporal Recursion / Recursive Scheduling<a class="headerlink" href="#temporal-recursion-recursive-scheduling" title="Permalink to this headline"></a></h2>
 <p>It is safe to have a scheduled function re-schedule another function, sometimes called
 “temporal recursion” in the algorithmic composition literature. The function
 definition uses standard Lisp recursion:</p>
@@ -361,7 +272,7 @@ of transport control functions that manage callback cancellation and then
 stop the transport using the aforementioned transport functions.</p>
 </div>
 <div class="section" id="recurive-scheduling-and-lexical-closures">
-<h2>Recurive Scheduling and Lexical Closures<a class="headerlink" href="#recurive-scheduling-and-lexical-closures" title="Permalink to this headline">¶</a></h2>
+<h2>Recurive Scheduling and Lexical Closures<a class="headerlink" href="#recurive-scheduling-and-lexical-closures" title="Permalink to this headline"></a></h2>
 <p>By combining lexical clojures with self-scheduling delay calls, we can
 make functions that change the arguments for their next iteration.
 Below is an example of a function that counts down 4 repetitions.</p>
@@ -405,7 +316,7 @@ the process stops after the count reaches the last rep:</p>
 </div>
 </div>
 <div class="section" id="controlling-recursive-processes">
-<h2>Controlling Recursive Processes<a class="headerlink" href="#controlling-recursive-processes" title="Permalink to this headline">¶</a></h2>
+<h2>Controlling Recursive Processes<a class="headerlink" href="#controlling-recursive-processes" title="Permalink to this headline"></a></h2>
 <p>We might need to be able to stop a process early, so we can also check
 a global to see if we should still be playing before scheduling the next
 iteration:</p>
@@ -466,50 +377,33 @@ variable, we can cancel recursion for a process at anytime by cancelling that ha
 
 
            </div>
-           
           </div>
-          <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="building.html" class="btn btn-neutral float-right" title="Building From Source" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="api.html" class="btn btn-neutral float-left" title="S4M Scheme API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="threading.html" class="btn btn-neutral float-right" title="Max Threads, the Scheduler and the S7 Garbage Collector" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2020, Iain CT Duncan.
-
-    </p>
+    <p>&#169; Copyright 2020, Iain CT Duncan.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

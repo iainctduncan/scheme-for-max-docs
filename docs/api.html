@@ -1,70 +1,31 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
-  <title>S4M Scheme API &mdash; Scheme For Max 0.1 documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-
-  
-  
-
-  
-  
-
-  
-
-  
+  <title>S4M Scheme API &mdash; Scheme For Max 0.1 documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+  <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
-    
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-
-    
+    <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Algorithmic Processes and Live-Coding" href="algo_procs.html" />
     <link rel="prev" title="Using Scheme For Max" href="usage.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
-
-          
             <a href="index.html" class="icon icon-home"> Scheme For Max
-          
-
-          
           </a>
-
-          
-            
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -72,24 +33,12 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="motivations.html">Motivation - Why Lisp in Max?</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Setup and Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="threading.html">Max Threads, the Scheduler and the S7 Garbage Collector</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Using Scheme For Max</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">S4M Scheme API</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#file-loading">File Loading</a></li>
@@ -108,88 +57,49 @@
 <li class="toctree-l3"><a class="reference internal" href="#helpful-functions">Helpful Functions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#delay-functions">Delay Functions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#timer-functions">Timer Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#garbage-collector-functions">Garbage Collector Functions</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="algo_procs.html">Algorithmic Processes and Live-Coding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="threading.html">Max Threads, the Scheduler and the S7 Garbage Collector</a></li>
 <li class="toctree-l1"><a class="reference internal" href="building.html">Building From Source</a></li>
 <li class="toctree-l1"><a class="reference internal" href="s7.html">Why S7 Scheme?</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">Scheme For Max</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-        
       <li>S4M Scheme API</li>
-    
-    
       <li class="wy-breadcrumbs-aside">
-        
-          
             <a href="_sources/api.rst.txt" rel="nofollow"> View page source</a>
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
+             
   <div class="section" id="s4m-scheme-api">
-<h1>S4M Scheme API<a class="headerlink" href="#s4m-scheme-api" title="Permalink to this headline">¶</a></h1>
+<h1>S4M Scheme API<a class="headerlink" href="#s4m-scheme-api" title="Permalink to this headline"></a></h1>
 <p>Below are details of the Scheme API. Core S7 functions are not listed here,
 only functions added by S4M. Scheme functions are either defined
 in <strong>s4m.c</strong> using the S7 Foreign Function Interface, or in Scheme code boostrapped
 from the initial load of <strong>s4m.scm</strong>, including the <strong>s74.scm</strong> file.</p>
 <div class="section" id="file-loading">
-<h2>File Loading<a class="headerlink" href="#file-loading" title="Permalink to this headline">¶</a></h2>
+<h2>File Loading<a class="headerlink" href="#file-loading" title="Permalink to this headline"></a></h2>
 <dl class="simple">
 <dt><strong>(load-from-max {filename string})</strong></dt><dd><p>Load a file into Scheme. Acts excactly like Scheme standard <strong>load</strong> but finds
 the full path on the Max file search path first.</p>
@@ -197,7 +107,7 @@ the full path on the Max file search path first.</p>
 </dl>
 </div>
 <div class="section" id="console-output">
-<h2>Console Output<a class="headerlink" href="#console-output" title="Permalink to this headline">¶</a></h2>
+<h2>Console Output<a class="headerlink" href="#console-output" title="Permalink to this headline"></a></h2>
 <dl class="simple">
 <dt><strong>(post {args…})</strong></dt><dd><p>Post to the Max console. All arguments will be converted to string representations
 automatically. Post returns the null list.</p>
@@ -229,7 +139,7 @@ indicate result should not be logged.</p>
 </div>
 </div>
 <div class="section" id="outputs">
-<h2>Outputs<a class="headerlink" href="#outputs" title="Permalink to this headline">¶</a></h2>
+<h2>Outputs<a class="headerlink" href="#outputs" title="Permalink to this headline"></a></h2>
 <dl class="simple">
 <dt><strong>(out {outlet} {value})</strong></dt><dd><p>Output {value} through outlet {outlet}. Value must be a single object.
 Returns the null list, thus by default does not log to console.</p>
@@ -255,10 +165,19 @@ Returns the null list, thus by default does not log to console.</p>
 Defined for outs 0-7, to add more, edit <strong>s4.scm</strong>
 Returns the null list, thus by default does not log to console.</p>
 </dd>
+<dt><strong>(out* {list or vector})</strong></dt><dd><p>Unpacks the argument and spreads across all available outlets. Input lists
+with more items than there are outlets have the remaining items sent out as
+list out the final outlet.</p>
+</dd>
 </dl>
+<div class="highlight-scm notranslate"><div class="highlight"><pre><span></span><span class="c1">;; assuming there are 3 outlets</span>
+<span class="p">(</span><span class="nf">out*</span> <span class="o">&#39;</span><span class="p">(</span><span class="nv">a</span> <span class="nv">b</span> <span class="nv">c</span> <span class="nv">d</span><span class="p">))</span>
+<span class="c1">;; out 0: a, out 1: b, out 2: c d</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="sending-messages">
-<h2>Sending Messages<a class="headerlink" href="#sending-messages" title="Permalink to this headline">¶</a></h2>
+<h2>Sending Messages<a class="headerlink" href="#sending-messages" title="Permalink to this headline"></a></h2>
 <p>We can send arbitrary Max messages to other Max objects that have been given
 a scripting name. Before doing so, we must send the <strong>scan</strong> message to the
 <strong>s4m</strong> object, which will scan the current patcher and all descendents,
@@ -281,7 +200,7 @@ values to be handled as Max atoms.</p>
 <span class="p">(</span><span class="nb">apply </span><span class="nv">send</span> <span class="p">(</span><span class="nb">cons </span><span class="ss">&#39;msg-target</span> <span class="nv">msg-list</span><span class="p">))</span>
 </pre></div>
 </div>
-<p>There is also a convenience helper, <strong>send-list</strong>.</p>
+<p>There are also two convenience helper, <strong>send-list</strong> and <strong>send*</strong>.</p>
 <dl class="simple">
 <dt><strong>(send-list {target} {msg-list})</strong></dt><dd><p>Send the message {msg-list}, a single arg of a list.</p>
 </dd>
@@ -290,12 +209,20 @@ values to be handled as Max atoms.</p>
 <span class="p">(</span><span class="nf">send-list</span> <span class="ss">&#39;msg-target</span> <span class="nv">msg-list</span><span class="p">)</span>
 </pre></div>
 </div>
+<dl class="simple">
+<dt><strong>(send* {args})</strong></dt><dd><p>Flattens all lists passed as arguments and calls send</p>
+</dd>
+</dl>
+<div class="highlight-scm notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="nf">send-list</span> <span class="ss">&#39;msg-target</span> <span class="ss">&#39;set</span> <span class="o">&#39;</span><span class="p">(</span><span class="nv">a</span> <span class="nv">b</span> <span class="nv">c</span><span class="p">)</span> <span class="o">&#39;</span><span class="p">(</span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">))</span>
+<span class="c1">; calls (send &#39;msg-target &#39;a &#39;b &#39;c 1 2 3)</span>
+</pre></div>
+</div>
 <p>This can be used to integrate with all kinds of Max objects, including
 updating colls, dicts, tables, etc. We can copy whatever message the object
 receives and send them.</p>
 </div>
 <div class="section" id="table-i-o">
-<h2>Table I/O<a class="headerlink" href="#table-i-o" title="Permalink to this headline">¶</a></h2>
+<h2>Table I/O<a class="headerlink" href="#table-i-o" title="Permalink to this headline"></a></h2>
 <p>We can write and read integer data directly to and from named Max tables, as well as query
 for the existence and size of Max tables. Max tables are useful
 for storing integer data that we want to share between an <strong>s4m</strong> object
@@ -330,7 +257,7 @@ Alias: <strong>vecsft</strong></p>
 </dl>
 </div>
 <div class="section" id="buffer-i-o">
-<h2>Buffer I/O<a class="headerlink" href="#buffer-i-o" title="Permalink to this headline">¶</a></h2>
+<h2>Buffer I/O<a class="headerlink" href="#buffer-i-o" title="Permalink to this headline"></a></h2>
 <p>We can write and read float data directly to and from named Max buffers, as well as query
 for the existence and size of Max buffers. Max buffers are useful
 for storing float data that we want to share between an <strong>s4m</strong> object
@@ -374,7 +301,7 @@ Alias: <strong>bufsft</strong></p>
 </dl>
 </div>
 <div class="section" id="dictionary-i-o-hash-tables">
-<h2>Dictionary I/O &amp; hash-tables<a class="headerlink" href="#dictionary-i-o-hash-tables" title="Permalink to this headline">¶</a></h2>
+<h2>Dictionary I/O &amp; hash-tables<a class="headerlink" href="#dictionary-i-o-hash-tables" title="Permalink to this headline"></a></h2>
 <p>We can read and write key-value stores in Max dictionaries and S7 Scheme hash-tables,
 which are unordered key-value hashmaps. When converting nested values in Max dictionaries to Scheme,
 arrays become Scheme vectors, and nested dictionaries become Scheme hash-tables. Only symbol, keyword, or
@@ -392,7 +319,7 @@ a valid value to store, and thus getting <strong>#false</strong> back can be mis
 a potentially valid value on a key error, the Max dict functions raise Scheme errors, which can
 be caught to return a default value of your choosing.</p>
 <div class="section" id="s7-hash-table-and-keyword-examples">
-<h3>S7 hash-table and keyword examples<a class="headerlink" href="#s7-hash-table-and-keyword-examples" title="Permalink to this headline">¶</a></h3>
+<h3>S7 hash-table and keyword examples<a class="headerlink" href="#s7-hash-table-and-keyword-examples" title="Permalink to this headline"></a></h3>
 <div class="highlight-scm notranslate"><div class="highlight"><pre><span></span><span class="c1">;; a keyword always evaluates to itself</span>
 <span class="p">(</span><span class="nb">eval </span><span class="nv">:foobar</span><span class="p">)</span>
 <span class="nv">s4m&gt;</span> <span class="nv">:foobar</span>
@@ -448,7 +375,7 @@ be caught to return a default value of your choosing.</p>
 </div>
 </div>
 <div class="section" id="max-dictionary-api">
-<h3>Max Dictionary API<a class="headerlink" href="#max-dictionary-api" title="Permalink to this headline">¶</a></h3>
+<h3>Max Dictionary API<a class="headerlink" href="#max-dictionary-api" title="Permalink to this headline"></a></h3>
 <p>Examples below can be used with the tests-dict.maxpat test patcher in the patchers directory.</p>
 <dl class="simple">
 <dt><strong>(dict-ref {dict-name} {symbol|list key} )</strong></dt><dd><p>Return value in dict {dict-name} at {key}, where dict-name is a symbol, and key can be either
@@ -528,7 +455,7 @@ creates a dictionary. If {dict-name} already exists, replaces entire contents. A
 </div>
 </div>
 <div class="section" id="max-time-and-transport-api">
-<h2>Max Time and Transport API<a class="headerlink" href="#max-time-and-transport-api" title="Permalink to this headline">¶</a></h2>
+<h2>Max Time and Transport API<a class="headerlink" href="#max-time-and-transport-api" title="Permalink to this headline"></a></h2>
 <p>Transport functions exist to interact with the Max master transport. Named transports in addition
 to the master transport are not yet supported, and behaviour in Max For Live is unknown (but will be tackled
 in future!).</p>
@@ -568,22 +495,19 @@ Returns new transport location in ticks (float). Alias <strong>t-seek</strong></
 </dl>
 </div>
 <div class="section" id="scheduling-delays-timers">
-<h2>Scheduling, Delays, &amp; Timers<a class="headerlink" href="#scheduling-delays-timers" title="Permalink to this headline">¶</a></h2>
-<p>Because we can run S4M in the high-priority thread, we can interact with the Max scheduler to
-create sample-accurate delays and timers. These are only currently supported in the high-priority
-thread, so will raise errors if called from <strong>s4m &#64;thread l</strong> objects. Note that this includes
-the load of a file from the main object box, so if you want to call scheduling functions
-in your main file, you will need to wrap them in a function that you call from the high-priority
-thread after file load.</p>
-<p>Future support for low-priority
-delays is planned. Delays can also interact with the global transport, including quantizing to
+<h2>Scheduling, Delays, &amp; Timers<a class="headerlink" href="#scheduling-delays-timers" title="Permalink to this headline"></a></h2>
+<p>S4M uses Max’s clock facilities to interact with the Max scheduler to
+create accurate delays and timers. As of 0.3, these can be run from both high priority
+and low priority thread objects. In the low priority thread, they are scheduled with the
+high priority scheduler, but defered when they start.</p>
+<p>Delays can also interact with the global transport, including quantizing to
 transport-aware time values.</p>
 <p>Internally, delays register callback functions in the global <strong>s4m-callback-registry</strong> hash-table.
 Cancelling an event consists of removing the callback function. Functions that are scheduled
 with the <strong>delay</strong> functions or used as clock listeners must take no arguments, with the exception
 of the tick listeners, which will get the current tick as a single argument.</p>
 <div class="section" id="helpful-functions">
-<h3>Helpful Functions<a class="headerlink" href="#helpful-functions" title="Permalink to this headline">¶</a></h3>
+<h3>Helpful Functions<a class="headerlink" href="#helpful-functions" title="Permalink to this headline"></a></h3>
 <p>Some helpful functions for working with timers and delay functions.</p>
 <dl class="simple">
 <dt><strong>(isr?)</strong></dt><dd><p>Returns true if exectuting in the the high-priority scheduler thread.</p>
@@ -593,7 +517,7 @@ of the tick listeners, which will get the current tick as a single argument.</p>
 </dl>
 </div>
 <div class="section" id="delay-functions">
-<h3>Delay Functions<a class="headerlink" href="#delay-functions" title="Permalink to this headline">¶</a></h3>
+<h3>Delay Functions<a class="headerlink" href="#delay-functions" title="Permalink to this headline"></a></h3>
 <p>Functions to schedule execution of a Scheme function in the Max scheduler.</p>
 <dl class="simple">
 <dt><strong>(delay {number time} {function})</strong></dt><dd><p>Schedule function to execute in {time} ms. Returns a symbol of the callback key, which is the
@@ -661,7 +585,7 @@ callback handles.</p>
 </div>
 </div>
 <div class="section" id="timer-functions">
-<h3>Timer Functions<a class="headerlink" href="#timer-functions" title="Permalink to this headline">¶</a></h3>
+<h3>Timer Functions<a class="headerlink" href="#timer-functions" title="Permalink to this headline"></a></h3>
 <p>Several functions are available to register periodic timers, with or without following
 the global transport. These are implemented at present only for the high-priority thread.
 (Low priority timers to be implemented in future). These all return the keyword <strong>:clock-registered</strong>
@@ -674,15 +598,15 @@ registered should accept no arguments, but can get the the current time by calli
 </dl>
 <div class="highlight-scm notranslate"><div class="highlight"><pre><span></span><span class="c1">;; register a time callback to post current time in ms every second</span>
 <span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">time-callback</span><span class="p">)</span> <span class="p">(</span><span class="nf">post</span> <span class="s">&quot;current time&quot;</span> <span class="p">(</span><span class="nf">time</span><span class="p">)))</span>
-<span class="p">(</span><span class="nf">listen-ms</span> <span class="mf">1000.0</span> <span class="nv">time-callback</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">clock-ms</span> <span class="mf">1000.0</span> <span class="nv">time-callback</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="simple">
-<dt><strong>(cancel-clock-ms)*</strong></dt><dd><p>Cancels the listen-ms timer.</p>
+<dt><strong>(cancel-clock-ms)</strong></dt><dd><p>Cancels the clock-ms timer.</p>
 </dd>
 <dt><strong>(clock-ms-t {number ms} {function callback})</strong></dt><dd><p>Transport aware version of <strong>clock-ms</strong>. The clock used only advances if transport is playing.</p>
 </dd>
-<dt><strong>(cancel-clock-ms)*</strong></dt><dd><p>Cancels the clock-ms-t timer.</p>
+<dt><strong>(cancel-clock-ms-t)</strong></dt><dd><p>Cancels the clock-ms-t timer.</p>
 </dd>
 <dt><strong>(clock-ticks {number ticks} {function callback})</strong></dt><dd><p>Transport aware version that receives the current transport tick location as its argument.</p>
 </dd>
@@ -693,59 +617,80 @@ registered should accept no arguments, but can get the the current time by calli
 </pre></div>
 </div>
 <dl class="simple">
-<dt><strong>(cancel-clock-ms)*</strong></dt><dd><p>Cancels the listen-ticks timer.</p>
+<dt><strong>(cancel-clock-ticks)</strong></dt><dd><p>Cancels the clock-ticks timer.</p>
 </dd>
 </dl>
+</div>
+<div class="section" id="garbage-collector-functions">
+<h3>Garbage Collector Functions<a class="headerlink" href="#garbage-collector-functions" title="Permalink to this headline"></a></h3>
+<p>Advanced users may want to tweak how the garbage collector runs to allow running with lower latency
+and larger programs. For example, one might set the heap-size quite low and deliberately run
+the gc very frequently off a timer, quantized such that it runs at an unimportant time musically
+such as between 16th notes every 4th 16th note or something. Or we might decide not to run it at
+all until a song is over, and then run when the music is paused.</p>
+<dl class="simple">
+<dt><strong>(gc-disable)</strong></dt><dd><p>Turn off the gc. Note that your heap-size will grow, and once you turn it back on, it will
+take a lot longer to run the gc if the heap is now big.</p>
+</dd>
+<dt><strong>(gc-enable)</strong></dt><dd><p>Enables the gc. This does not tell the gc to run though.</p>
+</dd>
+<dt><strong>(gc-try)</strong></dt><dd><p>Runs the gc if it’s enabled, does nothing if not.</p>
+</dd>
+<dt><strong>(gc-run)</strong></dt><dd><p>Forces the gc to run, whether or not it’s enabled. Does not change the enable status.</p>
+</dd>
+<dt><strong>(set! (*s7* ‘gc-stats #t))</strong></dt><dd><p>Turns on and off gc stats logging to the console, which will show you how fast its running
+and over how much memory.</p>
+</dd>
+<dt><strong>(*s7* ‘heap-size)</strong></dt><dd><p>Returns the current heap size. You can use this to see how big the heap got while you
+had the gc disabled.</p>
+</dd>
+<dt><strong>(*s4m* :heap-size)</strong></dt><dd><p>Returns the s4m <em>starting</em> heap-size. You can use this to set how much s4m allocates
+at the beginning to prevent unnecessary heap resizes if you’re planning on locking out the gc.</p>
+</dd>
+</dl>
+<p>Note that once the heap has grown, the only way to shrink it again is to recreate your
+s4m object by editing the s4m box. Reset does not shrink the heap.</p>
+<p>If you want to run with no gc, the best thing to do is to turn on stats, play for
+as long as you plan to run, and note the heap-size. Then start your s4m object
+off with this heap-size. This will avoid the work of resizing the heap during playback.
+However, this does mean any gc run will be slow, so you will need to keep it disabled
+until you can afford an underrun.</p>
+<p>Alternately, you can set the heap-size very low, and run the gc proactively very frequently.
+This will not run as fast as locking it out entirely (assuming you’ve made sure the heap
+won’t resize), but avoids the problem of eventually needing to run a really slow gc round.</p>
 </div>
 </div>
 </div>
 
 
            </div>
-           
           </div>
-          <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="algo_procs.html" class="btn btn-neutral float-right" title="Algorithmic Processes and Live-Coding" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="usage.html" class="btn btn-neutral float-left" title="Using Scheme For Max" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="algo_procs.html" class="btn btn-neutral float-right" title="Algorithmic Processes and Live-Coding" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2020, Iain CT Duncan.
-
-    </p>
+    <p>&#169; Copyright 2020, Iain CT Duncan.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

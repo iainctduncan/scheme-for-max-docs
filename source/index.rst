@@ -13,10 +13,10 @@ Scheme For Max - Documentation
     overview
     motivations
     installation
-    threading
     usage
     api
     algo_procs
+    threading
     building
     s7
     
