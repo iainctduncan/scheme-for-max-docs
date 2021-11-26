@@ -4,7 +4,7 @@ Setup and Installation
 Scheme for Max is currently available as a package for Max 8 on OSX or Windows, and as source code
 that should compile for Max 7.  
 
-The Scheme For Max package can be downloaded from the Releases tab on  `GitHub <https://github.com/iainctduncan/Scheme-for-max.com>`_
+The Scheme For Max package can be downloaded from the Releases tab on  `GitHub <https://github.com/iainctduncan/Scheme-for-max>`_.
 
 To install the package, download the archive, and uncompress it in your Max packages directory. On OSX this
 is normally in **~/Documents/Max 8/Packages**. Once you have uncompressed it, in Max you can open
